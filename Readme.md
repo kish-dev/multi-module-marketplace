@@ -19,7 +19,7 @@ git clone https://gitlab.ozon.dev/android/classroom-2/workshop-1.git
 - *dto* (Для хранение объектов, которыми обмениваются бэкенд и приложение. Там могут быть и объекты для хранения в базу данных.)
 - *repositoriesImpl* (Для реализации репозитория интерфейс которого будет лежать в слое domain)
 
-Перетащите файл ProductInListDTO в папку dto из папки sources, а файл mock.kt в repositoryImpl.
+Перетащите файл `ProductInListDTO` в папку dto из папки sources, а файл mock.kt в repositoryImpl.
 
 ## 4. Q&A - 5 мин
 
@@ -35,11 +35,40 @@ git clone https://gitlab.ozon.dev/android/classroom-2/workshop-1.git
 Теперь нужно будет сделать реализацию `ProductsRepository` c названием класса `MockProductsRepositoryImpl` в папке *data/repositoriesImpl*.
 Для простоты маппинг данных будем производить в реализации самого `MockProductsRepositoryImpl`, данные для маппинга хранятся в файлике *mock.kt*.
 
-И наконец нужно будет создать интерфейс `ProductsInteractor` с реализацией в папке *interactors*. Интерфейс должен содержать методы:
+И наконец нужно будет создать интерфейс `ProductsInteractor` с реализацией в папке *interactors*. Класс `ProductsInteractorImpl` должен  принимать в качестве аргумента `ProductsRepository`.
+Интерфейс `ProductsInteractor` должен содержать методы:
 > fun getProducts(): List<ProductInListVO>
 > fun getProductById(guid: String): ProductVO
 
-## 6.
+Теперь создадим папочку *di* на уровне папки *data* и переместим *sources/ServiceLocator* в созданную папку. После перемещения нужно будет зайти в `ServiceLocator` и раскоментировать все.
+Поправьте все конфликты и запустите проект.
+
+> P.S. Так как мы еще не прошли тему по Dependencies Injection, поэтому используем ServiceLocator. 
+> Подробнее можете почитать [тут](http://sergeyteplyakov.blogspot.com/2013/03/di-service-locator.html), [тут](https://habr.com/ru/post/465395/) и [тут](https://javatutor.net/articles/j2ee-pattern-service-locator).
+
+## 6. Presentation слой
+Так как этот слой по больше разделим его на несколько частей. Перед тем как мы начнем реализовывать экраны, нужно соверщить следующие действия:
+<ol> 
+<li>Создадим папку presentation на одном уровне с папкой *data* и внутри создадим еще папки:
+    <ol>
+        <li>view</li>
+        <li>viewModel</li>
+    </ol>
+</li>
+<li>Нужно будет переместить файл ViewModelFactory.kt в созданную папку viewModel</li>
+</ol>
+
+### 6.1 Экран со списком заказов
+В activity_main.xml уже лежит FragmentContainerView, подребнее можно почитать [тут](https://developer.android.com/reference/androidx/fragment/app/FragmentContainerView).
+- Создадим фрагмент ProductsFragment в папке view
+- Добавляем аттрибут android:name в FragmentContainerView и указываем в нём наш фрагмент ProductsFragment, 
+  чтобы по умолчанию в FragmentContainerView добавлялся наш созданный фрагмент.
+- Создаем recyclerView в xml фрагмента. Разметку для item RecyclerView лежит в sources/product_list_item.xml.
+- Создаем адаптер для нашего RecyclerView и подключаем адаптер к RecyclerView.
+
+- 
+
+
 
 ## 5. Interactor & ServiceLocator - 15 мин
 - Создаем interactor для Товара, сделать ServiceLocator с созданием зависимостей, билд проекта. Компилировать проект и запустить.
