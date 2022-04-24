@@ -1,6 +1,6 @@
 # Workshop Clean+MVVM+Jetpack
 <ol>
-<li> ## 1. Инициализация проекта - 10 мин </li>
+## <li>Инициализация проекта - 10 мин </li>
 Требование к проекту:
  - Kotlin версии 1.6.20
  - Android Gradle Plugin версии 7.1.3
