@@ -1,6 +1,5 @@
 # Workshop Clean+MVVM+Jetpack
-<ol>
-## <li>Инициализация проекта - 10 мин </li>
+## 1. Инициализация проекта - 10 мин
 Требование к проекту:
  - Kotlin версии 1.6.20
  - Android Gradle Plugin версии 7.1.3
@@ -41,8 +40,6 @@ git clone https://gitlab.ozon.dev/android/classroom-2/workshop-1.git
 > fun getProductById(guid: String): ProductVO
 
 ## 6.
-
-</ol>
 
 ## 5. Interactor & ServiceLocator - 15 мин
 - Создаем interactor для Товара, сделать ServiceLocator с созданием зависимостей, билд проекта. Компилировать проект и запустить.
