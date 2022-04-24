@@ -1,26 +1,48 @@
 # Workshop Clean+MVVM+Jetpack
-## 1. Создаем приложение - 15 мин
-Открываем Android Studio и делаем следующие шаги:
-- File -> New -> New project -> Next
-- Name: Workshop1
-- Language: Kotlin
-- Minimum SDK: API 24 – Android 7.0
-- Finish
+<ol>
+<li> ## 1. Инициализация проекта - 10 мин </li>
+Требование к проекту:
+ - Kotlin версии 1.6.20
+ - Android Gradle Plugin версии 7.1.3
+ - Android Studio Android Studio Bumblebee | 2021.1.1 Patch 3
 
-Затаскиваем зависимости, компилируем проект и запускаем проект. Затаскиваем файл dependencies.gradle в папке sources. Прописываем
-apply from: "dependencies.gradle" в build.gradle внутри buildscript {}.
+Клонируем проект с помощью команды:
+git clone https://gitlab.ozon.dev/android/classroom-2/workshop-1.git
+
+В проекте имеется папочка sources там вы найдете необходимые файлики и модельки, которые нужно будет по ходу воркшопа.
+
+После того как проект затащили нужно будет его скомпилировать и запустить на эмуляторе.
 
 ## 2. Q&A - 5 мин
 
-## 3. Добавляем package’и согласно CA - 30 мин
-- Созадем структуру папок также как в примере:
+## 3. Data слой
+Давайте создадим папочку data на одном уровне с папкой source. В папке data нужно будет создать две папки:
+- *dto* (Для хранение объектов, которыми обмениваются бэкенд и приложение. Там могут быть и объекты для хранения в базу данных.)
+- *repositoriesImpl* (Для реализации репозитория интерфейс которого будет лежать в слое domain)
 
-  ![](sources/структура.png)
+Перетащите файл ProductInListDTO в папку dto из папки sources, а файл mock.kt в repositoryImpl.
 
-- Копируем DTO и VO объекты и создаем мапперы, чтобы привести DTO в VO объект.
-- Создаем интерфейс репозитория и затаскиваем мок, который приложен в папке sources.
+## 4. Q&A - 5 мин
 
-## 4. Q&A - 10 мин
+## 5. Domain слой
+Создадим папочку domain на одном уровне с папкой *data*. В папке *domain* нужно будет создать две папки:
+- *repositories* (для хранения интерфейсов repository имплементация которых лежит в слое data)
+- *interactors* (для хранение интерфейса и реализации интеракторов, которые будут передавать данные из domain слоя в data слой)
+
+Нужно будет создать интерфейс ProductsRepository с тремя методами:
+> fun getProducts(): List<ProductInListVO>
+> fun getProductById(guid: String): ProductVO
+
+Теперь нужно будет сделать реализацию `ProductsRepository` c названием класса `MockProductsRepositoryImpl` в папке *data/repositoriesImpl*.
+Для простоты маппинг данных будем производить в реализации самого `MockProductsRepositoryImpl`, данные для маппинга хранятся в файлике *mock.kt*.
+
+И наконец нужно будет создать интерфейс `ProductsInteractor` с реализацией в папке *interactors*. Интерфейс должен содержать методы:
+> fun getProducts(): List<ProductInListVO>
+> fun getProductById(guid: String): ProductVO
+
+## 6.
+
+</ol>
 
 ## 5. Interactor & ServiceLocator - 15 мин
 - Создаем interactor для Товара, сделать ServiceLocator с созданием зависимостей, билд проекта. Компилировать проект и запустить.
