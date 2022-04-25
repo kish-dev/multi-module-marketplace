@@ -6,7 +6,7 @@
  - Android Studio Android Studio Bumblebee | 2021.1.1 Patch 3
 
 Клонируем проект с помощью команды:
-git clone https://gitlab.ozon.dev/android/classroom-2/workshop-1.git
+> git clone https://gitlab.ozon.dev/android/classroom-2/workshop-1.git
 
 В проекте имеется папочка sources там вы найдете необходимые файлики и модельки, которые нужно будет по ходу воркшопа.
 
@@ -15,16 +15,16 @@ git clone https://gitlab.ozon.dev/android/classroom-2/workshop-1.git
 ## 2. Q&A - 5 мин
 
 ## 3. Data слой
-Давайте создадим папочку data на одном уровне с папкой source. В папке data нужно будет создать две папки:
+Давайте создадим папочку *data* на одном уровне с папкой *source*. В папке *data* нужно будет создать две папки:
 - *dto* (Для хранение объектов, которыми обмениваются бэкенд и приложение. Там могут быть и объекты для хранения в базу данных.)
 - *repositoriesImpl* (Для реализации репозитория интерфейс которого будет лежать в слое domain)
 
-Перетащите файл `ProductInListDTO` в папку dto из папки sources, а файл mock.kt в repositoryImpl.
+Перетащите файл `ProductInListDTO` в папку dto из папки sources, а файл `mock.kt` в *repositoryImpl*.
 
 ## 4. Q&A - 5 мин
 
 ## 5. Domain слой
-Создадим папочку domain на одном уровне с папкой *data*. В папке *domain* нужно будет создать две папки:
+Создадим папочку *domain* на одном уровне с папкой *data*. В папке *domain* нужно будет создать две папки:
 - *repositories* (для хранения интерфейсов repository имплементация которых лежит в слое data)
 - *interactors* (для хранение интерфейса и реализации интеракторов, которые будут передавать данные из domain слоя в data слой)
 
@@ -48,44 +48,39 @@ git clone https://gitlab.ozon.dev/android/classroom-2/workshop-1.git
 
 ## 6. Presentation слой
 Так как этот слой по больше разделим его на несколько частей. Перед тем как мы начнем реализовывать экраны, нужно соверщить следующие действия:
-<ol> 
-<li>Создадим папку presentation на одном уровне с папкой *data* и внутри создадим еще папки:
-    <ol>
-        <li>view</li>
-        <li>viewModel</li>
-    </ol>
-</li>
-<li>Нужно будет переместить файл ViewModelFactory.kt в созданную папку viewModel</li>
-</ol>
+1. Создадим папку presentation на одном уровне с папкой *data* и внутри создадим еще папки:
+    1. view
+    2. viewModel
+2. Нужно будет переместить файл `ViewModelFactory.kt` в созданную папку *viewModel*.
 
 ### 6.1 Экран со списком заказов
-В activity_main.xml уже лежит FragmentContainerView, подребнее можно почитать [тут](https://developer.android.com/reference/androidx/fragment/app/FragmentContainerView).
-- Создадим фрагмент ProductsFragment в папке view
-- Добавляем аттрибут android:name в FragmentContainerView и указываем в нём наш фрагмент ProductsFragment, 
-  чтобы по умолчанию в FragmentContainerView добавлялся наш созданный фрагмент.
-- Создаем recyclerView в xml фрагмента. Разметку для item RecyclerView лежит в sources/product_list_item.xml.
-- Создаем адаптер для нашего RecyclerView и подключаем адаптер к RecyclerView. Не забудьте создать ViewHolder и забиндить данные. 
-  Не забудьте подключить Glide, для биндинга фото.
-- Создаем ProductsViewModel, наследуясь от ViewModel, который в качестве аргумента в конструторе принимает `ProductsInteractor`.
+В `activity_main.xml` уже лежит `FragmentContainerView`, подребнее можно почитать [тут](https://developer.android.com/reference/androidx/fragment/app/FragmentContainerView).
+- Создадим фрагмент `ProductsFragment` в папке *view*
+- Добавляем аттрибут `android:name` в `FragmentContainerView` и указываем в нём наш фрагмент `ProductsFragment`, 
+  чтобы по умолчанию в `FragmentContainerView` добавлялся наш созданный фрагмент.
+- Создаем recyclerView в xml фрагмента. Разметку для item RecyclerView лежит в `product_list_item.xml` уже в ресурсах, то есть в папке *res/layout*.
+- Создаем адаптер для нашего RecyclerView и подключаем адаптер к RecyclerView. Не забудьте создать `ViewHolder` и забиндить данные. 
+  Не забудьте подключить [Glide](https://github.com/bumptech/glide#how-do-i-use-glide), для биндинга фото.
+- Создаем `ProductsViewModel`, который в качестве аргумента в конструторе принимает `ProductsInteractor` и наследуясь от `ViewModel`.
 - В `ProductsViewModel` создаем приватную переменную `_productLD` с типом `MutableLiveData` 
   и создаем публичную переменную `productLD` с типом `LiveData`, который берет значение из `_productLD`.
-- Далее нужно будет в блоке init ProductsViewModel получить из ProductsInteractor список товаров и положить в `_productLD`.
-- Во фрагменте нужно будет создать переменную viewModel: ProductsViewModel
+- Далее нужно будет в блоке `init` нашего `ProductsViewModel` получить из `ProductsInteractor` список товаров и положить в `_productLD`.
+- Во фрагменте нужно будет создать переменную `viewModel: ProductsViewModel`
   ```
     private val vm: ProductsViewModel by viewModelCreator {
       ProductsViewModel(ServiceLocator().productsInteractor)
     }
   ```
-- В методе onViewCreated нашего фрагмента нужно будет подписаться на `productLD` и заполнить полученными данными наш RecyclerView.
+- В методе `onViewCreated` нашего фрагмента нужно будет подписаться на `productLD` и заполнить полученными данными наш RecyclerView.
 - Компилирем проект и запускаем, у нас должен получится экран со списком заказов.
 
 ### 6.2 Q&A - 10 мин
 
 ### 6.3 Экран с подробной информацией о заказе
-- Созадаем обычный Fragment, назовем его PDPFragment, он должен получать аргумент (productId, т.е. Id товара) из bundle. 
-  Ui у фрагмента уже имеется в pdp_fragment.xml.
-- Нужно будет открыть этот фрагмент при нажатии на товар в ProductsFragment, передав Id товара.
-- Теперь нужно будет создать для нашего фрагмента ViewModel и достать по Id товара информацию о товаре. Мы уже ранее это делали в предыдушем этапе.
+- Созадаем обычный Fragment, назовем его `PDPFragment`, он должен получать аргумент (`productId`, т.е. Id товара) из `bundle`. 
+  Ui у фрагмента уже имеется в `pdp_fragment.xml`.
+- Нужно будет открыть этот фрагмент при нажатии на товар в `ProductsFragment`, передав `Id` товара.
+- Теперь нужно будет создать для нашего фрагмента `ViewModel` и достать по `Id` товара информацию о товаре. Мы уже ранее это делали в предыдушем этапе.
 - А теперь нужно будет забиндить полученные данные о товаре, чтобы отобразилось на экране.
 - Компилируем проект и проверяем, что все работает и все отображается по нашему экрану.
 
