@@ -64,38 +64,32 @@ git clone https://gitlab.ozon.dev/android/classroom-2/workshop-1.git
 - Добавляем аттрибут android:name в FragmentContainerView и указываем в нём наш фрагмент ProductsFragment, 
   чтобы по умолчанию в FragmentContainerView добавлялся наш созданный фрагмент.
 - Создаем recyclerView в xml фрагмента. Разметку для item RecyclerView лежит в sources/product_list_item.xml.
-- Создаем адаптер для нашего RecyclerView и подключаем адаптер к RecyclerView.
+- Создаем адаптер для нашего RecyclerView и подключаем адаптер к RecyclerView. Не забудьте создать ViewHolder и забиндить данные. 
+  Не забудьте подключить Glide, для биндинга фото.
+- Создаем ProductsViewModel, наследуясь от ViewModel, который в качестве аргумента в конструторе принимает `ProductsInteractor`.
+- В `ProductsViewModel` создаем приватную переменную `_productLD` с типом `MutableLiveData` 
+  и создаем публичную переменную `productLD` с типом `LiveData`, который берет значение из `_productLD`.
+- Далее нужно будет в блоке init ProductsViewModel получить из ProductsInteractor список товаров и положить в `_productLD`.
+- Во фрагменте нужно будет создать переменную viewModel: ProductsViewModel
+  ```
+    private val vm: ProductsViewModel by viewModelCreator {
+      ProductsViewModel(ServiceLocator().productsInteractor)
+    }
+  ```
+- В методе onViewCreated нашего фрагмента нужно будет подписаться на `productLD` и заполнить полученными данными наш RecyclerView.
+- Компилирем проект и запускаем, у нас должен получится экран со списком заказов.
 
-- 
+### 6.2 Q&A - 10 мин
 
+### 6.3 Экран с подробной информацией о заказе
+- Созадаем обычный Fragment, назовем его PDPFragment, он должен получать аргумент (productId, т.е. Id товара) из bundle. 
+  Ui у фрагмента уже имеется в pdp_fragment.xml.
+- Нужно будет открыть этот фрагмент при нажатии на товар в ProductsFragment, передав Id товара.
+- Теперь нужно будет создать для нашего фрагмента ViewModel и достать по Id товара информацию о товаре. Мы уже ранее это делали в предыдушем этапе.
+- А теперь нужно будет забиндить полученные данные о товаре, чтобы отобразилось на экране.
+- Компилируем проект и проверяем, что все работает и все отображается по нашему экрану.
 
+### 6.4 Q&A - 10 мин
 
-## 5. Interactor & ServiceLocator - 15 мин
-- Создаем interactor для Товара, сделать ServiceLocator с созданием зависимостей, билд проекта. Компилировать проект и запустить.
-
-## 6. Q&A – 5 мин
-
-## 7. Fragment & RecyclerView - 30 мин
-- Создаем в activity_main.xml fragment container.
-- Создаем фрагмент ProductsFragment и в классе Активити добавляем фрагмент.
-- Создаем recyclerView в xml фрагмента. Разметку для item RecyclerView лежит в sources/product_list_item.xml.
-- Создаем и подключаем адаптер к RV.
-
-## 8. Q&A - 10 мин
-
-## 9. Создаем ProductsViewModel и делаем подписку для получения данных с репозитория - 20 мин
-- Создаем ProductsViewModel и затаскиваем в проект ViewModelFactory в папке sources - 5 мин
-- Подписываемся на Live Data, сделать связку между Interaction + MockRepository и достать products, билд и проверка на эмуляторе - 15 мин
-
-## 10. Q&A - 10 мин
-
-## 11. PDPFragment - 20 мин
-- Добавляем PDPFragment + UI(лежит в sources/pdp_fragment.xml) + PDPViewModel. PDPViewModel должен задержать LiveData-у, которая должа возвращать информацию о товаре
-- Создаем логику перехода на PDP по клику на елемент списка товаров
-
-## 12. Q&A - 5 мин
-
-## 13. Доработка приложения - 20 мин
-- Тестируем приложение, смотрим чтобы не было лишней загрузки данных или не сетился UI несколько раз при переходе назад и тп.
-
-## 14. Q&A - 10 мин
+### 7 Доработка приложения - 20 мин
+Дорабатываем приложения, ждем тех кто еще не успел все сделать и задаем вопросы по воркшопу
