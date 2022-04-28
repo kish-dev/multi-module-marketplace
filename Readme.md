@@ -30,15 +30,16 @@
 
 Нужно будет создать интерфейс ProductsRepository с тремя методами:
 > fun getProducts(): List<ProductInListVO>
-> fun getProductById(guid: String): ProductVO
+> fun getProductById(guid: String): ProductInListVO
 
+Модель данных `ProductInListVO`, это данные о товаре для отображения в слое Presentation (т.е. для View). 
 Теперь нужно будет сделать реализацию `ProductsRepository` c названием класса `MockProductsRepositoryImpl` в папке *data/repositoriesImpl*.
 Для простоты маппинг данных будем производить в реализации самого `MockProductsRepositoryImpl`, данные для маппинга хранятся в файлике *mock.kt*.
 
 И наконец нужно будет создать интерфейс `ProductsInteractor` с реализацией в папке *interactors*. Класс `ProductsInteractorImpl` должен  принимать в качестве аргумента `ProductsRepository`.
 Интерфейс `ProductsInteractor` должен содержать методы:
 > fun getProducts(): List<ProductInListVO>
-> fun getProductById(guid: String): ProductVO
+> fun getProductById(guid: String): ProductInListVO
 
 Теперь создадим папочку *di* на уровне папки *data* и переместим *sources/ServiceLocator* в созданную папку. После перемещения нужно будет зайти в `ServiceLocator` и раскоментировать все.
 Поправьте все конфликты и запустите проект.
@@ -51,7 +52,9 @@
 1. Создадим папку presentation на одном уровне с папкой *data* и внутри создадим еще папки:
     1. view
     2. viewModel
+    3. viewObject
 2. Нужно будет переместить файл `ViewModelFactory.kt` в созданную папку *viewModel*.
+3. Переместите файл `ProductInListVO.kt` в папку *viewObject*.
 
 ### 6.1 Экран со списком заказов
 В `activity_main.xml` уже лежит `FragmentContainerView`, подребнее можно почитать [тут](https://developer.android.com/reference/androidx/fragment/app/FragmentContainerView).
