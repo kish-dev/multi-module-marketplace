@@ -60,7 +60,7 @@
 ### 6.1 Экран со списком заказов
 В `activity_main.xml` уже лежит `FragmentContainerView`, подребнее можно почитать [тут](https://developer.android.com/reference/androidx/fragment/app/FragmentContainerView).
 - Создадим фрагмент `ProductsFragment` в папке *view*
-- Добавляем аттрибут `android:name` в `FragmentContainerView` и указываем в нём наш фрагмент `ProductsFragment`, 
+- Добавляем аттрибут `android:name` в `FragmentContainerView`, который находится в `activity_main.xml`, и указываем в нём наш фрагмент `ProductsFragment`, 
   чтобы по умолчанию в `FragmentContainerView` добавлялся наш созданный фрагмент.
 - Создаем recyclerView в xml фрагмента. Разметку для item RecyclerView лежит в `product_list_item.xml` уже в ресурсах, то есть в папке *res/layout*.
 - Создаем адаптер для нашего RecyclerView и подключаем адаптер к RecyclerView. Не забудьте создать `ViewHolder` и забиндить данные. 
