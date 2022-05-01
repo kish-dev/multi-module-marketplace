@@ -34,7 +34,8 @@
 
 Модель данных `ProductInListVO`, это данные о товаре для отображения в слое Presentation (т.е. для View). 
 Теперь нужно будет сделать реализацию `ProductsRepository` c названием класса `MockProductsRepositoryImpl` в папке *data/repositoriesImpl*.
-Для простоты маппинг данных будем производить в реализации самого `MockProductsRepositoryImpl`, данные для маппинга хранятся в файлике *mock.kt*.
+Для простоты маппинг данных будем производить в реализации самого `MockProductsRepositoryImpl`, данные для маппинга хранятся в файлике *mock.kt*. 
+Сам маппер написан ввиде `extension` функции в файлике *ProductsMapper.kt*. 
 
 И наконец нужно будет создать интерфейс `ProductsInteractor` с реализацией в папке *interactors*. Класс `ProductsInteractorImpl` должен  принимать в качестве аргумента `ProductsRepository`.
 Интерфейс `ProductsInteractor` должен содержать методы:

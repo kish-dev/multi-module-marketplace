@@ -10,8 +10,4 @@ data class ProductInListDTO(
     val rating: Double,
     val isFavorite: Boolean,
     val isInCart: Boolean
-) {
-    fun toVO(): ProductInListVO {
-        return ProductInListVO(guid, image, name, price, rating, isFavorite, isInCart)
-    }
-}
+)
