@@ -4,6 +4,7 @@
  - Kotlin версии 1.6.20
  - Android Gradle Plugin версии 7.1.3
  - Android Studio Android Studio Bumblebee | 2021.1.1 Patch 3
+ - Готовый эмулятор Android 10
 
 Клонируем проект с помощью команды:
 > git clone https://gitlab.ozon.dev/android/classroom-2/workshop-1.git
@@ -30,6 +31,7 @@
 
 Нужно будет создать интерфейс ProductsRepository с тремя методами:
 > fun getProducts(): List<ProductInListVO>
+
 > fun getProductById(guid: String): ProductInListVO
 
 Модель данных `ProductInListVO`, это данные о товаре для отображения в слое Presentation (т.е. для View). 
@@ -40,12 +42,14 @@
 И наконец нужно будет создать интерфейс `ProductsInteractor` с реализацией в папке *interactors*. Класс `ProductsInteractorImpl` должен  принимать в качестве аргумента `ProductsRepository`.
 Интерфейс `ProductsInteractor` должен содержать методы:
 > fun getProducts(): List<ProductInListVO>
+
 > fun getProductById(guid: String): ProductInListVO
 
 Теперь создадим папочку *di* на уровне папки *data* и переместим *sources/ServiceLocator* в созданную папку. После перемещения нужно будет зайти в `ServiceLocator` и раскоментировать все.
 Поправьте все конфликты и запустите проект.
 
 > P.S. Так как мы еще не прошли тему по Dependencies Injection, поэтому используем ServiceLocator. 
+
 > Подробнее можете почитать [тут](http://sergeyteplyakov.blogspot.com/2013/03/di-service-locator.html), [тут](https://habr.com/ru/post/465395/) и [тут](https://javatutor.net/articles/j2ee-pattern-service-locator).
 
 ## 6. Presentation слой
