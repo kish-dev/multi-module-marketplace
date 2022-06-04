@@ -15,7 +15,7 @@
 
 ## 2. Q&A - 5 мин
 
-## 3. Data слой
+## 3. Data слой - 10 мин
 Давайте создадим папочку *data* на одном уровне с папкой *source*. В папке *data* нужно будет создать две папки:
 - *dto* (Для хранение объектов, которыми обмениваются бэкенд и приложение. Там могут быть и объекты для хранения в базу данных.)
 - *repositoriesImpl* (Для реализации репозитория интерфейс которого будет лежать в слое domain)
@@ -24,19 +24,19 @@
 
 ## 4. Q&A - 5 мин
 
-## 5. Domain слой
+## 5. Domain слой - 20 мин
 Создадим папочку *domain* на одном уровне с папкой *data*. В папке *domain* нужно будет создать две папки:
 - *repositories* (для хранения интерфейсов repository имплементация которых лежит в слое data)
 - *interactors* (для хранение интерфейса и реализации интеракторов, которые будут передавать данные из domain слоя в data слой)
 
-Нужно будет создать интерфейс ProductsRepository с тремя методами:
+Нужно будет создать интерфейс ProductsRepository в папке *repositories* с тремя методами:
 > fun getProducts(): List<ProductInListVO>
 
 > fun getProductById(guid: String): ProductInListVO
 
 Модель данных `ProductInListVO`, это данные о товаре для отображения в слое Presentation (т.е. для View). 
 Теперь нужно будет сделать реализацию `ProductsRepository` c названием класса `MockProductsRepositoryImpl` в папке *data/repositoriesImpl*.
-Для простоты маппинг данных будем производить в реализации самого `MockProductsRepositoryImpl`, данные для маппинга хранятся в файлике *mock.kt*. 
+Для простоты, маппинг данных будем производить в реализации самого `MockProductsRepositoryImpl`, данные для маппинга хранятся в файлике *mock.kt*. 
 Сам маппер написан ввиде `extension` функции в файлике *ProductsMapper.kt*. 
 
 И наконец нужно будет создать интерфейс `ProductsInteractor` с реализацией в папке *interactors*. Класс `ProductsInteractorImpl` должен  принимать в качестве аргумента `ProductsRepository`.
@@ -52,8 +52,8 @@
 
 > Подробнее можете почитать [тут](http://sergeyteplyakov.blogspot.com/2013/03/di-service-locator.html), [тут](https://habr.com/ru/post/465395/) и [тут](https://javatutor.net/articles/j2ee-pattern-service-locator).
 
-## 6. Presentation слой
-Так как этот слой по больше разделим его на несколько частей. Перед тем как мы начнем реализовывать экраны, нужно соверщить следующие действия:
+## 6. Presentation слой - 5 мин
+Так как этот слой по больше, разделим его на несколько частей. Перед тем как мы начнем реализовывать экраны, нужно соверщить следующие действия:
 1. Создадим папку presentation на одном уровне с папкой *data* и внутри создадим еще папки:
     1. view
     2. viewModel
@@ -61,7 +61,7 @@
 2. Нужно будет переместить файл `ViewModelFactory.kt` в созданную папку *viewModel*.
 3. Переместите файл `ProductInListVO.kt` в папку *viewObject*.
 
-### 6.1. Экран со списком заказов
+### 6.1. Экран со списком заказов - 30 мин
 В `activity_main.xml` уже лежит `FragmentContainerView`, подребнее можно почитать [тут](https://developer.android.com/reference/androidx/fragment/app/FragmentContainerView).
 - Создадим фрагмент `ProductsFragment` в папке *view*
 - Добавляем аттрибут `android:name` в `FragmentContainerView`, который находится в `activity_main.xml`, и указываем в нём наш фрагмент `ProductsFragment`, 
@@ -84,7 +84,7 @@
 
 ### 6.2. Q&A - 10 мин
 
-### 6.3. Экран с подробной информацией о заказе
+### 6.3. Экран с подробной информацией о заказе - 30 мин
 - Созадаем обычный Fragment, назовем его `PDPFragment`, он должен получать аргумент (`productId`, т.е. Id товара) из `bundle`. 
   Ui у фрагмента уже имеется в `pdp_fragment.xml`.
 - Нужно будет открыть этот фрагмент при нажатии на товар в `ProductsFragment`, передав `Id` товара.
