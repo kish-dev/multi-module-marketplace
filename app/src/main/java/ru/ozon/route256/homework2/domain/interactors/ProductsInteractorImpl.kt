@@ -11,8 +11,7 @@ import ru.ozon.route256.homework2.presentation.viewObject.ProductVO
 class ProductsInteractorImpl(
     private val productsRepository: ProductsRepository
 ) : ProductListUseCase,
-    ProductDetailUseCase,
-    AddProductUseCase {
+    ProductDetailUseCase {
     override suspend fun getProducts(): List<ProductInListVO>? {
         return productsRepository.getProducts()?.map { it.mapToVO() }
     }
@@ -28,8 +27,5 @@ class ProductsInteractorImpl(
     override suspend fun addViewToProductInList(guid: String) {
         productsRepository.addViewToProductInList(guid)
     }
-
-    override suspend fun addProductToAllPlaces(product: ProductVO) =
-        productsRepository.addProduct(product.mapToDTO())
 
 }

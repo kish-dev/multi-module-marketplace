@@ -20,10 +20,4 @@ class MockProductsRepositoryImpl : ProductsRepository {
             ++viewsCount
         }
     }
-
-    override suspend fun addProduct(productDTO: ProductDTO): Boolean {
-        productDTOs.add(productDTO)
-        productInListDTOs.add(productDTO.mapToProductListDTO())
-        return true
-    }
 }

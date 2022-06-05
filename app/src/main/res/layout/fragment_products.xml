@@ -16,14 +16,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/add_product_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:src="@drawable/ic_add_product"
-            android:contentDescription="@string/add_product"
-            android:layout_margin="16dp" />
     </FrameLayout>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

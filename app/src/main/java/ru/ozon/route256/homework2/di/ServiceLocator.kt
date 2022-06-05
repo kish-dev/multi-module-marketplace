@@ -4,7 +4,6 @@ package ru.ozon.route256.homework2.di
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import ru.ozon.route256.homework2.data.repositoriesImpl.MockProductsRepositoryImpl
-import ru.ozon.route256.homework2.domain.interactors.AddProductUseCase
 import ru.ozon.route256.homework2.domain.interactors.ProductDetailUseCase
 import ru.ozon.route256.homework2.domain.interactors.ProductListUseCase
 import ru.ozon.route256.homework2.domain.interactors.ProductsInteractorImpl
@@ -20,12 +19,6 @@ class ServiceLocator {
     }
 
     val productDetailInteractor: ProductDetailUseCase by lazy {
-        ProductsInteractorImpl(
-            MockProductsRepositoryImpl()
-        )
-    }
-
-    val addProductInteractor: AddProductUseCase by lazy {
         ProductsInteractorImpl(
             MockProductsRepositoryImpl()
         )
