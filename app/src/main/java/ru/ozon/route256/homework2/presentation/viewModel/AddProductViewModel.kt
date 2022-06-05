@@ -8,32 +8,33 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.ozon.route256.homework2.domain.interactors.ProductDetailUseCase
+import ru.ozon.route256.homework2.domain.interactors.AddProductUseCase
 import ru.ozon.route256.homework2.presentation.viewObject.ProductVO
 import ru.ozon.route256.homework2.presentation.viewObject.UiState
 
-class PDPViewModel(
-    private val interactor: ProductDetailUseCase,
+class AddProductViewModel(
+    private val interactor: AddProductUseCase,
     private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val _productLD: MutableLiveData<UiState<ProductVO>> = MutableLiveData(UiState.Init())
-    var productLD: LiveData<UiState<ProductVO>> = _productLD
+    private val _addProductState: MutableLiveData<UiState<Boolean>> = MutableLiveData(UiState.Init())
+    var addProductState: LiveData<UiState<Boolean>> = _addProductState
 
-    fun getProduct(productId: String) {
+    fun addProduct(productVO: ProductVO) {
         viewModelScope.launch(Dispatchers.Main) {
-            _productLD.value = UiState.Loading()
-            val product = withContext(dispatcher) {
-                interactor.getProductById(productId)
+            _addProductState.value = UiState.Loading()
+            val isAdded = withContext(dispatcher) {
+                interactor.addProductToAllPlaces(productVO)
             }
-            when (product) {
-                null -> {
-                    _productLD.value = UiState.Error()
+            when (isAdded) {
+                true -> {
+                    _addProductState.value = UiState.Success(true)
                 }
                 else -> {
-                    _productLD.value = UiState.Success(product)
+                    _addProductState.value = UiState.Error()
                 }
             }
         }
     }
+
 }

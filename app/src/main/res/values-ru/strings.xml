@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_product_name">Название товара</string>
+    <string name="add_description">Описание</string>
+    <string name="add_image_link">Ссылка на картинку</string>
+    <string name="add_price">Цена</string>
+    <string name="add_product">Добавить продукт</string>
+    <string name="loading_error">При загрузке произошла ошибка</string>
+    <string name="add_product_success">Продукт успешно добавлен</string>
+</resources>

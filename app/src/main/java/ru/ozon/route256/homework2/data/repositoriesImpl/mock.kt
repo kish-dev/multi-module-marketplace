@@ -106,7 +106,7 @@ val productInListDTOs = mutableListOf(
     ),
 )
 
-val productDTOs = listOf(
+val productDTOs = mutableListOf(
     ProductDTO(
         additionalParams = mapOf(),
         availableCount = 10,
