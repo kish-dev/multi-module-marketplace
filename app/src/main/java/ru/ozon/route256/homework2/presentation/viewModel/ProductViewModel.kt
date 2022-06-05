@@ -10,24 +10,34 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.ozon.route256.homework2.domain.interactors.ProductListUseCase
 import ru.ozon.route256.homework2.presentation.viewObject.ProductInListVO
+import ru.ozon.route256.homework2.presentation.viewObject.UiState
 
 class ProductViewModel(
     private val interactor: ProductListUseCase,
     private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val _productLD: MutableLiveData<List<ProductInListVO>> = MutableLiveData(emptyList())
-    var productLD: LiveData<List<ProductInListVO>> = _productLD
+    private val _productLD: MutableLiveData<UiState<List<ProductInListVO>>> =
+        MutableLiveData(UiState.Init())
+    var productLD: LiveData<UiState<List<ProductInListVO>>> = _productLD
 
     init {
         getProducts()
     }
 
-    private fun getProducts() {
-        viewModelScope.launch(dispatcher) {
-            val products = interactor.getProducts()
-            withContext(Dispatchers.Main) {
-                _productLD.value = products
+    fun getProducts() {
+        viewModelScope.launch(Dispatchers.Main) {
+            _productLD.value = UiState.Init()
+            val products = withContext(dispatcher) {
+                interactor.getProducts()
+            }
+            when(products) {
+                null -> {
+                    _productLD.value = UiState.Error()
+                }
+                else -> {
+                    _productLD.value = UiState.Success(products)
+                }
             }
         }
     }
