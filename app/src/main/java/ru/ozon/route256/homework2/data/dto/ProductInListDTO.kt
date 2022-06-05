@@ -1,6 +1,4 @@
-package ru.ozon.route256.workshop1.sources
-
-import ru.ozon.route256.workshop1.sources.ProductInListVO
+package ru.ozon.route256.homework2.data.dto
 
 data class ProductInListDTO(
     val guid: String,
@@ -9,5 +7,9 @@ data class ProductInListDTO(
     val price: String,
     val rating: Double,
     val isFavorite: Boolean,
-    val isInCart: Boolean
+    val isInCart: Boolean,
+    var viewsCount: Int,
 )
+
+
+

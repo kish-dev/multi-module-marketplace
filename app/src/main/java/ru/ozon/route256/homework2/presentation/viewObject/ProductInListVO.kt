@@ -1,4 +1,4 @@
-package ru.ozon.route256.workshop1.sources
+package ru.ozon.route256.homework2.presentation.viewObject
 
 data class ProductInListVO(
     val guid: String,
@@ -7,5 +7,6 @@ data class ProductInListVO(
     val price: String,
     val rating: Double,
     val isFavorite: Boolean,
-    val isInCart: Boolean
+    val isInCart: Boolean,
+    var viewsCount: Int,
 )

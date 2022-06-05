@@ -5,11 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/productIV"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/productImageRV"
         android:layout_width="match_parent"
         android:layout_height="280dp"
-        android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,7 +23,7 @@
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/productIV"
+        app:layout_constraintTop_toBottomOf="@id/productImageRV"
         tools:text="Яблоки" />
 
     <androidx.appcompat.widget.AppCompatTextView

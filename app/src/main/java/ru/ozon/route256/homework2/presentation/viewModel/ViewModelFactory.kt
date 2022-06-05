@@ -1,4 +1,4 @@
-package ru.ozon.route256.workshop1.sources
+package ru.ozon.route256.homework2.presentation.viewModel
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels

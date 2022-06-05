@@ -1,7 +1,7 @@
-package ru.ozon.route256.workshop1
+package ru.ozon.route256.homework2
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

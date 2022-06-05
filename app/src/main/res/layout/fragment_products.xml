@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ru.ozon.route256.homework2.MainActivity">
+    tools:context=".presentation.view.ProductsFragment">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:name="ru.ozon.route256.homework2.presentation.view.ProductsFragment"
-        android:id="@+id/fragmentContainer"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/productsRV"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp" />
 
 </FrameLayout>
