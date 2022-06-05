@@ -7,4 +7,5 @@
     <string name="add_product">Add product</string>
     <string name="loading_error">Loading error</string>
     <string name="add_product_success">Product added successfully</string>
+    <string name="fill_all_strokes">Fill all strokes</string>
 </resources>

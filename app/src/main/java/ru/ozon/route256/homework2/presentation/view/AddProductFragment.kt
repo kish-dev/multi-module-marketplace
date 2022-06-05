@@ -10,7 +10,6 @@ import ru.ozon.route256.homework2.R
 import ru.ozon.route256.homework2.databinding.FragmentAddProductBinding
 import ru.ozon.route256.homework2.di.ServiceLocator
 import ru.ozon.route256.homework2.presentation.viewModel.AddProductViewModel
-import ru.ozon.route256.homework2.presentation.viewModel.PDPViewModel
 import ru.ozon.route256.homework2.presentation.viewModel.viewModelCreator
 import ru.ozon.route256.homework2.presentation.viewObject.UiState
 import ru.ozon.route256.homework2.presentation.viewObject.createProduct
@@ -44,7 +43,7 @@ class AddProductFragment : Fragment() {
 
     private fun initObservers() {
         addProductViewModel.addProductState.observe(viewLifecycleOwner) {
-            when(it) {
+            when (it) {
                 is UiState.Loading -> {
                     binding.swipeRefreshLayout.isRefreshing = true
                 }
@@ -60,7 +59,11 @@ class AddProductFragment : Fragment() {
 
                 is UiState.Success -> {
                     binding.swipeRefreshLayout.isRefreshing = false
-                    Toast.makeText(requireContext(), R.string.add_product_success, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        R.string.add_product_success,
+                        Toast.LENGTH_SHORT
+                    ).show()
                     parentFragmentManager.popBackStack()
                 }
 
@@ -83,7 +86,17 @@ class AddProductFragment : Fragment() {
                         rating = ratingBar.rating.toDouble()
                     )
                     addProductViewModel.addProduct(product)
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.fill_all_strokes),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
+            }
+
+            swipeRefreshLayout.setOnRefreshListener {
+                swipeRefreshLayout.isRefreshing = false
             }
         }
     }
