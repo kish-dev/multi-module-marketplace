@@ -40,7 +40,6 @@ class AddProductFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         initObservers()
-
     }
 
     private fun initObservers() {
