@@ -7,10 +7,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import ru.ozon.route256.homework2.R
+import ru.ozon.route256.homework2.presentation.viewHolders.base.BaseViewHolder
 
 class ProductImageViewHolder(
     itemView: View
-) : RecyclerView.ViewHolder(itemView) {
+) : BaseViewHolder(itemView) {
 
     private var productIV: AppCompatImageView? = null
 
@@ -22,7 +23,7 @@ class ProductImageViewHolder(
 
     fun bind(image: String) {
         productIV?.let {
-            Glide.with(itemView)
+            glideWith()
                 .load(image)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .diskCacheStrategy(DiskCacheStrategy.DATA)

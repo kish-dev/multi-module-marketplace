@@ -11,12 +11,13 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.card.MaterialCardView
 import ru.ozon.route256.homework2.R
 import ru.ozon.route256.homework2.presentation.adapters.ProductsAdapter
+import ru.ozon.route256.homework2.presentation.viewHolders.base.BaseViewHolder
 import ru.ozon.route256.homework2.presentation.viewObject.ProductInListVO
 
 class ProductViewHolder(
     itemView: View,
     private val listener: ProductsAdapter.Listener
-) : RecyclerView.ViewHolder(itemView) {
+) : BaseViewHolder(itemView) {
 
     private var productIV: AppCompatImageView? = null
     private var nameTV: AppCompatTextView? = null
@@ -43,7 +44,7 @@ class ProductViewHolder(
         }
 
         productIV?.let {
-            Glide.with(itemView)
+            glideWith()
                 .load(productInListVO.image)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .diskCacheStrategy(DiskCacheStrategy.DATA)

@@ -1,15 +1,14 @@
 package ru.ozon.route256.homework2.domain.interactors
 
-import kotlinx.coroutines.delay
-import ru.ozon.route256.homework2.data.dto.ProductDTO
-import ru.ozon.route256.homework2.data.dto.mapToDTO
-import ru.ozon.route256.homework2.data.dto.mapToVO
+import kotlinx.coroutines.CoroutineDispatcher
+import ru.ozon.route256.homework2.presentation.viewObject.utils.mappers.mapToVO
 import ru.ozon.route256.homework2.domain.repositories.ProductsRepository
 import ru.ozon.route256.homework2.presentation.viewObject.ProductInListVO
 import ru.ozon.route256.homework2.presentation.viewObject.ProductVO
 
 class ProductsInteractorImpl(
-    private val productsRepository: ProductsRepository
+    private val productsRepository: ProductsRepository,
+    private val dispatcher: CoroutineDispatcher
 ) : ProductListUseCase,
     ProductDetailUseCase {
     override suspend fun getProducts(): List<ProductInListVO>? {

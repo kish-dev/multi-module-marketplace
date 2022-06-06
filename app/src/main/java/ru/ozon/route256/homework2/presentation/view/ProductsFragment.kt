@@ -1,6 +1,7 @@
 package ru.ozon.route256.homework2.presentation.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +12,10 @@ import ru.ozon.route256.homework2.R
 import ru.ozon.route256.homework2.databinding.FragmentProductsBinding
 import ru.ozon.route256.homework2.di.ServiceLocator
 import ru.ozon.route256.homework2.presentation.adapters.ProductsAdapter
+import ru.ozon.route256.homework2.presentation.common.UiState
 import ru.ozon.route256.homework2.presentation.viewHolders.ProductViewHolder
-import ru.ozon.route256.homework2.presentation.viewModel.ProductViewModel
+import ru.ozon.route256.homework2.presentation.viewModel.ProductsViewModel
 import ru.ozon.route256.homework2.presentation.viewModel.viewModelCreator
-import ru.ozon.route256.homework2.presentation.viewObject.UiState
 
 class ProductsFragment : Fragment() {
 
@@ -22,16 +23,15 @@ class ProductsFragment : Fragment() {
     private val binding
         get() = _binding!!
 
-    private val productViewModel: ProductViewModel by viewModelCreator {
-        ProductViewModel(
-            ServiceLocator().productListInteractor,
-            ServiceLocator().dispatcherViewModel
+    private val productsViewModel: ProductsViewModel by viewModelCreator {
+        ProductsViewModel(
+            ServiceLocator().productListInteractor
         )
     }
     private val productsAdapter: ProductsAdapter by lazy {
         ProductsAdapter(object : ProductsAdapter.Listener {
             override fun onClickProduct(holder: ProductViewHolder, productId: String) {
-                productViewModel.addViewCount(productId)
+                productsViewModel.addViewCount(productId)
                 val pdpFragment = PDPFragment.newInstance(productId)
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.fragmentContainer, pdpFragment)
@@ -44,7 +44,7 @@ class ProductsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentProductsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -57,7 +57,7 @@ class ProductsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        productViewModel.getProducts()
+        productsViewModel.getProducts()
     }
 
     private fun initViews() {
@@ -69,13 +69,13 @@ class ProductsFragment : Fragment() {
             }
 
             swipeRefreshLayout.setOnRefreshListener {
-                productViewModel.getProducts()
+                productsViewModel.getProducts()
             }
         }
     }
 
     private fun initObservers() {
-        productViewModel.productLD.observe(viewLifecycleOwner) {
+        productsViewModel.productLD.observe(viewLifecycleOwner) {
             when (it) {
                 is UiState.Loading, is UiState.Init -> {
                     binding.swipeRefreshLayout.isRefreshing = true
@@ -88,6 +88,8 @@ class ProductsFragment : Fragment() {
                         getString(R.string.loading_error),
                         Toast.LENGTH_SHORT
                     ).show()
+
+                    Log.e(TAG, "UiState is Error because of ${it.throwable.message}")
                 }
 
                 is UiState.Success -> {
@@ -96,5 +98,9 @@ class ProductsFragment : Fragment() {
                 }
             }
         }
+    }
+
+    companion object {
+        private val TAG = ProductsFragment::class.java.simpleName
     }
 }

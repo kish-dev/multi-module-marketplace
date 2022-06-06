@@ -1,5 +1,7 @@
 package ru.ozon.route256.homework2.presentation.viewObject
 
+import ru.ozon.route256.homework2.presentation.viewObject.utils.UUID
+
 data class ProductVO(
     val guid: String,
     val name: String,
@@ -23,7 +25,7 @@ fun createProduct(
     rating: Double
 ): ProductVO {
     return ProductVO(
-        guid = System.currentTimeMillis().toString(),
+        guid = UUID.randomUUID().toString(),
         name = name,
         price = price,
         description = description,

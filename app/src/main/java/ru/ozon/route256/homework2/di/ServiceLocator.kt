@@ -14,15 +14,17 @@ import ru.ozon.route256.homework2.domain.interactors.ProductsInteractorImpl
 class ServiceLocator {
     val productListInteractor: ProductListUseCase by lazy {
         ProductsInteractorImpl(
-            MockProductsRepositoryImpl()
+            MockProductsRepositoryImpl(),
+            dispatcherIO
         )
     }
 
     val productDetailInteractor: ProductDetailUseCase by lazy {
         ProductsInteractorImpl(
-            MockProductsRepositoryImpl()
+            MockProductsRepositoryImpl(),
+            dispatcherIO
         )
     }
 
-    val dispatcherViewModel: CoroutineDispatcher = Dispatchers.IO
+    val dispatcherIO: CoroutineDispatcher = Dispatchers.IO
 }

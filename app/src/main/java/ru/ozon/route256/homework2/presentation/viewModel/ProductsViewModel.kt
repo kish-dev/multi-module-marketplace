@@ -4,18 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ru.ozon.route256.homework2.domain.interactors.ProductListUseCase
 import ru.ozon.route256.homework2.presentation.viewObject.ProductInListVO
-import ru.ozon.route256.homework2.presentation.viewObject.UiState
+import ru.ozon.route256.homework2.presentation.common.UiState
 
-class ProductViewModel(
-    private val interactor: ProductListUseCase,
-    private val dispatcher: CoroutineDispatcher
-) : ViewModel() {
+class ProductsViewModel(private val interactor: ProductListUseCase) : ViewModel() {
 
     private val _productLD: MutableLiveData<UiState<List<ProductInListVO>>> =
         MutableLiveData(UiState.Init())
@@ -28,12 +23,10 @@ class ProductViewModel(
     fun getProducts() {
         viewModelScope.launch(Dispatchers.Main) {
             _productLD.value = UiState.Init()
-            val products = withContext(dispatcher) {
-                interactor.getProducts()
-            }
-            when(products) {
+
+            when (val products = interactor.getProducts()) {
                 null -> {
-                    _productLD.value = UiState.Error()
+                    _productLD.value = UiState.Error(NullPointerException())
                 }
                 else -> {
                     _productLD.value = UiState.Success(products)
@@ -43,7 +36,7 @@ class ProductViewModel(
     }
 
     fun addViewCount(guid: String) {
-        viewModelScope.launch(dispatcher) {
+        viewModelScope.launch(Dispatchers.Main) {
             interactor.addViewToProductInList(guid)
             getProducts()
         }
