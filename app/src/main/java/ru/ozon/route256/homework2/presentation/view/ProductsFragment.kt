@@ -72,6 +72,13 @@ class ProductsFragment : Fragment() {
             swipeRefreshLayout.setOnRefreshListener {
                 productsViewModel.getProducts()
             }
+
+            addProductButton.setOnClickListener {
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainer, AddProductFragment())
+                    .addToBackStack(null)
+                    .commit()
+            }
         }
     }
 

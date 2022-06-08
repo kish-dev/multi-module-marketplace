@@ -24,9 +24,9 @@ class ProductsInteractorImpl(
         withContext(dispatcher) {
             val product = productsRepository.getProductById(guid)
             product?.let {
-                product.mapToVO()
+               return@withContext product.mapToVO()
             }
-            null
+            return@withContext null
         }
 
 
