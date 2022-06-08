@@ -1,6 +1,7 @@
 package ru.ozon.route256.homework2.presentation.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +17,7 @@ import ru.ozon.route256.homework2.presentation.adapters.ProductImageAdapter
 import ru.ozon.route256.homework2.presentation.viewModel.PDPViewModel
 import ru.ozon.route256.homework2.presentation.viewModel.viewModelCreator
 import ru.ozon.route256.homework2.presentation.viewObject.ProductVO
-import ru.ozon.route256.homework2.presentation.viewObject.UiState
+import ru.ozon.route256.homework2.presentation.common.UiState
 
 class PDPFragment : Fragment() {
 
@@ -36,8 +37,7 @@ class PDPFragment : Fragment() {
 
     private val pdpViewModel: PDPViewModel by viewModelCreator {
         PDPViewModel(
-            ServiceLocator().productDetailInteractor,
-            ServiceLocator().dispatcherViewModel
+            ServiceLocator().productDetailInteractor
         )
     }
 
@@ -67,7 +67,7 @@ class PDPFragment : Fragment() {
 
     private fun initObservers() {
         pdpViewModel.productLD.observe(viewLifecycleOwner) {
-            when(it) {
+            when (it) {
                 is UiState.Loading, is UiState.Init -> {
                     binding.swipeRefreshLayout.isRefreshing = true
                 }
@@ -79,6 +79,8 @@ class PDPFragment : Fragment() {
                         getString(R.string.loading_error),
                         Toast.LENGTH_SHORT
                     ).show()
+
+                    Log.e(TAG, "UiState is Error because of ${it.throwable.message}")
                 }
 
                 is UiState.Success -> {
@@ -120,6 +122,7 @@ class PDPFragment : Fragment() {
     companion object {
 
         private const val EXTRA_PRODUCT_ID = "extra_product_id"
+        private val TAG = PDPFragment::class.java.simpleName
 
         @JvmStatic
         fun newInstance(productId: String): PDPFragment = PDPFragment().apply {

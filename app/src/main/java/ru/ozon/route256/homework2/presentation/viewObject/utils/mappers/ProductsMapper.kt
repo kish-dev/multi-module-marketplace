@@ -1,5 +1,7 @@
-package ru.ozon.route256.homework2.data.dto
+package ru.ozon.route256.homework2.presentation.viewObject.utils.mappers
 
+import ru.ozon.route256.homework2.data.dto.ProductDTO
+import ru.ozon.route256.homework2.data.dto.ProductInListDTO
 import ru.ozon.route256.homework2.presentation.viewObject.ProductInListVO
 import ru.ozon.route256.homework2.presentation.viewObject.ProductVO
 

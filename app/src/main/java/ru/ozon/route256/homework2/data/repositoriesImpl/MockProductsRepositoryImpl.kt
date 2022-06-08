@@ -2,7 +2,6 @@ package ru.ozon.route256.homework2.data.repositoriesImpl
 
 import ru.ozon.route256.homework2.data.dto.ProductDTO
 import ru.ozon.route256.homework2.data.dto.ProductInListDTO
-import ru.ozon.route256.homework2.data.dto.mapToProductListDTO
 import ru.ozon.route256.homework2.domain.repositories.ProductsRepository
 
 class MockProductsRepositoryImpl : ProductsRepository {
@@ -14,16 +13,11 @@ class MockProductsRepositoryImpl : ProductsRepository {
         return productDTOs.firstOrNull { it.guid == guid }
     }
 
-    override suspend fun addViewToProductInList(guid: String) {
+    override suspend fun addViewToProductInList(guid: String): ProductInListDTO? {
         val productInList = productInListDTOs.firstOrNull { it.guid == guid }
         productInList?.apply {
             ++viewsCount
         }
-    }
-
-    override suspend fun addProduct(productDTO: ProductDTO): Boolean {
-        productDTOs.add(productDTO)
-        productInListDTOs.add(productDTO.mapToProductListDTO())
-        return true
+        return productInList
     }
 }
