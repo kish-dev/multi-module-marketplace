@@ -1,6 +1,7 @@
 package ru.ozon.route256.homework2.domain.interactors
 
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.ozon.route256.homework2.domain.repositories.ProductsRepository
 import ru.ozon.route256.homework2.presentation.viewObject.ProductInListVO

@@ -120,7 +120,7 @@ class ProductsFragment : Fragment() {
                     binding.swipeRefreshLayout.isRefreshing = false
                     productsAdapter.currentList
                         .filter { prev ->  prev.guid == it.value.guid }
-                        .map { prev -> prev.viewsCount = prev.viewsCount + 1 }
+                        .map { prev -> prev.viewsCount = it.value.viewsCount }
                     val position = productsAdapter.currentList.indexOf(it.value)
                     productsAdapter.notifyItemChanged(position)
                 }
