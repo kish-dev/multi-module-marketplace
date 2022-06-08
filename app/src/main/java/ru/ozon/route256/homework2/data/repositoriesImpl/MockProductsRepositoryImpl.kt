@@ -13,10 +13,11 @@ class MockProductsRepositoryImpl : ProductsRepository {
         return productDTOs.firstOrNull { it.guid == guid }
     }
 
-    override suspend fun addViewToProductInList(guid: String) {
+    override suspend fun addViewToProductInList(guid: String): ProductInListDTO? {
         val productInList = productInListDTOs.firstOrNull { it.guid == guid }
         productInList?.apply {
             ++viewsCount
         }
+        return productInList
     }
 }

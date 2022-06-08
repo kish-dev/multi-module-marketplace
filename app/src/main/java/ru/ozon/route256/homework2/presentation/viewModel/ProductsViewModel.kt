@@ -16,13 +16,17 @@ class ProductsViewModel(private val interactor: ProductListUseCase) : ViewModel(
         MutableLiveData(UiState.Init())
     var productLD: LiveData<UiState<List<ProductInListVO>>> = _productLD
 
+    private val _lastChangedProduct: MutableLiveData<UiState<ProductInListVO>> =
+        MutableLiveData(UiState.Init())
+    var lastChangedProduct: MutableLiveData<UiState<ProductInListVO>> = _lastChangedProduct
+
     init {
         getProducts()
     }
 
     fun getProducts() {
         viewModelScope.launch(Dispatchers.Main) {
-            _productLD.value = UiState.Init()
+            _productLD.value = UiState.Loading()
 
             when (val products = interactor.getProducts()) {
                 null -> {
@@ -37,8 +41,16 @@ class ProductsViewModel(private val interactor: ProductListUseCase) : ViewModel(
 
     fun addViewCount(guid: String) {
         viewModelScope.launch(Dispatchers.Main) {
-            interactor.addViewToProductInList(guid)
-            getProducts()
+            _lastChangedProduct.value = UiState.Loading()
+
+            when(val product = interactor.addViewToProductInList(guid)) {
+                null -> {
+                    _lastChangedProduct.value = UiState.Error(NullPointerException())
+                }
+                else -> {
+                    _lastChangedProduct.value = UiState.Success(product)
+                }
+            }
         }
     }
 }

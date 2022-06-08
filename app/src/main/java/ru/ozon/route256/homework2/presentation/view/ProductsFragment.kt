@@ -16,6 +16,7 @@ import ru.ozon.route256.homework2.presentation.common.UiState
 import ru.ozon.route256.homework2.presentation.viewHolders.ProductViewHolder
 import ru.ozon.route256.homework2.presentation.viewModel.ProductsViewModel
 import ru.ozon.route256.homework2.presentation.viewModel.viewModelCreator
+import ru.ozon.route256.homework2.presentation.viewObject.ProductInListVO
 
 class ProductsFragment : Fragment() {
 
@@ -95,6 +96,33 @@ class ProductsFragment : Fragment() {
                 is UiState.Success -> {
                     binding.swipeRefreshLayout.isRefreshing = false
                     productsAdapter.submitList(it.value)
+                }
+            }
+        }
+
+        productsViewModel.lastChangedProduct.observe(viewLifecycleOwner) {
+            when(it) {
+                is UiState.Loading, is UiState.Init -> {
+                }
+
+                is UiState.Error -> {
+                    binding.swipeRefreshLayout.isRefreshing = false
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.loading_error),
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    Log.e(TAG, "UiState is Error because of ${it.throwable.message}")
+                }
+
+                is UiState.Success -> {
+                    binding.swipeRefreshLayout.isRefreshing = false
+                    productsAdapter.currentList
+                        .filter { prev ->  prev.guid == it.value.guid }
+                        .map { prev -> prev.viewsCount = prev.viewsCount + 1 }
+                    val position = productsAdapter.currentList.indexOf(it.value)
+                    productsAdapter.notifyItemChanged(position)
                 }
             }
         }
