@@ -15,7 +15,7 @@ class ProductsInteractorImpl(
     ProductDetailUseCase {
     override suspend fun getProducts(): List<ProductInListVO>? =
         withContext(dispatcher) {
-            return@withContext productsRepository.getProducts()?.map { it.mapToVO() }
+            productsRepository.getProducts()?.map { it.mapToVO() }
         }
 
 
@@ -31,7 +31,7 @@ class ProductsInteractorImpl(
 
     override suspend fun addViewToProductInList(guid: String): ProductInListVO? =
         withContext(dispatcher) {
-            return@withContext productsRepository.addViewToProductInList(guid)?.mapToVO()
+            productsRepository.addViewToProductInList(guid)?.mapToVO()
         }
 
 
