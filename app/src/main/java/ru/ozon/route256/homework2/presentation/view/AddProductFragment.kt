@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import ru.ozon.route256.homework2.R
 import ru.ozon.route256.homework2.databinding.FragmentAddProductBinding
 import ru.ozon.route256.homework2.di.ServiceLocator
+import ru.ozon.route256.homework2.presentation.common.UiState
 import ru.ozon.route256.homework2.presentation.viewModel.AddProductViewModel
 import ru.ozon.route256.homework2.presentation.viewModel.viewModelCreator
-import ru.ozon.route256.homework2.presentation.viewObject.UiState
 import ru.ozon.route256.homework2.presentation.viewObject.createProduct
 
 class AddProductFragment : Fragment() {
@@ -23,7 +23,6 @@ class AddProductFragment : Fragment() {
     private val addProductViewModel: AddProductViewModel by viewModelCreator {
         AddProductViewModel(
             ServiceLocator().addProductInteractor,
-            ServiceLocator().dispatcherViewModel
         )
     }
 
