@@ -1,18 +1,19 @@
 package ru.ozon.route256.homework2.domain.interactors
 
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.ozon.route256.homework2.domain.repositories.ProductsRepository
 import ru.ozon.route256.homework2.presentation.viewObject.ProductInListVO
 import ru.ozon.route256.homework2.presentation.viewObject.ProductVO
+import ru.ozon.route256.homework2.presentation.viewObject.utils.mappers.mapToDTO
 import ru.ozon.route256.homework2.presentation.viewObject.utils.mappers.mapToVO
 
 class ProductsInteractorImpl(
     private val productsRepository: ProductsRepository,
     private val dispatcher: CoroutineDispatcher
 ) : ProductListUseCase,
-    ProductDetailUseCase {
+    ProductDetailUseCase,
+    AddProductUseCase {
     override suspend fun getProducts(): List<ProductInListVO>? =
         withContext(dispatcher) {
             productsRepository.getProducts()?.map { it.mapToVO() }
@@ -23,7 +24,7 @@ class ProductsInteractorImpl(
         withContext(dispatcher) {
             val product = productsRepository.getProductById(guid)
             product?.let {
-                return@withContext product.mapToVO()
+               return@withContext product.mapToVO()
             }
             return@withContext null
         }
@@ -34,6 +35,9 @@ class ProductsInteractorImpl(
             productsRepository.addViewToProductInList(guid)?.mapToVO()
         }
 
-
+    override suspend fun addProductToAllPlaces(product: ProductVO) =
+        withContext(dispatcher) {
+            productsRepository.addProduct(product.mapToDTO())
+        }
 }
 

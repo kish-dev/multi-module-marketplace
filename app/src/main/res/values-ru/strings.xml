@@ -7,4 +7,5 @@
     <string name="add_product">Добавить продукт</string>
     <string name="loading_error">При загрузке произошла ошибка</string>
     <string name="add_product_success">Продукт успешно добавлен</string>
+    <string name="fill_all_strokes">Заполните все поля</string>
 </resources>

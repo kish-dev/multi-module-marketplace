@@ -56,11 +56,6 @@ class ProductsFragment : Fragment() {
         initObservers()
     }
 
-    override fun onResume() {
-        super.onResume()
-        productsViewModel.getProducts()
-    }
-
     private fun initViews() {
         with(binding) {
             productsRV.apply {
@@ -71,6 +66,13 @@ class ProductsFragment : Fragment() {
 
             swipeRefreshLayout.setOnRefreshListener {
                 productsViewModel.getProducts()
+            }
+
+            addProductButton.setOnClickListener {
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainer, AddProductFragment())
+                    .addToBackStack(null)
+                    .commit()
             }
         }
     }
