@@ -13,25 +13,24 @@ import ru.ozon.route256.homework2.domain.interactors.ProductsInteractorImpl
 // [тут](https://habr.com/ru/post/465395/) и [тут](https://javatutor.net/articles/j2ee-pattern-service-locator).
 
 class ServiceLocator {
-    val productListInteractor: ProductListUseCase by lazy {
+
+    private val productsRepositoryImpl: ProductsInteractorImpl by lazy {
         ProductsInteractorImpl(
             MockProductsRepositoryImpl(),
             dispatcherIO
         )
+    }
+
+    val productListInteractor: ProductListUseCase by lazy {
+        productsRepositoryImpl
     }
 
     val productDetailInteractor: ProductDetailUseCase by lazy {
-        ProductsInteractorImpl(
-            MockProductsRepositoryImpl(),
-            dispatcherIO
-        )
+        productsRepositoryImpl
     }
 
     val addProductInteractor: AddProductUseCase by lazy {
-        ProductsInteractorImpl(
-            MockProductsRepositoryImpl(),
-            dispatcherIO
-        )
+        productsRepositoryImpl
     }
 
     val dispatcherIO: CoroutineDispatcher = Dispatchers.IO
