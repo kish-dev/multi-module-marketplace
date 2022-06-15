@@ -14,3 +14,14 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Workshop1"
 include ':app'
+include ':core-utils'
+include ':feature-products-api'
+include ':feature-products-impl'
+include ':core-network-api'
+include ':feature-pdp-api'
+include ':feature-pdp-impl'
+include ':core-navigation-impl'
+include ':core-navigation-api'
+include ':core-network-impl'
+include ':feature-add-product-api'
+include ':feature-add-product-impl'

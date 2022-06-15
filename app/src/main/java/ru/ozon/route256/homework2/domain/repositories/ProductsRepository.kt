@@ -1,16 +1,15 @@
 package ru.ozon.route256.homework2.domain.repositories
 
-import ru.ozon.route256.homework2.data.dto.ProductDTO
-import ru.ozon.route256.homework2.data.dto.ProductInListDTO
-import ru.ozon.route256.homework2.presentation.viewObject.ProductInListVO
+import com.software.feature_api.models.ProductDTO
+import com.software.feature_api.models.ProductInListDTO
 
 interface ProductsRepository {
-    suspend fun getProducts(): List<ProductInListDTO>?
+    suspend fun getProducts(): List<com.software.feature_api.models.ProductInListDTO>?
 
-    suspend fun getProductById(guid: String): ProductDTO?
+    suspend fun getProductById(guid: String): com.software.feature_api.models.ProductDTO?
 
-    suspend fun addViewToProductInList(guid: String): ProductInListDTO?
+    suspend fun addViewToProductInList(guid: String): com.software.feature_api.models.ProductInListDTO?
 
-    suspend fun addProduct(productDTO: ProductDTO): ProductInListDTO?
+    suspend fun addProduct(productDTO: com.software.feature_api.models.ProductDTO): com.software.feature_api.models.ProductInListDTO?
 
 }
