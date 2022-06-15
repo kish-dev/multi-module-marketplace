@@ -11,6 +11,6 @@ interface ProductsRepository {
 
     suspend fun addViewToProductInList(guid: String): ProductInListDTO?
 
-    suspend fun addProduct(productDTO: ProductDTO): Boolean
+    suspend fun addProduct(productDTO: ProductDTO): ProductInListDTO?
 
 }

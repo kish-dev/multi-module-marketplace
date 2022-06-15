@@ -22,9 +22,9 @@ class MockProductsRepositoryImpl : ProductsRepository {
         return productInList
     }
 
-    override suspend fun addProduct(productDTO: ProductDTO): Boolean {
+    override suspend fun addProduct(productDTO: ProductDTO): ProductInListDTO {
             productDTOs.add(productDTO)
             productInListDTOs.add(productDTO.mapToProductListDTO())
-            return true
+            return productInListDTOs.last()
     }
 }

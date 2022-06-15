@@ -37,7 +37,7 @@ class ProductsInteractorImpl(
 
     override suspend fun addProductToAllPlaces(product: ProductVO) =
         withContext(dispatcher) {
-            productsRepository.addProduct(product.mapToDTO())
+            productsRepository.addProduct(product.mapToDTO())?.mapToVO()
         }
 }
 
