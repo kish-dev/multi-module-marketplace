@@ -60,7 +60,6 @@ class AddProductFragment : Fragment() {
             }
         }
         super.onPause()
-
     }
 
     private fun initObservers() {
