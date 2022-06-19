@@ -9,6 +9,9 @@ import com.software.feature_products_impl.di.components.DaggerProductsFeatureDep
 import com.software.feature_products_impl.di.components.ProductsFeatureComponent
 
 object FeatureInjectorProxy {
+
+    var isFirst = true
+
     fun initFeatureProductsDI() {
         ProductsFeatureComponent.initAndGet(
             DaggerProductsFeatureDependenciesComponent.builder()

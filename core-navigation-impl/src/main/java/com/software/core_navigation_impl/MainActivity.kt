@@ -13,12 +13,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun navigateProduct() {
-        FeatureInjectorProxy.initFeatureProductsDI()
-        val newFragment = ProductsFragment()
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragmentContainer, newFragment, ProductsFragment::class.java.simpleName)
-            .addToBackStack(null)
-            .commit()
+        if(FeatureInjectorProxy.isFirst) {
+            FeatureInjectorProxy.initFeatureProductsDI()
+            val newFragment = ProductsFragment()
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragmentContainer, newFragment, ProductsFragment::class.java.simpleName)
+                .addToBackStack(null)
+                .commit()
+            FeatureInjectorProxy.isFirst = false
+        } else {
+            supportFragmentManager.restoreBackStack("")
+        }
     }
 }
