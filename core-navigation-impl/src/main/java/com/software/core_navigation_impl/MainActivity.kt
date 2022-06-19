@@ -10,7 +10,7 @@ import com.software.feature_products_impl.presentation.views.ProductsFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        FeatureInjectorProxy.initFeatureProductsDI()
+        restoreComponents()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         navigateProduct()
@@ -31,6 +31,24 @@ class MainActivity : AppCompatActivity() {
             FeatureInjectorProxy.isFirst = false
         } else {
             supportFragmentManager.restoreBackStack("")
+        }
+    }
+
+    private fun restoreComponents() {
+        FeatureInjectorProxy.initFeatureProductsDI()
+        if(!FeatureInjectorProxy.isFirst) {
+            for (i in 0 until supportFragmentManager.backStackEntryCount) {
+                val entry = supportFragmentManager.getBackStackEntryAt(i)
+                entry.name?.let {
+                    when (it) {
+                        PDPFragment::class.java.simpleName ->
+                            FeatureInjectorProxy.initFeaturePDPDI()
+
+                        AddProductFragment::class.java.simpleName ->
+                            FeatureInjectorProxy.initFeatureAddProductDI()
+                    }
+                }
+            }
         }
     }
 }
