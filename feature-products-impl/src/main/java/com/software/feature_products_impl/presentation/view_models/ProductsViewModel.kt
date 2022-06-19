@@ -1,17 +1,22 @@
 package com.software.feature_products_impl.presentation.view_models
 
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.software.core_utils.presentation.common.UiState
+import com.software.feature_products_api.ProductsNavigationApi
 import com.software.feature_products_impl.domain.interactors.ProductListUseCase
 import com.software.feature_products_impl.presentation.view_objects.ProductInListVO
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class ProductsViewModel @Inject constructor(private val interactor: ProductListUseCase) : ViewModel() {
+class ProductsViewModel @Inject constructor(
+    private val interactor: ProductListUseCase,
+    private val router: ProductsNavigationApi
+    ) : ViewModel() {
 
     private val _productLD: MutableLiveData<UiState<List<ProductInListVO>>> =
         MutableLiveData(UiState.Init())

@@ -1,5 +1,6 @@
 package com.software.feature_products_impl.di.components
 
+import android.util.Log
 import com.software.core_utils.di.PerFeature
 import com.software.feature_products_impl.di.modules.InteractorModule
 import com.software.feature_products_impl.di.modules.ProductsFeatureDependencies
@@ -50,6 +51,7 @@ abstract class ProductsFeatureComponent {
 
         fun reset() {
             productsFeatureComponent = null
+            Log.d("initFeatureProductsDI", "reset: ")
         }
 
     }

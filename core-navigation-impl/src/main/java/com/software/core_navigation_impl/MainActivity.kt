@@ -1,5 +1,6 @@
 package com.software.core_navigation_impl
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.software.core_navigation_impl.di.FeatureInjectorProxy
@@ -9,6 +10,7 @@ import com.software.feature_products_impl.presentation.views.ProductsFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        FeatureInjectorProxy.initFeatureProductsDI()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         navigateProduct()
@@ -16,7 +18,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun navigateProduct() {
         if (FeatureInjectorProxy.isFirst) {
-            FeatureInjectorProxy.initFeatureProductsDI()
             val newFragment = ProductsFragment()
             supportFragmentManager
                 .beginTransaction()
@@ -29,19 +30,6 @@ class MainActivity : AppCompatActivity() {
                 .commit()
             FeatureInjectorProxy.isFirst = false
         } else {
-            FeatureInjectorProxy.initFeatureProductsDI()
-            for (i in 0 until supportFragmentManager.backStackEntryCount) {
-                val entry = supportFragmentManager.getBackStackEntryAt(i)
-                entry.name?.let {
-                    when (it) {
-                        PDPFragment::class.java.simpleName ->
-                            FeatureInjectorProxy.initFeaturePDPDI()
-
-                        AddProductFragment::class.java.simpleName ->
-                            FeatureInjectorProxy.initFeatureAddProductDI()
-                    }
-                }
-            }
             supportFragmentManager.restoreBackStack("")
         }
     }

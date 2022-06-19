@@ -1,5 +1,6 @@
 package com.software.core_navigation_impl.navigation
 
+import android.util.Log
 import androidx.fragment.app.Fragment
 import com.software.core_navigation_impl.R
 import com.software.core_navigation_impl.di.FeatureInjectorProxy
@@ -13,7 +14,18 @@ class ProductsNavigationImpl @Inject constructor(): ProductsNavigationApi {
 
     override fun isClosed(fragment: Fragment): Boolean {
         return if(fragment.javaClass.simpleName != ProductsFragment::class.simpleName) {
-            fragment.activity?.supportFragmentManager?.findFragmentByTag(ProductsFragment::class.java.simpleName) == null
+            var isInBackStack = false
+            fragment.activity?.supportFragmentManager?.let {
+                for(i in 0 until it.backStackEntryCount) {
+                    if(it.getBackStackEntryAt(i).name == ProductsFragment::class.java.simpleName) {
+                        isInBackStack = true
+                    }
+                }
+                if(it.findFragmentByTag(ProductsFragment::class.java.simpleName) != null) {
+                    isInBackStack = true
+                }
+            }
+            isInBackStack
         } else {
             true
         }

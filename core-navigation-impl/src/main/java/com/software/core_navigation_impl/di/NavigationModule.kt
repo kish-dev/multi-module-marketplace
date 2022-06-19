@@ -8,6 +8,7 @@ import com.software.feature_pdp_api.PDPNavigationApi
 import com.software.feature_products_api.ProductsNavigationApi
 import dagger.Binds
 import dagger.Module
+import javax.inject.Singleton
 
 @Module
 interface NavigationModule {

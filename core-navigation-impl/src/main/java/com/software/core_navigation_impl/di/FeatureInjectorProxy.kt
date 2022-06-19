@@ -1,5 +1,6 @@
 package com.software.core_navigation_impl.di
 
+import android.util.Log
 import com.software.core_network_impl.di.DaggerCoreNetworkComponent
 import com.software.feature_add_product_impl.di.components.AddProductFeatureComponent
 import com.software.feature_add_product_impl.di.components.DaggerAddProductFeatureDependenciesComponent
