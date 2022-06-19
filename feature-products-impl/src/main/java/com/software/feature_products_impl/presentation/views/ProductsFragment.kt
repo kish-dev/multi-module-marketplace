@@ -9,10 +9,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.software.core_utils.R
 import com.software.core_utils.presentation.common.UiState
 import com.software.core_utils.presentation.viewModels.viewModelCreator
 import com.software.feature_products_api.ProductsNavigationApi
-import com.software.core_utils.R
 import com.software.feature_products_impl.databinding.FragmentProductsBinding
 import com.software.feature_products_impl.di.components.ProductsFeatureComponent
 import com.software.feature_products_impl.domain.interactors.ProductListUseCase
@@ -34,7 +34,10 @@ class ProductsFragment : Fragment() {
     lateinit var productsNavigationApi: ProductsNavigationApi
 
     private val productsViewModel: ProductsViewModel by viewModelCreator {
-        ProductsViewModel(productsInteractor)
+        ProductsViewModel(
+            productsInteractor,
+            productsNavigationApi
+        )
     }
     private val productsAdapter: ProductsAdapter by lazy {
         ProductsAdapter(object : ProductsAdapter.Listener {
@@ -108,7 +111,7 @@ class ProductsFragment : Fragment() {
         }
 
         productsViewModel.lastChangedProduct.observe(viewLifecycleOwner) {
-            when(it) {
+            when (it) {
                 is UiState.Loading, is UiState.Init -> {
                 }
 
@@ -126,7 +129,7 @@ class ProductsFragment : Fragment() {
                 is UiState.Success -> {
                     binding.swipeRefreshLayout.isRefreshing = false
                     productsAdapter.currentList
-                        .filter { prev ->  prev.guid == it.value.guid }
+                        .filter { prev -> prev.guid == it.value.guid }
                         .map { prev -> prev.viewsCount = it.value.viewsCount }
                     val position = productsAdapter.currentList.indexOf(it.value)
                     productsAdapter.notifyItemChanged(position)
@@ -136,8 +139,8 @@ class ProductsFragment : Fragment() {
     }
 
     override fun onPause() {
-        if(isRemoving) {
-            if(productsNavigationApi.isClosed(this)) {
+        if (isRemoving) {
+            if (productsNavigationApi.isClosed(this)) {
                 ProductsFeatureComponent.reset()
             }
         }
