@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
                 .commit()
             FeatureInjectorProxy.isFirst = false
         } else {
+            FeatureInjectorProxy.initFeatureProductsDI()
             supportFragmentManager.restoreBackStack("")
         }
     }
