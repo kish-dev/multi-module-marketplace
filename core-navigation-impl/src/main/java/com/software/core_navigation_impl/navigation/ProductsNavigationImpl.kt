@@ -26,7 +26,7 @@ class ProductsNavigationImpl @Inject constructor(): ProductsNavigationApi {
             ?.supportFragmentManager
             ?.beginTransaction()
             ?.replace(R.id.fragmentContainer, newFragment, PDPFragment::class.java.simpleName)
-            ?.addToBackStack(null)
+            ?.addToBackStack(fragment.javaClass.simpleName)
             ?.commit()
     }
 
@@ -37,7 +37,7 @@ class ProductsNavigationImpl @Inject constructor(): ProductsNavigationApi {
             ?.supportFragmentManager
             ?.beginTransaction()
             ?.replace(R.id.fragmentContainer, newFragment, AddProductFragment::class.java.simpleName)
-            ?.addToBackStack(null)
+            ?.addToBackStack(fragment.javaClass.simpleName)
             ?.commit()
     }
 }
