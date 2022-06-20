@@ -5,13 +5,13 @@ plugins {
     id 'kotlin-android'
 }
 
-apply from: "dependencies.gradle"
+apply from: "../dependencies.gradle"
 
 android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "ru.ozon.route256.workshop1"
+        applicationId "ru.ozon.route256.marketplace"
         minSdk 24
         targetSdk 31
         versionCode 1
@@ -26,25 +26,29 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
     kotlinOptions {
         jvmTarget = '1.8'
-    }
-
-    buildFeatures {
-        viewBinding = true
     }
 }
 
 dependencies {
+    implementation project(":core-network-api")
+    implementation project(":core-network-impl")
+    implementation project(":core-utils")
+    implementation project(":feature-products-api")
+    implementation project(":feature-products-impl")
+    implementation project(":feature-pdp-api")
+    implementation project(":feature-pdp-impl")
+    implementation project(":core-navigation-api")
+    implementation project(":core-navigation-impl")
+    implementation project(":feature-add-product-api")
+    implementation project(":feature-add-product-impl")
 
     implementation coreKtx
-    implementation navigation.values()
     implementation appCompat
     implementation material
     implementation constraintLayout
@@ -52,8 +56,7 @@ dependencies {
     implementation lifecycle
     implementation liveData
     implementation glide
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    testImplementation junit
-    androidTestImplementation androidTestJunit
-    androidTestImplementation espresso
+
+    implementation dagger
+    kapt daggerCompiler
 }
