@@ -1,5 +1,7 @@
 package com.software.feature_pdp_impl.domain.interactors
 
+import com.software.core_utils.presentation.common.UiState
+import com.software.feature_api.models.ServerResponse
 import com.software.feature_pdp_impl.domain.mapper.mapToVO
 import com.software.feature_pdp_impl.domain.repository.PDPRepository
 import com.software.feature_pdp_impl.presentation.view_objects.ProductVO
@@ -11,12 +13,16 @@ class PDPInteractorImpl @Inject constructor(
     private val pdpRepository: PDPRepository,
     private val dispatcher: CoroutineDispatcher
 ) : ProductDetailUseCase {
-    override suspend fun getProductById(guid: String): ProductVO? =
+    override suspend fun getProductById(guid: String): ServerResponse<ProductVO> =
         withContext(dispatcher) {
-            val product = pdpRepository.getProductById(guid)
-            product?.let {
-                return@withContext product.mapToVO()
+            when(val response = pdpRepository.getProductById(guid)) {
+                is ServerResponse.Success -> {
+                    ServerResponse.Success(response.value.mapToVO())
+                }
+
+                is ServerResponse.Error -> {
+                    ServerResponse.Error(response.throwable)
+                }
             }
-            return@withContext null
         }
 }

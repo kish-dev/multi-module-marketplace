@@ -3,6 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+apply from: "../dependencies.gradle"
+
 android {
     compileSdk 31
 
@@ -30,5 +32,7 @@ android {
 }
 
 dependencies {
+    implementation retrofit
 
+    implementation project(path: ':core-utils')
 }

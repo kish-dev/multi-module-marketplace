@@ -9,5 +9,6 @@ class AddProductRepositoryImpl @Inject constructor(private val productsApi: Prod
     AddProductRepository {
 
     override suspend fun addProduct(productDTO: ProductDTO): Boolean? =
-        productsApi.addProduct(productDTO)
+//        productsApi.addProduct(productDTO)
+        true
 }

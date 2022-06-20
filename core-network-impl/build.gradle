@@ -36,6 +36,9 @@ android {
 dependencies {
     implementation project(":core-network-api")
 
+    implementation retrofit
+    implementation retrofitConverter
+    implementation okHttp
     implementation dagger
     kapt daggerCompiler
 }

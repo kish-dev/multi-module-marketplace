@@ -18,6 +18,8 @@ ext {
             fragment           : '1.4.1',
             swipeRefreshVersion: '1.1.0',
             legacyVersion      : '1.0.0',
+            retrofitVersion    : '2.9.0',
+            okHttpVersion      : '5.0.0-alpha.9',
     ]
 
     coreKtx = "androidx.core:core-ktx:${versions.coreKtx}"
@@ -50,5 +52,11 @@ ext {
     swipeRefresh = "androidx.swiperefreshlayout:swiperefreshlayout:${versions.swipeRefreshVersion}"
 
     legacySupport = "androidx.legacy:legacy-support-v4:${versions.legacyVersion}"
+
+    retrofit = "com.squareup.retrofit2:retrofit:${versions.retrofitVersion}"
+
+    retrofitConverter = "com.squareup.retrofit2:converter-gson:${versions.retrofitVersion}"
+
+    okHttp = "com.squareup.okhttp3:logging-interceptor:${versions.okHttpVersion}"
 
 }

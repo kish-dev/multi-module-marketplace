@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.software.core_utils.presentation.common.UiState
+import com.software.feature_api.models.ServerResponse
 import com.software.feature_products_api.ProductsNavigationApi
 import com.software.feature_products_impl.domain.interactors.ProductListUseCase
 import com.software.feature_products_impl.presentation.view_objects.ProductInListVO
@@ -33,11 +34,13 @@ class ProductsViewModel (
             _productLD.value = UiState.Loading()
 
             when (val products = interactor.getProducts()) {
-                null -> {
-                    _productLD.value = UiState.Error(NullPointerException())
+                is ServerResponse.Success -> {
+                    _productLD.value =
+                        UiState.Success(products.value)
                 }
-                else -> {
-                    _productLD.value = UiState.Success(products)
+                is ServerResponse.Error -> {
+                    _productLD.value =
+                        UiState.Error(products.throwable)
                 }
             }
         }
@@ -46,13 +49,14 @@ class ProductsViewModel (
     fun addViewCount(guid: String) {
         viewModelScope.launch(Dispatchers.Main) {
             _lastChangedProduct.value = UiState.Loading()
-
             when(val product = interactor.addViewToProductInList(guid)) {
-                null -> {
-                    _lastChangedProduct.value = UiState.Error(NullPointerException())
+                is ServerResponse.Success -> {
+                    _lastChangedProduct.value =
+                        UiState.Success(product.value)
                 }
-                else -> {
-                    _lastChangedProduct.value = UiState.Success(product)
+                is ServerResponse.Error -> {
+                    _lastChangedProduct.value =
+                        UiState.Error(product.throwable)
                 }
             }
         }
