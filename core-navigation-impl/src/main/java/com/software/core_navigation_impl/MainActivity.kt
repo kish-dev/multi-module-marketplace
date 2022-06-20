@@ -1,6 +1,5 @@
 package com.software.core_navigation_impl
 
-import android.content.res.Configuration
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.software.core_navigation_impl.di.FeatureInjectorProxy
