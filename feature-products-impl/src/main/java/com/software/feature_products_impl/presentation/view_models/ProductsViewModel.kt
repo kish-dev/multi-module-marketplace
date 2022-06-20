@@ -1,6 +1,5 @@
 package com.software.feature_products_impl.presentation.view_models
 
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,9 +10,8 @@ import com.software.feature_products_impl.domain.interactors.ProductListUseCase
 import com.software.feature_products_impl.presentation.view_objects.ProductInListVO
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class ProductsViewModel @Inject constructor(
+class ProductsViewModel (
     private val interactor: ProductListUseCase,
     private val router: ProductsNavigationApi
     ) : ViewModel() {

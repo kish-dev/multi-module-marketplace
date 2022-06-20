@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun navigateProduct() {
         if (FeatureInjectorProxy.isFirst) {
+            FeatureInjectorProxy.initFeatureProductsDI()
             val newFragment = ProductsFragment()
             supportFragmentManager
                 .beginTransaction()

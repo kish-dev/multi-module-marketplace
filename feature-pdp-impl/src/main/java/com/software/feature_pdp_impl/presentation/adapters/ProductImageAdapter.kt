@@ -5,21 +5,22 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.software.feature_pdp_impl.R
+import com.software.feature_pdp_impl.presentation.view_holders.ProductImageViewHolder
 
-class ProductImageAdapter : ListAdapter<String, com.software.feature_pdp_impl.presentation.view_holders.ProductImageViewHolder>(
+class ProductImageAdapter : ListAdapter<String, ProductImageViewHolder>(
     StringDiffUtil()
 ) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): com.software.feature_pdp_impl.presentation.view_holders.ProductImageViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductImageViewHolder {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
         val itemView = inflater.inflate(R.layout.product_image_item, parent, false)
-        return com.software.feature_pdp_impl.presentation.view_holders.ProductImageViewHolder(
+        return ProductImageViewHolder(
             itemView
         )
     }
 
-    override fun onBindViewHolder(holder: com.software.feature_pdp_impl.presentation.view_holders.ProductImageViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ProductImageViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 

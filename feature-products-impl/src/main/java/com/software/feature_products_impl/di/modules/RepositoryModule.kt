@@ -10,6 +10,5 @@ import dagger.Module
 interface RepositoryModule {
 
     @Binds
-    @PerFeature
     fun bindRepository(repository: ProductsRepositoryImpl): ProductsRepository
 }

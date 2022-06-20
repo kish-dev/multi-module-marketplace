@@ -15,7 +15,8 @@ class AddProductViewModel(
 ) : ViewModel() {
 
     private val _addProductState: MutableLiveData<UiState<Boolean>> = MutableLiveData(
-        UiState.Init())
+        UiState.Init()
+    )
     var addProductState: LiveData<UiState<Boolean>> = _addProductState
 
     fun addProduct(productVO: ProductVO) {

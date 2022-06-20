@@ -7,7 +7,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class ProductsInteractorImpl @Inject constructor(
+class ProductsInteractorImpl (
     private val productsRepository: ProductsRepository,
     private val dispatcher: CoroutineDispatcher
 ) : ProductListUseCase {

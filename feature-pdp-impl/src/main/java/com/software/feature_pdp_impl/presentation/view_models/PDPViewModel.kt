@@ -10,9 +10,8 @@ import com.software.feature_pdp_impl.presentation.view_objects.ProductVO
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
-class PDPViewModel @Inject constructor(private val interactor: ProductDetailUseCase) : ViewModel() {
+class PDPViewModel (private val interactor: ProductDetailUseCase) : ViewModel() {
 
     private val _productLD: MutableLiveData<UiState<ProductVO>> = MutableLiveData(
         UiState.Init()

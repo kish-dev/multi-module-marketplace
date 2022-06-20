@@ -54,7 +54,7 @@ dependencies {
     implementation liveData
     implementation glide
     implementation dagger
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation legacySupport
     kapt daggerCompiler
 
 }
