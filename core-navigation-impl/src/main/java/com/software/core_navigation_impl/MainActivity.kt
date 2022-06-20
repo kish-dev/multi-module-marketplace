@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
                     newFragment,
                     ProductsFragment::class.java.simpleName
                 )
-                .addToBackStack(null)
+                .addToBackStack(ProductsFragment::class.java.simpleName)
                 .commit()
             FeatureInjectorProxy.isFirst = false
         } else {
