@@ -1,14 +1,25 @@
 package com.software.feature_products_impl.di.modules
 
-import com.software.core_utils.di.PerFeature
+import android.content.Context
+import com.software.feature_api.ProductsApi
 import com.software.feature_products_impl.data.ProductsRepositoryImpl
 import com.software.feature_products_impl.domain.repositories.ProductsRepository
-import dagger.Binds
 import dagger.Module
+import dagger.Provides
 
 @Module
-interface RepositoryModule {
+class RepositoryModule(val context: Context) {
 
-    @Binds
-    fun bindRepository(repository: ProductsRepositoryImpl): ProductsRepository
+    @Provides
+    fun provideContext(): Context {
+        return context
+    }
+
+    @Provides
+    fun provideRepository(
+        productsApi: ProductsApi,
+        context: Context
+    ): ProductsRepository {
+        return ProductsRepositoryImpl(productsApi, context)
+    }
 }

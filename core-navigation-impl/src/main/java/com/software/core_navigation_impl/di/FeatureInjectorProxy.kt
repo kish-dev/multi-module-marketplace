@@ -1,5 +1,6 @@
 package com.software.core_navigation_impl.di
 
+import android.content.Context
 import android.util.Log
 import com.software.core_network_impl.di.DaggerCoreNetworkComponent
 import com.software.feature_add_product_impl.di.components.AddProductFeatureComponent
@@ -13,12 +14,13 @@ object FeatureInjectorProxy {
 
     var isFirst = true
 
-    fun initFeatureProductsDI() {
+    fun initFeatureProductsDI(appContext: Context) {
         ProductsFeatureComponent.initAndGet(
             DaggerProductsFeatureDependenciesComponent.builder()
                 .networkApi(DaggerCoreNetworkComponent.builder().build())
                 .productsNavigationApi(DaggerCoreNavigationComponent.builder().build().getProductNavigation())
-                .build()
+                .build(),
+            appContext
         )
     }
 

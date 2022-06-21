@@ -20,6 +20,7 @@ ext {
             legacyVersion      : '1.0.0',
             retrofitVersion    : '2.9.0',
             okHttpVersion      : '5.0.0-alpha.9',
+            workerVersion      : '2.7.1'
     ]
 
     coreKtx = "androidx.core:core-ktx:${versions.coreKtx}"
@@ -58,5 +59,7 @@ ext {
     retrofitConverter = "com.squareup.retrofit2:converter-gson:${versions.retrofitVersion}"
 
     okHttp = "com.squareup.okhttp3:logging-interceptor:${versions.okHttpVersion}"
+
+    worker = "androidx.work:work-runtime:${versions.workerVersion}"
 
 }
