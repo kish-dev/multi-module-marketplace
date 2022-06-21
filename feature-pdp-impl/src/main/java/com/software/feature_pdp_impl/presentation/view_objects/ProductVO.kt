@@ -16,3 +16,26 @@ data class ProductVO(
     val availableCount: Int?,
     val additionalParams: Map<String, String>
 )
+
+fun createProduct(
+    name: String,
+    description: String,
+    image: String,
+    price: String,
+    rating: Double
+): ProductVO {
+    return ProductVO(
+        guid = UUID.randomUUID().toString(),
+        name = name,
+        price = price,
+        description = description,
+        rating = rating,
+        isFavorite = false,
+        isInCart = false,
+        images = listOf(image),
+        weight = null,
+        count = null,
+        availableCount = null,
+        additionalParams = mapOf()
+    )
+}

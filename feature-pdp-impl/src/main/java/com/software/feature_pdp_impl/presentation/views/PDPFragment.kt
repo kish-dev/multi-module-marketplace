@@ -20,7 +20,7 @@ import com.software.feature_pdp_impl.di.components.PDPFeatureComponent
 import com.software.feature_pdp_impl.domain.interactors.ProductDetailUseCase
 import com.software.feature_pdp_impl.presentation.adapters.ProductImageAdapter
 import com.software.feature_pdp_impl.presentation.view_models.PDPViewModel
-import com.software.feature_pdp_impl.presentation.view_objects.ProductVO
+import com.software.core_utils.presentation.view_objects.ProductVO
 import javax.inject.Inject
 
 class PDPFragment : Fragment() {

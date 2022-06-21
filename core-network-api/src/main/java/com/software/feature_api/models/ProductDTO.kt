@@ -1,5 +1,10 @@
 package com.software.feature_api.models
 
+import android.os.Parcelable
+import com.google.gson.Gson
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class ProductDTO(
     val guid: String,
     val name: String,
@@ -13,4 +18,7 @@ data class ProductDTO(
     val count: Int?,
     val availableCount: Int?,
     val additionalParams: Map<String, String>
-)
+): Parcelable
+
+
+

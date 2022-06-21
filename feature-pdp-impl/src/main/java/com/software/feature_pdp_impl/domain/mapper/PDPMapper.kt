@@ -1,7 +1,7 @@
 package com.software.feature_pdp_impl.domain.mapper
 
 import com.software.feature_api.models.ProductDTO
-import com.software.feature_pdp_impl.presentation.view_objects.ProductVO
+import com.software.core_utils.presentation.view_objects.ProductVO
 
 
 fun ProductDTO.mapToVO(): ProductVO {
