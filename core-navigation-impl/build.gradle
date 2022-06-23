@@ -44,6 +44,10 @@ dependencies {
     implementation project(":feature-pdp-impl")
     implementation project(":feature-add-product-api")
     implementation project(":feature-add-product-impl")
+    implementation project(":storage-api")
+    implementation project(":storage-impl")
+    implementation project(":worker-api")
+    implementation project(":worker")
 
     implementation coreKtx
     implementation appCompat

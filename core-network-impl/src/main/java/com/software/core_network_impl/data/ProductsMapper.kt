@@ -1,7 +1,7 @@
 package com.software.core_network_impl.data
 
-import com.software.feature_api.models.ProductDTO
-import com.software.feature_api.models.ProductInListDTO
+import com.software.core_utils.models.ProductDTO
+import com.software.core_utils.models.ProductInListDTO
 
 fun ProductDTO.mapToProductListDTO(): ProductInListDTO {
     return ProductInListDTO(

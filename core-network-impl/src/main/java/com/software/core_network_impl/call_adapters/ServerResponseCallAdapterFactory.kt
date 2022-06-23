@@ -1,6 +1,6 @@
 package com.software.core_network_impl.call_adapters
 
-import com.software.feature_api.models.ServerResponse
+import com.software.core_utils.models.ServerResponse
 import retrofit2.Call
 import retrofit2.CallAdapter
 import retrofit2.Retrofit

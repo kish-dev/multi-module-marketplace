@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.software.core_utils.presentation.common.UiState
-import com.software.feature_api.models.ServerResponse
-import com.software.feature_pdp_impl.domain.interactors.ProductDetailUseCase
 import com.software.core_utils.presentation.view_objects.ProductVO
+import com.software.core_utils.models.ServerResponse
+import com.software.feature_pdp_impl.domain.interactors.ProductDetailUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

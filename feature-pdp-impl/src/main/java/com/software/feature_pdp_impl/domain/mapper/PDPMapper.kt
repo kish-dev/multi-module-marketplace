@@ -1,6 +1,6 @@
 package com.software.feature_pdp_impl.domain.mapper
 
-import com.software.feature_api.models.ProductDTO
+import com.software.core_utils.models.ProductDTO
 import com.software.core_utils.presentation.view_objects.ProductVO
 
 

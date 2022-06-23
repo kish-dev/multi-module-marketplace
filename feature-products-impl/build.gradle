@@ -42,7 +42,9 @@ dependencies {
     implementation project(":core-utils")
     implementation project(":core-network-api")
     implementation project(":feature-products-api")
-
+    implementation project(":worker-api")
+    implementation project(":worker")
+    implementation project(":storage-api")
 
     implementation coreKtx
     implementation appCompat

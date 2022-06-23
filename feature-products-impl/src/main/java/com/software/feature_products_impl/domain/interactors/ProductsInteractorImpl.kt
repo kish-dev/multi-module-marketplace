@@ -1,6 +1,6 @@
 package com.software.feature_products_impl.domain.interactors
 
-import com.software.feature_api.models.ServerResponse
+import com.software.core_utils.models.ServerResponse
 import com.software.feature_products_impl.domain.mappers.mapToVO
 import com.software.feature_products_impl.domain.repositories.ProductsRepository
 import com.software.feature_products_impl.presentation.view_objects.ProductInListVO

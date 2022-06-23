@@ -1,7 +1,7 @@
 package com.software.feature_products_impl.domain.repositories
 
-import com.software.feature_api.models.ProductInListDTO
-import com.software.feature_api.models.ServerResponse
+import com.software.core_utils.models.ProductInListDTO
+import com.software.core_utils.models.ServerResponse
 
 interface ProductsRepository {
 

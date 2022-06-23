@@ -1,12 +1,5 @@
 package com.software.core_network_impl.data
 
-import com.software.core_network_impl.mock.productDTOs
-import com.software.core_network_impl.mock.productInListDTOs
-import com.software.feature_api.ProductsApi
-import com.software.feature_api.models.ProductDTO
-import com.software.feature_api.models.ProductInListDTO
-import javax.inject.Inject
-
 //class ProductsApiImpl @Inject constructor(): ProductsApi {
 //    override suspend fun getProducts(): List<ProductInListDTO>? =
 //        productInListDTOs

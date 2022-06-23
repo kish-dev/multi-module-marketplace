@@ -1,6 +1,6 @@
 package com.software.feature_pdp_impl.domain.interactors
 
-import com.software.feature_api.models.ServerResponse
+import com.software.core_utils.models.ServerResponse
 import com.software.core_utils.presentation.view_objects.ProductVO
 
 interface ProductDetailUseCase {
