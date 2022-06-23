@@ -33,6 +33,7 @@ android {
 
 dependencies {
 
+    implementation junit
     implementation coreKtx
     implementation appCompat
     implementation material

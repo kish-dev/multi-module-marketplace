@@ -15,17 +15,18 @@ abstract class CoreNetworkComponent : NetworkApi {
             private set
 
         @Synchronized
-        fun initAndGet() {
+        fun initAndGet() =
             when (networkComponent) {
                 null -> {
                     networkComponent = DaggerCoreNetworkComponent.builder()
                         .build()
+                    networkComponent
                 }
 
                 else -> {
-
+                    networkComponent
                 }
             }
-        }
+
     }
 }

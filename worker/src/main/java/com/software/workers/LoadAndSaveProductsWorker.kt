@@ -2,17 +2,17 @@ package com.software.workers
 
 import android.content.Context
 import android.util.Log
-import androidx.work.Worker
+import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.software.feature_api.ProductsApi
 import com.software.core_utils.models.ServerResponse
+import com.software.feature_api.ProductsApi
 import com.software.storage_api.SharedPreferencesApi
 import javax.inject.Inject
 
 class LoadAndSaveProductsWorker(
     context: Context,
     workerParameters: WorkerParameters
-) : Worker(context, workerParameters) {
+) : CoroutineWorker(context, workerParameters) {
 
     companion object {
         private val TAG = LoadAndSaveProductsWorker::class.java.simpleName
@@ -24,9 +24,9 @@ class LoadAndSaveProductsWorker(
     @Inject
     lateinit var sharedPreferencesApi: SharedPreferencesApi
 
-    override fun doWork(): Result {
+    override suspend fun doWork(): Result {
 
-        return when(val response = productsApi.getProducts()) {
+        return when (val response = productsApi.getProducts()) {
             is ServerResponse.Success -> {
                 sharedPreferencesApi.insertProductsDTO(response.value)
                 Result.success()
@@ -37,9 +37,4 @@ class LoadAndSaveProductsWorker(
             }
         }
     }
-
-    override fun onStopped() {
-        Log.d("RetrofitWorker", "onStopped!")
-    }
-
 }

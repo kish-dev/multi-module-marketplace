@@ -34,9 +34,14 @@ android {
 
 dependencies {
 
+    implementation retrofit
+    implementation junit
+    testImplementation junit
+    androidTestImplementation androidTestJunit
+    androidTestImplementation espresso
     implementation fragment
     implementation glide
-
+    implementation junit
     implementation coreKtx
     implementation appCompat
     implementation material

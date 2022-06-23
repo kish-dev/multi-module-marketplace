@@ -5,7 +5,6 @@ import com.software.core_network_impl.di.CoreNetworkComponent
 import com.software.core_network_impl.di.DaggerCoreNetworkComponent
 import com.software.feature_add_product_impl.di.components.AddProductFeatureComponent
 import com.software.feature_add_product_impl.di.components.DaggerAddProductFeatureDependenciesComponent
-import com.software.feature_api.NetworkApi
 import com.software.feature_pdp_impl.di.components.DaggerPDPFeatureDependenciesComponent
 import com.software.feature_pdp_impl.di.components.PDPFeatureComponent
 import com.software.feature_products_impl.di.components.DaggerProductsFeatureDependenciesComponent
@@ -21,7 +20,7 @@ object FeatureInjectorProxy {
     fun initFeatureProductsDI(appContext: Context) {
         ProductsFeatureComponent.initAndGet(
             DaggerProductsFeatureDependenciesComponent.builder()
-                .networkApi(CoreNetworkComponent.initAndGet() as NetworkApi)
+                .networkApi(CoreNetworkComponent.initAndGet())
                 .productsNavigationApi(
                     DaggerCoreNavigationComponent.builder().build().getProductNavigation()
                 )
@@ -29,7 +28,7 @@ object FeatureInjectorProxy {
                 .workerComponentInterface(
                     WorkerComponent.initAndGet(
                         DaggerWorkerDependenciesComponent.builder()
-                            .networkApi(CoreNetworkComponent.initAndGet() as NetworkApi)
+                            .networkApi(CoreNetworkComponent.initAndGet())
                             .storageApi(StorageComponent.initAndGet(appContext))
                             .build()
                     )

@@ -56,6 +56,10 @@ dependencies {
     implementation lifecycle
     implementation liveData
     implementation glide
+    implementation junit
+    testImplementation junit
+    androidTestImplementation androidTestJunit
+    androidTestImplementation espresso
 
     implementation dagger
     kapt daggerCompiler

@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun restoreComponents() {
         FeatureInjectorProxy.initFeatureProductsDI(this.applicationContext)
-        if(!FeatureInjectorProxy.isFirst) {
+        if (!FeatureInjectorProxy.isFirst) {
             for (i in 0 until supportFragmentManager.backStackEntryCount) {
                 val entry = supportFragmentManager.getBackStackEntryAt(i)
                 entry.name?.let {

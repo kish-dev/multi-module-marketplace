@@ -45,7 +45,7 @@ val productInListDTOs = mutableListOf(
         isInCart = false,
         viewsCount = 0
     ),
-   ProductInListDTO(
+    ProductInListDTO(
         guid = "493ef2ba-cd2f-4ca5-b3af-f9091115700e",
         image = "https://cdn1.ozone.ru/s3/multimedia-z/6267606395.jpg",
         name = "Мармелад клюква с ягелем",

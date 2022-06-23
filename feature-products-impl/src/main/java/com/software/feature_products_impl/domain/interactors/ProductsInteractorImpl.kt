@@ -7,14 +7,14 @@ import com.software.feature_products_impl.presentation.view_objects.ProductInLis
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
-class ProductsInteractorImpl (
+class ProductsInteractorImpl(
     private val productsRepository: ProductsRepository,
     private val dispatcher: CoroutineDispatcher
 ) : ProductListUseCase {
 
     override suspend fun getProducts(): ServerResponse<List<ProductInListVO>> =
         withContext(dispatcher) {
-            when(val products = productsRepository.getProducts()) {
+            when (val products = productsRepository.getProducts()) {
                 is ServerResponse.Success -> {
                     ServerResponse.Success(products.value.map { it.mapToVO() })
                 }
@@ -27,7 +27,7 @@ class ProductsInteractorImpl (
 
     override suspend fun addViewToProductInList(guid: String): ServerResponse<ProductInListVO> =
         withContext(dispatcher) {
-            when(val products = productsRepository.addViewToProductInList(guid)) {
+            when (val products = productsRepository.addViewToProductInList(guid)) {
                 is ServerResponse.Success -> {
                     ServerResponse.Success(products.value.mapToVO())
                 }

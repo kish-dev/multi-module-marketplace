@@ -7,7 +7,7 @@ import retrofit2.Retrofit
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
-class ServerResponseCallAdapterFactory: CallAdapter.Factory() {
+class ServerResponseCallAdapterFactory : CallAdapter.Factory() {
 
     companion object {
         private const val CHECK_RETURN_TYPE_FAILURE =
@@ -22,7 +22,7 @@ class ServerResponseCallAdapterFactory: CallAdapter.Factory() {
         annotations: Array<out Annotation>,
         retrofit: Retrofit
     ): CallAdapter<*, *>? {
-        if(Call::class.java != getRawType(returnType)) {
+        if (Call::class.java != getRawType(returnType)) {
             return null
         }
 
@@ -32,7 +32,7 @@ class ServerResponseCallAdapterFactory: CallAdapter.Factory() {
 
         val responseType = getParameterUpperBound(0, returnType)
 
-        if(getRawType(responseType) != ServerResponse::class.java) {
+        if (getRawType(responseType) != ServerResponse::class.java) {
             return null
         }
 

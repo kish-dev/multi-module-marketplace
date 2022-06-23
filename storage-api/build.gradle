@@ -35,4 +35,9 @@ android {
 dependencies {
 
     implementation project(":core-utils")
+
+    implementation junit
+    testImplementation junit
+    androidTestImplementation androidTestJunit
+    androidTestImplementation espresso
 }

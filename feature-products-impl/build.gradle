@@ -46,6 +46,10 @@ dependencies {
     implementation project(":worker")
     implementation project(":storage-api")
 
+    implementation junit
+    testImplementation junit
+    androidTestImplementation androidTestJunit
+    androidTestImplementation espresso
     implementation coreKtx
     implementation appCompat
     implementation material

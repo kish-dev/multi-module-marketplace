@@ -38,6 +38,12 @@ dependencies {
     implementation project(":storage-api")
     implementation project(":worker-api")
 
+    implementation coroutineWorker
+    implementation coroutines
+    implementation junit
+    testImplementation junit
+    androidTestImplementation androidTestJunit
+    androidTestImplementation espresso
     implementation worker
     implementation dagger
     kapt daggerCompiler

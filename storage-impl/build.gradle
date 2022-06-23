@@ -37,6 +37,10 @@ dependencies {
     implementation project(":core-utils")
     implementation project(":core-network-api")
 
+    implementation junit
+    testImplementation junit
+    androidTestImplementation androidTestJunit
+    androidTestImplementation espresso
     implementation retrofitConverter
     implementation dagger
     kapt daggerCompiler

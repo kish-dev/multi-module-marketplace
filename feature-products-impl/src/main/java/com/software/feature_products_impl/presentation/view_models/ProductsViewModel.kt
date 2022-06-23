@@ -4,18 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.software.core_utils.presentation.common.UiState
 import com.software.core_utils.models.ServerResponse
+import com.software.core_utils.presentation.common.UiState
 import com.software.feature_products_api.ProductsNavigationApi
 import com.software.feature_products_impl.domain.interactors.ProductListUseCase
 import com.software.feature_products_impl.presentation.view_objects.ProductInListVO
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ProductsViewModel (
+class ProductsViewModel(
     private val interactor: ProductListUseCase,
     private val router: ProductsNavigationApi
-    ) : ViewModel() {
+) : ViewModel() {
 
     private val _productLD: MutableLiveData<UiState<List<ProductInListVO>>> =
         MutableLiveData(UiState.Init())
@@ -49,7 +49,7 @@ class ProductsViewModel (
     fun addViewCount(guid: String) {
         viewModelScope.launch(Dispatchers.Main) {
             _lastChangedProduct.value = UiState.Loading()
-            when(val product = interactor.addViewToProductInList(guid)) {
+            when (val product = interactor.addViewToProductInList(guid)) {
                 is ServerResponse.Success -> {
                     _lastChangedProduct.value =
                         UiState.Success(product.value)

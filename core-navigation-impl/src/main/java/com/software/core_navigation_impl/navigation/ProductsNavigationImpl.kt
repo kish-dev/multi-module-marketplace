@@ -9,10 +9,10 @@ import com.software.feature_products_api.ProductsNavigationApi
 import com.software.feature_products_impl.presentation.views.ProductsFragment
 import javax.inject.Inject
 
-class ProductsNavigationImpl @Inject constructor(): ProductsNavigationApi {
+class ProductsNavigationImpl @Inject constructor() : ProductsNavigationApi {
 
     override fun isClosed(fragment: Fragment): Boolean {
-        return if(fragment.javaClass.simpleName != ProductsFragment::class.simpleName) {
+        return if (fragment.javaClass.simpleName != ProductsFragment::class.simpleName) {
             fragment.activity?.supportFragmentManager?.findFragmentByTag(ProductsFragment::class.java.simpleName) == null
         } else {
             true
@@ -36,7 +36,11 @@ class ProductsNavigationImpl @Inject constructor(): ProductsNavigationApi {
         fragment.activity
             ?.supportFragmentManager
             ?.beginTransaction()
-            ?.replace(R.id.fragmentContainer, newFragment, AddProductFragment::class.java.simpleName)
+            ?.replace(
+                R.id.fragmentContainer,
+                newFragment,
+                AddProductFragment::class.java.simpleName
+            )
             ?.addToBackStack(fragment.javaClass.simpleName)
             ?.commit()
     }

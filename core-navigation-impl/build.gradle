@@ -51,6 +51,10 @@ dependencies {
 
     implementation coreKtx
     implementation appCompat
+    implementation junit
+    testImplementation junit
+    androidTestImplementation androidTestJunit
+    androidTestImplementation espresso
 
     implementation dagger
     kapt daggerCompiler

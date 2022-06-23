@@ -33,8 +33,13 @@ android {
 }
 
 dependencies {
+    implementation project(":core-utils")
+
     implementation retrofit
     implementation retrofitConverter
-    
-    implementation project(path: ':core-utils')
+    implementation junit
+    testImplementation junit
+    androidTestImplementation androidTestJunit
+    androidTestImplementation espresso
+
 }

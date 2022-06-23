@@ -11,7 +11,7 @@ import javax.inject.Singleton
     modules = [WorkerModule::class],
     dependencies = [WorkerDependencies::class]
 )
-abstract class WorkerComponent: WorkerComponentInterface {
+abstract class WorkerComponent : WorkerComponentInterface {
 
     companion object {
 

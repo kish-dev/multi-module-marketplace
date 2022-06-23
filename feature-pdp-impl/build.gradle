@@ -44,7 +44,10 @@ dependencies {
     implementation project(":core-network-api")
     implementation project(":feature-pdp-api")
 
-
+    implementation junit
+    testImplementation junit
+    androidTestImplementation androidTestJunit
+    androidTestImplementation espresso
     implementation coreKtx
     implementation appCompat
     implementation material
