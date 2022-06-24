@@ -15,16 +15,17 @@ data class ProductDTO(
     val additionalParams: Map<String, String>
 )
 
-fun ProductDTO.mapToProductInListDTO() :ProductInListDTO {
+fun ProductDTO.mapToProductInListDTO(): ProductInListDTO {
     return ProductInListDTO(
-        guid,
-        name,
-        price,
-        description,
-        rating,
-        isFavorite,
-        isInCart,
-        viewsCount = 0)
+        guid = guid,
+        image = images[0],
+        name = name,
+        price = price,
+        rating = rating,
+        isFavorite = isFavorite,
+        isInCart = isInCart,
+        viewsCount = 0,
+    )
 }
 
 
