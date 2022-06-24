@@ -1,7 +1,7 @@
 package com.software.storage_impl.models
 
 data class ProductInListEntity(
-    val guid: String,
+    var guid: String,
     val image: String,
     val name: String,
     val price: String,

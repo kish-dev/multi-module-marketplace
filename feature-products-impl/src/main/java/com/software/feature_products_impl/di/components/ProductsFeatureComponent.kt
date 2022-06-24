@@ -7,6 +7,7 @@ import com.software.feature_products_impl.di.modules.InteractorModule
 import com.software.feature_products_impl.di.modules.ProductsFeatureDependencies
 import com.software.feature_products_impl.di.modules.RepositoryModule
 import com.software.feature_products_impl.presentation.views.ProductsFragment
+import dagger.BindsInstance
 import dagger.Component
 
 @Component(
@@ -25,12 +26,12 @@ abstract class ProductsFeatureComponent {
         @Synchronized
         fun initAndGet(
             productsFeatureDependencies: ProductsFeatureDependencies,
-            context: Context
+            appContext: Context
         ): ProductsFeatureComponent? =
             when (productsFeatureComponent) {
                 null -> {
                     productsFeatureComponent = DaggerProductsFeatureComponent.builder()
-                        .repositoryModule(RepositoryModule(context))
+                        .appContext(appContext)
                         .productsFeatureDependencies(productsFeatureDependencies)
                         .build()
                     productsFeatureComponent
@@ -58,6 +59,15 @@ abstract class ProductsFeatureComponent {
             Log.d("initFeatureProductsDI", "reset: ")
         }
 
+    }
+
+    @Component.Builder
+    interface Builder {
+
+        @BindsInstance
+        fun appContext(appContext: Context): Builder
+        fun productsFeatureDependencies(productsFeatureDependencies: ProductsFeatureDependencies): Builder
+        fun build(): ProductsFeatureComponent
     }
 
     abstract fun inject(fragment: ProductsFragment)

@@ -60,7 +60,7 @@ dependencies {
     implementation glide
     implementation dagger
     implementation swipeRefresh
-    implementation worker
+    implementation coroutineWorker
     kapt daggerCompiler
 
 }

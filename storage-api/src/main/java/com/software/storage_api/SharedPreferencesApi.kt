@@ -16,5 +16,9 @@ interface SharedPreferencesApi {
 
     fun getProductsInListDTO(): List<ProductInListDTO>?
 
+    fun getProductsDTO(): List<ProductDTO>?
+
     fun getProductById(guid: String): ProductDTO?
+
+    fun addViewToProductInListDTO(guid: String): ProductInListDTO?
 }

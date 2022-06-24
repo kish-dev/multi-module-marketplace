@@ -1,25 +1,20 @@
 package com.software.feature_products_impl.di.modules
 
 import android.content.Context
-import com.software.feature_api.ProductsApi
 import com.software.feature_products_impl.data.ProductsRepositoryImpl
 import com.software.feature_products_impl.domain.repositories.ProductsRepository
+import com.software.storage_api.StorageApi
 import dagger.Module
 import dagger.Provides
 
 @Module
-class RepositoryModule(val context: Context) {
-
-    @Provides
-    fun provideContext(): Context {
-        return context
-    }
+class RepositoryModule {
 
     @Provides
     fun provideRepository(
-        productsApi: ProductsApi,
-        context: Context
+        storageApi: StorageApi,
+        appContext: Context
     ): ProductsRepository {
-        return ProductsRepositoryImpl(productsApi, context)
+        return ProductsRepositoryImpl(storageApi.getSharedPreferencesApi(), appContext)
     }
 }

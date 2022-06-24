@@ -3,20 +3,21 @@ package com.software.workers
 import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
+import androidx.work.Data
 import androidx.work.WorkerParameters
 import com.software.core_utils.models.ServerResponse
 import com.software.feature_api.ProductsApi
 import com.software.storage_api.SharedPreferencesApi
-import com.software.workers.di.WorkerComponent
+import com.software.workers.utils.JSONConverterProductsDTO
 import javax.inject.Inject
 
-class LoadAndSaveProductsInListWorker(
+class LoadProductsWorker @Inject constructor(
     context: Context,
     workerParameters: WorkerParameters
 ) : CoroutineWorker(context, workerParameters) {
 
     companion object {
-        private val TAG = LoadAndSaveProductsInListWorker::class.java.simpleName
+        private val TAG = LoadProductsWorker::class.java.simpleName
     }
 
     @Inject
@@ -26,12 +27,15 @@ class LoadAndSaveProductsInListWorker(
     lateinit var sharedPreferencesApi: SharedPreferencesApi
 
     override suspend fun doWork(): Result {
-        WorkerComponent.workerComponent?.injectLoadAndSaveProductsInListWorker(this)
 
-        return when (val response = productsApi.getProductsInList()) {
+        return when (val response = productsApi.getProducts()) {
             is ServerResponse.Success -> {
-                sharedPreferencesApi.insertProductsInListDTO(response.value)
-                Result.success()
+                val outputData = Data.Builder()
+                    .putString(
+                        PRODUCTS_RESPONSE,
+                        JSONConverterProductsDTO.fromProductListDTO(response.value)
+                    ).build()
+                Result.success(outputData)
             }
             is ServerResponse.Error -> {
                 Log.d(TAG, "doWork: ${response.throwable} ${response.throwable.message}")
@@ -39,5 +43,4 @@ class LoadAndSaveProductsInListWorker(
             }
         }
     }
-
 }

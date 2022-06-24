@@ -38,6 +38,7 @@ dependencies {
     implementation project(":storage-api")
     implementation project(":worker-api")
 
+    implementation retrofitConverter
     implementation coroutineWorker
     implementation coroutines
     implementation junit
