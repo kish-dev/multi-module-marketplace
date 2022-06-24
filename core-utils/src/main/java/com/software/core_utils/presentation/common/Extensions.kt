@@ -2,6 +2,7 @@ package com.software.core_utils.presentation.common
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.preference.PreferenceManager
 import androidx.appcompat.widget.AppCompatImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -17,5 +18,5 @@ fun AppCompatImageView.setImageFromUrl(imageUrl: String) {
 }
 
 fun Context.getDefaultSharedPreferences(): SharedPreferences {
-    return this.getSharedPreferences(this.getString(R.string.shared_preferences), 0)
+    return PreferenceManager.getDefaultSharedPreferences(this)
 }

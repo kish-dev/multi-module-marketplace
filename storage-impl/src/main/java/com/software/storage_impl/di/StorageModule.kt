@@ -12,13 +12,8 @@ import dagger.Provides
 class StorageModule {
 
     @Provides
-    fun provideSharedPreferences(appContext: Context): SharedPreferences {
-        return appContext.getDefaultSharedPreferences()
-    }
-
-    @Provides
-    fun provideSharedPreferencesImpl(sharedPreferences: SharedPreferences)
+    fun provideSharedPreferencesImpl(appContext: Context)
             : SharedPreferencesApi {
-        return SharedPreferencesApiImpl(sharedPreferences)
+        return SharedPreferencesApiImpl(appContext)
     }
 }

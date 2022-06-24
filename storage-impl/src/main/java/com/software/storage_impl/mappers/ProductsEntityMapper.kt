@@ -95,6 +95,13 @@ fun mapProductsInListDTOtoProductsInListEntity(
         }
         ++entityIndex
     }
+
+    if(listEntity.size <= entityIndex) {
+        while(listDTO.size <= i) {
+            listEntity.add(listDTO[i].mapToEntity(listDTO[i].viewsCount))
+            ++i
+        }
+    }
     return listEntity
 }
 
@@ -120,13 +127,21 @@ fun mapProductsDTOtoProductsEntity(
 
     var entityIndex = 0
     var i = 0
-    while (listDTO.size > i) {
+    while (listDTO.size > i && listEntity.size > entityIndex) {
         if (listEntity[entityIndex].guid == listDTO[i].guid) {
             listEntity[entityIndex] = listDTO[i].mapToEntity()
             ++i
         }
         ++entityIndex
     }
+
+    if(listEntity.size <= entityIndex) {
+        while(listDTO.size <= i) {
+            listEntity.add(listDTO[i].mapToEntity())
+            ++i
+        }
+    }
+
     return listEntity
 }
 

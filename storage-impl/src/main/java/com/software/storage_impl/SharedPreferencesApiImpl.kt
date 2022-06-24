@@ -1,7 +1,11 @@
 package com.software.storage_impl
 
 import android.annotation.SuppressLint
-import android.content.SharedPreferences
+import android.content.Context
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.software.core_utils.Constants.PRODUCTS_IN_LIST_SP
+import com.software.core_utils.Constants.PRODUCTS_SP
 import com.software.core_utils.models.ProductDTO
 import com.software.core_utils.models.ProductInListDTO
 import com.software.storage_api.SharedPreferencesApi
@@ -15,8 +19,9 @@ import com.software.storage_impl.utils.JSONConverterProductsInListEntity
 import javax.inject.Inject
 import javax.inject.Singleton
 
+
 @Singleton
-class SharedPreferencesApiImpl @Inject constructor(private val sharedPreferences: SharedPreferences) :
+class SharedPreferencesApiImpl @Inject constructor(private val appContext: Context) :
     SharedPreferencesApi {
 
     companion object {
@@ -26,10 +31,12 @@ class SharedPreferencesApiImpl @Inject constructor(private val sharedPreferences
 
     @SuppressLint("CommitPrefEdits")
     override fun insertProductsDTO(productsDTO: List<ProductDTO>) {
-        val jsonList = sharedPreferences.getString(PRODUCTS, "")
+        val sp = appContext.getSharedPreferences(PRODUCTS_SP, 0)
+        val jsonList = sp.getString(PRODUCTS, "")
         var listEntity: MutableList<ProductEntity>? = null
         jsonList?.let {
-            listEntity = JSONConverterProductsEntity.toProductListEntity(jsonList)?.toMutableList()
+            listEntity =
+                Gson().fromJson(jsonList, object : TypeToken<List<ProductEntity?>?>() {}.type)
         }
         val result = JSONConverterProductsEntity.fromProductListEntity(
             mapProductsDTOtoProductsEntity(
@@ -37,12 +44,13 @@ class SharedPreferencesApiImpl @Inject constructor(private val sharedPreferences
                 listEntity = listEntity
             )
         )
-        sharedPreferences.edit().putString(PRODUCTS, result)
+        sp.edit().putString(PRODUCTS, result).apply()
     }
 
     @SuppressLint("CommitPrefEdits")
     override fun insertProductsInListDTO(productsInListDTO: List<ProductInListDTO>) {
-        val jsonList = sharedPreferences.getString(PRODUCTS_IN_LIST, "")
+        val sp = appContext.getSharedPreferences(PRODUCTS_IN_LIST_SP, 0)
+        val jsonList = sp.getString(PRODUCTS_IN_LIST, "")
         var listEntity: MutableList<ProductInListEntity>? = null
         jsonList?.let {
             listEntity = JSONConverterProductsInListEntity
@@ -54,12 +62,13 @@ class SharedPreferencesApiImpl @Inject constructor(private val sharedPreferences
                 listEntity = listEntity
             )
         )
-        sharedPreferences.edit().putString(PRODUCTS_IN_LIST, result)
+        sp.edit().putString(PRODUCTS_IN_LIST, result).apply()
     }
 
     @SuppressLint("CommitPrefEdits")
     override fun insertProductInListDTO(productInListDTO: ProductInListDTO) {
-        val jsonList = sharedPreferences.getString(PRODUCTS_IN_LIST, "")
+        val sp = appContext.getSharedPreferences(PRODUCTS_IN_LIST_SP, 0)
+        val jsonList = sp.getString(PRODUCTS_IN_LIST, "")
         var listEntity: MutableList<ProductInListEntity>? = null
         jsonList?.let {
             listEntity = JSONConverterProductsInListEntity
@@ -72,12 +81,13 @@ class SharedPreferencesApiImpl @Inject constructor(private val sharedPreferences
                 listEntity = listEntity
             )
         )
-        sharedPreferences.edit().putString(PRODUCTS_IN_LIST, result)
+        sp.edit().putString(PRODUCTS_IN_LIST, result).apply()
     }
 
     @SuppressLint("CommitPrefEdits")
     override fun insertProductDTO(productDTO: ProductDTO) {
-        val jsonList = sharedPreferences.getString(PRODUCTS, "")
+        val sp = appContext.getSharedPreferences(PRODUCTS_SP, 0)
+        val jsonList = sp.getString(PRODUCTS, "")
         var listEntity: MutableList<ProductEntity>? = null
         jsonList?.let {
             listEntity = JSONConverterProductsEntity
@@ -90,11 +100,12 @@ class SharedPreferencesApiImpl @Inject constructor(private val sharedPreferences
                 listEntity = listEntity
             )
         )
-        sharedPreferences.edit().putString(PRODUCTS, result)
+        sp.edit().putString(PRODUCTS, result).apply()
     }
 
     override fun getProductsInListDTO(): List<ProductInListDTO>? {
-        val jsonList = sharedPreferences.getString(PRODUCTS_IN_LIST, "")
+        val sp = appContext.getSharedPreferences(PRODUCTS_IN_LIST_SP, 0)
+        val jsonList = sp.getString(PRODUCTS_IN_LIST, "")
         var listEntity: MutableList<ProductInListEntity>? = null
         jsonList?.let {
             listEntity = JSONConverterProductsInListEntity
@@ -104,7 +115,8 @@ class SharedPreferencesApiImpl @Inject constructor(private val sharedPreferences
     }
 
     override fun getProductsDTO(): List<ProductDTO>? {
-        val jsonList = sharedPreferences.getString(PRODUCTS, "")
+        val sp = appContext.getSharedPreferences(PRODUCTS_SP, 0)
+        val jsonList = sp.getString(PRODUCTS, "")
         var listEntity: MutableList<ProductEntity>? = null
         jsonList?.let {
             listEntity = JSONConverterProductsEntity
@@ -114,7 +126,8 @@ class SharedPreferencesApiImpl @Inject constructor(private val sharedPreferences
     }
 
     override fun getProductById(guid: String): ProductDTO? {
-        val jsonList = sharedPreferences.getString(PRODUCTS, "")
+        val sp = appContext.getSharedPreferences(PRODUCTS_SP, 0)
+        val jsonList = sp.getString(PRODUCTS, "")
         var listEntity: MutableList<ProductEntity>? = null
         jsonList?.let {
             listEntity = JSONConverterProductsEntity
@@ -124,7 +137,8 @@ class SharedPreferencesApiImpl @Inject constructor(private val sharedPreferences
     }
 
     override fun addViewToProductInListDTO(guid: String): ProductInListDTO? {
-        val jsonList = sharedPreferences.getString(PRODUCTS_IN_LIST, "")
+        val sp = appContext.getSharedPreferences(PRODUCTS_IN_LIST_SP, 0)
+        val jsonList = sp.getString(PRODUCTS_IN_LIST, "")
         var listEntity: MutableList<ProductInListEntity>? = null
         jsonList?.let {
             listEntity = JSONConverterProductsInListEntity
@@ -133,7 +147,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val sharedPreferences
         listEntity?.findLast { it.guid == guid }?.guid += 1
         listEntity?.let {
             val newJsonList = JSONConverterProductsInListEntity.fromProductInListEntityList(it)
-            sharedPreferences.edit().putString(PRODUCTS_IN_LIST, newJsonList)
+            sp.edit().putString(PRODUCTS_IN_LIST, newJsonList)
         }
         return listEntity?.findLast { it.guid == guid }?.mapToDTO()
     }
