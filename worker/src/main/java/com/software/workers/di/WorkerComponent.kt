@@ -1,8 +1,8 @@
 package com.software.workers.di
 
 import com.software.worker_api.WorkerComponentInterface
-import com.software.workers.LoadProductsInListWorker
-import com.software.workers.LoadProductsWorker
+import com.software.workers.LoadAndSaveProductsInListWorker
+import com.software.workers.LoadAndSaveProductsWorker
 import dagger.Component
 import javax.inject.Singleton
 
@@ -48,6 +48,6 @@ abstract class WorkerComponent : WorkerComponentInterface {
 
     }
 
-    abstract fun injectLoadAndSaveProductsWorker(loadAndSaveProductsWorker: LoadProductsWorker)
-    abstract fun injectLoadAndSaveProductsInListWorker(loadAndSaveProductsInListWorker: LoadProductsInListWorker)
+    abstract fun inject(loadAndSaveProductsWorker: LoadAndSaveProductsWorker)
+    abstract fun inject(loadAndSaveProductsInListWorker: LoadAndSaveProductsInListWorker)
 }

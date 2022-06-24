@@ -7,13 +7,6 @@ import retrofit2.http.GET
 
 interface ProductsApi {
 
-    //    suspend fun getProducts(): List<ProductInListDTO>?
-//
-//    suspend fun getProductById(guid: String): ProductDTO?
-//
-//    suspend fun addViewToProductInList(guid: String): ProductInListDTO?
-//
-//    suspend fun addProduct(productDTO: ProductDTO): Boolean?
     @GET("50afcd4b-d81e-473e-827c-1b6cae1ea1b2")
     suspend fun getProductsInList(): ServerResponse<List<ProductInListDTO>>
 

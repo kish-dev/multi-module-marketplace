@@ -47,7 +47,12 @@ dependencies {
     implementation project(":core-navigation-impl")
     implementation project(":feature-add-product-api")
     implementation project(":feature-add-product-impl")
+    implementation project(":storage-api")
+    implementation project(":storage-impl")
+    implementation project(":worker-api")
+    implementation project(":worker")
 
+    implementation coroutineWorker
     implementation coreKtx
     implementation appCompat
     implementation material

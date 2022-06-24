@@ -1,9 +1,11 @@
 package com.software.feature_products_impl.presentation.view_models
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.WorkInfo
 import com.software.core_utils.models.ServerResponse
 import com.software.core_utils.presentation.common.UiState
 import com.software.feature_products_api.ProductsNavigationApi
@@ -16,6 +18,10 @@ class ProductsViewModel(
     private val interactor: ProductListUseCase,
     private val router: ProductsNavigationApi
 ) : ViewModel() {
+
+    companion object {
+        private val TAG = ProductsViewModel::class.java.simpleName
+    }
 
     private val _productLD: MutableLiveData<UiState<List<ProductInListVO>>> =
         MutableLiveData(UiState.Init())
@@ -33,6 +39,43 @@ class ProductsViewModel(
         viewModelScope.launch(Dispatchers.Main) {
             _productLD.value = UiState.Loading()
 
+            val responseFlow = interactor.loadProducts()
+            responseFlow.collect {
+                when (it.state) {
+                    WorkInfo.State.SUCCEEDED -> {
+                        Log.d(TAG, "WorkInfo.State.SUCCEEDED: ")
+                        updateUiState()
+                    }
+
+                    WorkInfo.State.BLOCKED -> {
+                        Log.d(TAG, "WorkInfo.State.BLOCKED: ")
+                        _productLD.value = UiState.Error(Throwable("Hasn't internet, BLOCKED"))
+                    }
+
+                    WorkInfo.State.FAILED -> {
+                        Log.d(TAG, "WorkInfo.State.FAILED: ")
+                        _productLD.value = UiState.Error(Throwable("Something went wrong, FAILED"))
+                    }
+
+                    WorkInfo.State.CANCELLED -> {
+                        Log.d(TAG, "WorkInfo.State.CANCELLED: ")
+                        _productLD.value = UiState.Error(Throwable("Something went wrong, CANCELLED"))
+                    }
+
+                    WorkInfo.State.ENQUEUED -> {
+                        Log.d(TAG, "WorkInfo.State.ENQUEUED: ")
+                    }
+
+                    WorkInfo.State.RUNNING -> {
+                        Log.d(TAG, "WorkInfo.State.RUNNING: ")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateUiState() {
+        viewModelScope.launch(Dispatchers.Main) {
             when (val products = interactor.getProducts()) {
                 is ServerResponse.Success -> {
                     _productLD.value =

@@ -29,7 +29,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val sharedPreferences
         val jsonList = sharedPreferences.getString(PRODUCTS, "")
         var listEntity: MutableList<ProductEntity>? = null
         jsonList?.let {
-            listEntity = JSONConverterProductsEntity.toProductListEntity(jsonList).toMutableList()
+            listEntity = JSONConverterProductsEntity.toProductListEntity(jsonList)?.toMutableList()
         }
         val result = JSONConverterProductsEntity.fromProductListEntity(
             mapProductsDTOtoProductsEntity(
@@ -46,7 +46,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val sharedPreferences
         var listEntity: MutableList<ProductInListEntity>? = null
         jsonList?.let {
             listEntity = JSONConverterProductsInListEntity
-                .toProductInListEntityList(jsonList).toMutableList()
+                .toProductInListEntityList(jsonList)?.toMutableList()
         }
         val result = JSONConverterProductsInListEntity.fromProductInListEntityList(
             mapProductsInListDTOtoProductsInListEntity(
@@ -63,7 +63,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val sharedPreferences
         var listEntity: MutableList<ProductInListEntity>? = null
         jsonList?.let {
             listEntity = JSONConverterProductsInListEntity
-                .toProductInListEntityList(jsonList).toMutableList()
+                .toProductInListEntityList(jsonList)?.toMutableList()
         }
         val listDTO = mutableListOf(productInListDTO)
         val result = JSONConverterProductsInListEntity.fromProductInListEntityList(
@@ -81,7 +81,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val sharedPreferences
         var listEntity: MutableList<ProductEntity>? = null
         jsonList?.let {
             listEntity = JSONConverterProductsEntity
-                .toProductListEntity(jsonList).toMutableList()
+                .toProductListEntity(jsonList)?.toMutableList()
         }
         val listDTO = mutableListOf(productDTO)
         val result = JSONConverterProductsEntity.fromProductListEntity(
@@ -98,7 +98,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val sharedPreferences
         var listEntity: MutableList<ProductInListEntity>? = null
         jsonList?.let {
             listEntity = JSONConverterProductsInListEntity
-                .toProductInListEntityList(jsonList).toMutableList()
+                .toProductInListEntityList(jsonList)?.toMutableList()
         }
         return listEntity?.map { it.mapToDTO() }
     }
@@ -108,7 +108,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val sharedPreferences
         var listEntity: MutableList<ProductEntity>? = null
         jsonList?.let {
             listEntity = JSONConverterProductsEntity
-                .toProductListEntity(jsonList).toMutableList()
+                .toProductListEntity(jsonList)?.toMutableList()
         }
         return listEntity?.map { it.mapToDTO() }
     }
@@ -118,7 +118,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val sharedPreferences
         var listEntity: MutableList<ProductEntity>? = null
         jsonList?.let {
             listEntity = JSONConverterProductsEntity
-                .toProductListEntity(jsonList).toMutableList()
+                .toProductListEntity(jsonList)?.toMutableList()
         }
         return listEntity?.findLast { it.guid == guid }?.mapToDTO()
     }
@@ -128,7 +128,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val sharedPreferences
         var listEntity: MutableList<ProductInListEntity>? = null
         jsonList?.let {
             listEntity = JSONConverterProductsInListEntity
-                .toProductInListEntityList(jsonList).toMutableList()
+                .toProductInListEntityList(jsonList)?.toMutableList()
         }
         listEntity?.findLast { it.guid == guid }?.guid += 1
         listEntity?.let {

@@ -1,5 +1,9 @@
 package com.software.storage_impl.models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class ProductEntity(
     val guid: String,
     val name: String,
@@ -13,4 +17,4 @@ data class ProductEntity(
     val count: Int?,
     val availableCount: Int?,
     val additionalParams: Map<String, String>
-)
+): Parcelable

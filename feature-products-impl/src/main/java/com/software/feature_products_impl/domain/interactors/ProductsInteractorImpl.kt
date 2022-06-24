@@ -1,6 +1,7 @@
 package com.software.feature_products_impl.domain.interactors
 
 import androidx.work.WorkInfo
+import com.software.core_utils.models.ProductInListDTO
 import com.software.core_utils.models.ServerResponse
 import com.software.feature_products_impl.domain.mappers.mapToVO
 import com.software.feature_products_impl.domain.repositories.ProductsRepository
@@ -27,8 +28,19 @@ class ProductsInteractorImpl(
             }
         }
 
-    override suspend fun addViewToProductInList(guid: String): Flow<WorkInfo> =
+    override suspend fun addViewToProductInList(guid: String): ServerResponse<ProductInListVO> =
         withContext(dispatcher) {
-            productsRepository.addViewToProductInList(guid)
+            when (val product = productsRepository.addViewToProductInList(guid)) {
+                is ServerResponse.Success -> {
+                    ServerResponse.Success(product.value.mapToVO())
+                }
+
+                is ServerResponse.Error -> {
+                    ServerResponse.Error(product.throwable)
+                }
+            }
         }
+
+    override suspend fun loadProducts(): Flow<WorkInfo> =
+        productsRepository.loadProducts()
 }

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.software.core_utils.R
 import com.software.core_utils.presentation.common.UiState
 import com.software.core_utils.presentation.viewModels.viewModelCreator
+import com.software.feature_api.ProductsApi
 import com.software.feature_products_api.ProductsNavigationApi
 import com.software.feature_products_impl.databinding.FragmentProductsBinding
 import com.software.feature_products_impl.di.components.ProductsFeatureComponent
@@ -26,6 +27,9 @@ class ProductsFragment : Fragment() {
     private var _binding: FragmentProductsBinding? = null
     private val binding
         get() = _binding!!
+
+    @Inject
+    lateinit var productsApi: ProductsApi
 
     @Inject
     lateinit var productsInteractor: ProductListUseCase
@@ -51,6 +55,7 @@ class ProductsFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         ProductsFeatureComponent.productsFeatureComponent?.inject(this)
+        productsApi
     }
 
     override fun onCreateView(

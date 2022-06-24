@@ -6,6 +6,6 @@ import com.software.storage_api.StorageApi
 
 interface ProductsFeatureDependencies {
     fun productsApi(): ProductsApi
-    fun productNavigationApi(): ProductsNavigationApi
     fun storageApi(): StorageApi
+    fun productNavigationApi(): ProductsNavigationApi
 }
