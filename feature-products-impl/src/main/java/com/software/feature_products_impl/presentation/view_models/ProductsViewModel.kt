@@ -49,7 +49,6 @@ class ProductsViewModel(
 
                     WorkInfo.State.BLOCKED -> {
                         Log.d(TAG, "WorkInfo.State.BLOCKED: ")
-                        _productLD.value = UiState.Error(Throwable("Hasn't internet, BLOCKED"))
                     }
 
                     WorkInfo.State.FAILED -> {

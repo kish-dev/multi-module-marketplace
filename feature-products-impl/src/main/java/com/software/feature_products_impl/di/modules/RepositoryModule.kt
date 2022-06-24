@@ -17,4 +17,5 @@ class RepositoryModule {
     ): ProductsRepository {
         return ProductsRepositoryImpl(storageApi.getSharedPreferencesApi(), appContext)
     }
+
 }

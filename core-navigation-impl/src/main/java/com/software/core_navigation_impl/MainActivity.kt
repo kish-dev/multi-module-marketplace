@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
                 entry.name?.let {
                     when (it) {
                         PDPFragment::class.java.simpleName ->
-                            FeatureInjectorProxy.initFeaturePDPDI()
+                            FeatureInjectorProxy.initFeaturePDPDI(this.applicationContext)
 
                         AddProductFragment::class.java.simpleName ->
                             FeatureInjectorProxy.initFeatureAddProductDI()

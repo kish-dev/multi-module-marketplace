@@ -38,13 +38,14 @@ object FeatureInjectorProxy {
         )
     }
 
-    fun initFeaturePDPDI() {
+    fun initFeaturePDPDI(appContext: Context) {
         PDPFeatureComponent.initAndGet(
             DaggerPDPFeatureDependenciesComponent.builder()
                 .networkApi(DaggerCoreNetworkComponent.builder().build())
                 .pDPNavigationApi(
                     DaggerCoreNavigationComponent.builder().build().getPDPNavigation()
                 )
+                .storageApi(StorageComponent.initAndGet(appContext))
                 .build()
         )
     }

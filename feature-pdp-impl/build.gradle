@@ -43,6 +43,7 @@ dependencies {
     implementation project(":core-utils")
     implementation project(":core-network-api")
     implementation project(":feature-pdp-api")
+    implementation project(":storage-api")
 
     implementation junit
     testImplementation junit

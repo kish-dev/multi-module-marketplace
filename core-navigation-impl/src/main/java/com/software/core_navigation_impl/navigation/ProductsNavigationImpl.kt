@@ -20,14 +20,21 @@ class ProductsNavigationImpl @Inject constructor() : ProductsNavigationApi {
     }
 
     override fun navigateToPDP(fragment: Fragment, guid: String) {
-        FeatureInjectorProxy.initFeaturePDPDI()
-        val newFragment = PDPFragment.newInstance(guid)
-        fragment.activity
-            ?.supportFragmentManager
-            ?.beginTransaction()
-            ?.replace(R.id.fragmentContainer, newFragment, PDPFragment::class.java.simpleName)
-            ?.addToBackStack(fragment.javaClass.simpleName)
-            ?.commit()
+        if(fragment.activity != null) {
+            fragment.activity?.let {
+                FeatureInjectorProxy.initFeaturePDPDI(it.applicationContext)
+                val newFragment = PDPFragment.newInstance(guid)
+                fragment.activity
+                    ?.supportFragmentManager
+                    ?.beginTransaction()
+                    ?.replace(R.id.fragmentContainer, newFragment, PDPFragment::class.java.simpleName)
+                    ?.addToBackStack(fragment.javaClass.simpleName)
+                    ?.commit()
+            }
+        } else {
+            throw NullPointerException("Fragment($fragment) activity is null," +
+                    " fragment.activity=${fragment.activity}")
+        }
     }
 
     override fun navigateToAddProduct(fragment: Fragment) {

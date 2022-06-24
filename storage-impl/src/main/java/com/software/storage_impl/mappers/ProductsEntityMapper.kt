@@ -97,7 +97,7 @@ fun mapProductsInListDTOtoProductsInListEntity(
     }
 
     if(listEntity.size <= entityIndex) {
-        while(listDTO.size <= i) {
+        while(listDTO.size > i) {
             listEntity.add(listDTO[i].mapToEntity(listDTO[i].viewsCount))
             ++i
         }
@@ -136,7 +136,7 @@ fun mapProductsDTOtoProductsEntity(
     }
 
     if(listEntity.size <= entityIndex) {
-        while(listDTO.size <= i) {
+        while(listDTO.size > i) {
             listEntity.add(listDTO[i].mapToEntity())
             ++i
         }

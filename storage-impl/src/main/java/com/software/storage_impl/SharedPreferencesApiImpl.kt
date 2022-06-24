@@ -144,10 +144,12 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
             listEntity = JSONConverterProductsInListEntity
                 .toProductInListEntityList(jsonList)?.toMutableList()
         }
-        listEntity?.findLast { it.guid == guid }?.guid += 1
+        listEntity?.findLast { it.guid == guid }?.let {
+            it.viewsCount += 1
+        }
         listEntity?.let {
             val newJsonList = JSONConverterProductsInListEntity.fromProductInListEntityList(it)
-            sp.edit().putString(PRODUCTS_IN_LIST, newJsonList)
+            sp.edit().putString(PRODUCTS_IN_LIST, newJsonList).apply()
         }
         return listEntity?.findLast { it.guid == guid }?.mapToDTO()
     }
