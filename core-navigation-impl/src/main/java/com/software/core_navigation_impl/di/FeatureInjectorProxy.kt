@@ -50,13 +50,14 @@ object FeatureInjectorProxy {
         )
     }
 
-    fun initFeatureAddProductDI() {
+    fun initFeatureAddProductDI(appContext: Context) {
         AddProductFeatureComponent.initAndGet(
             DaggerAddProductFeatureDependenciesComponent.builder()
                 .networkApi(DaggerCoreNetworkComponent.builder().build())
                 .addProductNavigationApi(
                     DaggerCoreNavigationComponent.builder().build().getAddProductNavigation()
                 )
+                .storageApi(StorageComponent.initAndGet(appContext))
                 .build()
         )
     }

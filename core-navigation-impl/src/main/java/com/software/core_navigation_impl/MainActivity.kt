@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
                             FeatureInjectorProxy.initFeaturePDPDI(this.applicationContext)
 
                         AddProductFragment::class.java.simpleName ->
-                            FeatureInjectorProxy.initFeatureAddProductDI()
+                            FeatureInjectorProxy.initFeatureAddProductDI(this.applicationContext)
                     }
                 }
             }

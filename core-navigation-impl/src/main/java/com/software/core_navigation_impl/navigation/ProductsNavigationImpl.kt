@@ -20,35 +20,49 @@ class ProductsNavigationImpl @Inject constructor() : ProductsNavigationApi {
     }
 
     override fun navigateToPDP(fragment: Fragment, guid: String) {
-        if(fragment.activity != null) {
+        if (fragment.activity != null) {
             fragment.activity?.let {
                 FeatureInjectorProxy.initFeaturePDPDI(it.applicationContext)
                 val newFragment = PDPFragment.newInstance(guid)
-                fragment.activity
-                    ?.supportFragmentManager
-                    ?.beginTransaction()
-                    ?.replace(R.id.fragmentContainer, newFragment, PDPFragment::class.java.simpleName)
-                    ?.addToBackStack(fragment.javaClass.simpleName)
-                    ?.commit()
+                it.supportFragmentManager
+                    .beginTransaction()
+                    .replace(
+                        R.id.fragmentContainer,
+                        newFragment,
+                        PDPFragment::class.java.simpleName
+                    )
+                    .addToBackStack(fragment.javaClass.simpleName)
+                    .commit()
             }
         } else {
-            throw NullPointerException("Fragment($fragment) activity is null," +
-                    " fragment.activity=${fragment.activity}")
+            throw NullPointerException(
+                "Fragment($fragment) activity is null," +
+                        " fragment.activity=${fragment.activity}"
+            )
         }
     }
 
     override fun navigateToAddProduct(fragment: Fragment) {
-        FeatureInjectorProxy.initFeatureAddProductDI()
-        val newFragment = AddProductFragment()
-        fragment.activity
-            ?.supportFragmentManager
-            ?.beginTransaction()
-            ?.replace(
-                R.id.fragmentContainer,
-                newFragment,
-                AddProductFragment::class.java.simpleName
+        if (fragment.activity != null) {
+            fragment.activity?.let {
+                FeatureInjectorProxy.initFeatureAddProductDI(it.applicationContext)
+                val newFragment = AddProductFragment()
+                it.supportFragmentManager
+                    .beginTransaction()
+                    .replace(
+                        R.id.fragmentContainer,
+                        newFragment,
+                        AddProductFragment::class.java.simpleName
+                    )
+                    .addToBackStack(fragment.javaClass.simpleName)
+                    .commit()
+            }
+        } else {
+            throw NullPointerException(
+                "Fragment($fragment) activity is null," +
+                        " fragment.activity=${fragment.activity}"
             )
-            ?.addToBackStack(fragment.javaClass.simpleName)
-            ?.commit()
+        }
+
     }
 }

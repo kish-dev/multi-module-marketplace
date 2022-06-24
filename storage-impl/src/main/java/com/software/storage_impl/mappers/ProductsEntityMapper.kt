@@ -65,6 +65,40 @@ fun ProductEntity.mapToDTO(): ProductDTO {
     )
 }
 
+fun addProductToListEntities(
+    productEntity: ProductEntity,
+    listEntity: MutableList<ProductEntity>?
+) : List<ProductEntity> =
+    when(listEntity?.findLast { it.guid == productEntity.guid }) {
+        null -> {
+            val resultList = mutableListOf<ProductEntity>()
+            if(listEntity == null) {
+                resultList.add(productEntity)
+            }
+            listEntity?.let {
+                var i = 0
+                while(it.size > i) {
+                    if(it[i].name < productEntity.name) {
+                        resultList.add(it[i])
+                        ++i
+                    } else {
+                        resultList.add(productEntity)
+                        resultList.addAll(listEntity.subList(i, listEntity.size))
+                        break
+                    }
+                }
+            }
+
+            resultList
+        }
+
+        else -> {
+            listEntity
+        }
+
+    }
+
+
 
 /**
  * Method for map network data with cached data

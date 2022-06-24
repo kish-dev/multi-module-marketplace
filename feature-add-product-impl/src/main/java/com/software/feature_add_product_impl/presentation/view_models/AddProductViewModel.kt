@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.software.core_utils.models.ServerResponse
 import com.software.core_utils.presentation.common.UiState
 import com.software.feature_add_product_impl.domain.interactors.AddProductUseCase
 import com.software.feature_add_product_impl.presentation.view_objects.ProductVO
@@ -22,12 +23,14 @@ class AddProductViewModel(
     fun addProduct(productVO: ProductVO) {
         viewModelScope.launch(Dispatchers.Main) {
             _addProductState.value = UiState.Loading()
-            when (interactor.addProductToAllPlaces(productVO)) {
-                true -> {
-                    _addProductState.value = UiState.Success(true)
+            when (val productResult = interactor.addProductToAllPlaces(productVO)) {
+                is ServerResponse.Success -> {
+                    _addProductState.value =
+                        UiState.Success(productResult.value)
                 }
-                else -> {
-                    _addProductState.value = UiState.Error(NullPointerException())
+                is ServerResponse.Error -> {
+                    _addProductState.value =
+                        UiState.Error(productResult.throwable)
                 }
             }
         }

@@ -9,9 +9,7 @@ import com.software.core_utils.Constants.PRODUCTS_SP
 import com.software.core_utils.models.ProductDTO
 import com.software.core_utils.models.ProductInListDTO
 import com.software.storage_api.SharedPreferencesApi
-import com.software.storage_impl.mappers.mapProductsDTOtoProductsEntity
-import com.software.storage_impl.mappers.mapProductsInListDTOtoProductsInListEntity
-import com.software.storage_impl.mappers.mapToDTO
+import com.software.storage_impl.mappers.*
 import com.software.storage_impl.models.ProductEntity
 import com.software.storage_impl.models.ProductInListEntity
 import com.software.storage_impl.utils.JSONConverterProductsEntity
@@ -85,7 +83,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
     }
 
     @SuppressLint("CommitPrefEdits")
-    override fun insertProductDTO(productDTO: ProductDTO) {
+    override fun insertProductDTO(productDTO: ProductDTO): Boolean {
         val sp = appContext.getSharedPreferences(PRODUCTS_SP, 0)
         val jsonList = sp.getString(PRODUCTS, "")
         var listEntity: MutableList<ProductEntity>? = null
@@ -93,14 +91,14 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
             listEntity = JSONConverterProductsEntity
                 .toProductListEntity(jsonList)?.toMutableList()
         }
-        val listDTO = mutableListOf(productDTO)
-        val result = JSONConverterProductsEntity.fromProductListEntity(
-            mapProductsDTOtoProductsEntity(
-                listDTO = listDTO,
+        val result =
+            addProductToListEntities(
+                productDTO.mapToEntity(),
                 listEntity = listEntity
             )
-        )
-        sp.edit().putString(PRODUCTS, result).apply()
+        val jsonResult = JSONConverterProductsEntity.fromProductListEntity(result)
+        sp.edit().putString(PRODUCTS, jsonResult).apply()
+        return result.size > (listEntity?.size ?: 0)
     }
 
     override fun getProductsInListDTO(): List<ProductInListDTO>? {
