@@ -65,6 +65,52 @@ fun ProductEntity.mapToDTO(): ProductDTO {
     )
 }
 
+fun ProductEntity.mapToProductInListEntity(): ProductInListEntity {
+    return ProductInListEntity(
+        guid,
+        name,
+        price,
+        description,
+        rating,
+        isFavorite,
+        isInCart,
+        viewsCount = 0
+    )
+}
+
+fun addProductInListToListEntities(
+    productEntity: ProductInListEntity,
+    listEntity: MutableList<ProductInListEntity>?
+) : List<ProductInListEntity> =
+    when(listEntity?.findLast { it.guid == productEntity.guid }) {
+        null -> {
+            val resultList = mutableListOf<ProductInListEntity>()
+            if(listEntity == null) {
+                resultList.add(productEntity)
+            }
+            listEntity?.let {
+                var i = 0
+                while(it.size > i) {
+                    if(it[i].name < productEntity.name) {
+                        resultList.add(it[i])
+                        ++i
+                    } else {
+                        resultList.add(productEntity)
+                        resultList.addAll(listEntity.subList(i, listEntity.size))
+                        break
+                    }
+                }
+            }
+
+            resultList
+        }
+
+        else -> {
+            listEntity
+        }
+
+    }
+
 fun addProductToListEntities(
     productEntity: ProductEntity,
     listEntity: MutableList<ProductEntity>?
@@ -97,7 +143,6 @@ fun addProductToListEntities(
         }
 
     }
-
 
 
 /**

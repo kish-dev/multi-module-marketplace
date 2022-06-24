@@ -12,7 +12,7 @@ class AddProductRepositoryImpl @Inject constructor(
     AddProductRepository {
 
     override suspend fun addProduct(productDTO: ProductDTO): ServerResponse<Boolean> =
-        when(val result = sharedPreferencesApi.insertProductDTO(productDTO)) {
+        when(val result = sharedPreferencesApi.insertNewProduct(productDTO)) {
             true -> {
                 ServerResponse.Success(result)
             }

@@ -10,8 +10,6 @@ interface SharedPreferencesApi {
 
     fun insertProductsInListDTO(productsInListDTO: List<ProductInListDTO>)
 
-    fun insertProductInListDTO(productInListDTO: ProductInListDTO)
-
     fun insertProductDTO(productDTO: ProductDTO): Boolean
 
     fun getProductsInListDTO(): List<ProductInListDTO>?
@@ -21,4 +19,8 @@ interface SharedPreferencesApi {
     fun getProductById(guid: String): ProductDTO?
 
     fun addViewToProductInListDTO(guid: String): ProductInListDTO?
+
+    fun insertNewProduct(productDTO: ProductDTO): Boolean
+
+    fun insertProductInListDTO(productInListDTO: ProductInListDTO): Boolean
 }
