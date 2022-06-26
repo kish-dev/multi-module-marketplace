@@ -8,6 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.software.core_utils.R
 import com.software.core_utils.presentation.common.UiState
@@ -20,6 +23,7 @@ import com.software.feature_products_impl.domain.interactors.ProductListUseCase
 import com.software.feature_products_impl.presentation.adapters.ProductsAdapter
 import com.software.feature_products_impl.presentation.view_holders.ProductViewHolder
 import com.software.feature_products_impl.presentation.view_models.ProductsViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ProductsFragment : Fragment() {
@@ -70,6 +74,11 @@ class ProductsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         initObservers()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        productsViewModel.autoUpdateProducts()
     }
 
     private fun initViews() {
@@ -147,6 +156,7 @@ class ProductsFragment : Fragment() {
         if (isRemoving) {
             if (productsNavigationApi.isClosed(this)) {
                 ProductsFeatureComponent.reset()
+                productsViewModel.stopAutoUpdate()
             }
         }
         super.onPause()

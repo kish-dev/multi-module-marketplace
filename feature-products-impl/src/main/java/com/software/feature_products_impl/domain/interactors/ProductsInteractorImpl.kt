@@ -1,7 +1,6 @@
 package com.software.feature_products_impl.domain.interactors
 
 import androidx.work.WorkInfo
-import com.software.core_utils.models.ProductInListDTO
 import com.software.core_utils.models.ServerResponse
 import com.software.feature_products_impl.domain.mappers.mapToVO
 import com.software.feature_products_impl.domain.repositories.ProductsRepository

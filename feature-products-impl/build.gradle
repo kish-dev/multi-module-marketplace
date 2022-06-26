@@ -46,6 +46,8 @@ dependencies {
     implementation project(":worker")
     implementation project(":storage-api")
 
+    implementation viewModelSavedState
+    implementation lifecycleCommon
     implementation junit
     testImplementation junit
     androidTestImplementation androidTestJunit

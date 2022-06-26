@@ -11,8 +11,7 @@ import com.software.core_utils.presentation.common.UiState
 import com.software.feature_products_api.ProductsNavigationApi
 import com.software.feature_products_impl.domain.interactors.ProductListUseCase
 import com.software.feature_products_impl.presentation.view_objects.ProductInListVO
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class ProductsViewModel(
     private val interactor: ProductListUseCase,
@@ -22,6 +21,10 @@ class ProductsViewModel(
     companion object {
         private val TAG = ProductsViewModel::class.java.simpleName
     }
+
+    private val five_minutes = 5000L
+
+    private var autoUpdateScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
 
     private val _productLD: MutableLiveData<UiState<List<ProductInListVO>>> =
         MutableLiveData(UiState.Init())
@@ -33,6 +36,16 @@ class ProductsViewModel(
 
     init {
         getProducts()
+    }
+
+    fun autoUpdateProducts() {
+        autoUpdateScope.launch(Dispatchers.IO) {
+            Log.d(TAG, "autoUpdateProducts: inViewModelScope")
+            delay(five_minutes)
+            getProducts()
+            autoUpdateProducts()
+        }
+        Log.d(TAG, "autoUpdateProducts: afterViewModelScope")
     }
 
     fun getProducts() {
@@ -58,7 +71,8 @@ class ProductsViewModel(
 
                     WorkInfo.State.CANCELLED -> {
                         Log.d(TAG, "WorkInfo.State.CANCELLED: ")
-                        _productLD.value = UiState.Error(Throwable("Something went wrong, CANCELLED"))
+                        _productLD.value =
+                            UiState.Error(Throwable("Something went wrong, CANCELLED"))
                     }
 
                     WorkInfo.State.ENQUEUED -> {
@@ -102,5 +116,10 @@ class ProductsViewModel(
                 }
             }
         }
+    }
+
+    fun stopAutoUpdate() {
+        autoUpdateScope.cancel(null)
+        autoUpdateScope = CoroutineScope(Dispatchers.IO)
     }
 }
