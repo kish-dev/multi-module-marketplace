@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.software.core_utils.R
 import com.software.core_utils.presentation.common.UiState
-import com.software.core_utils.presentation.viewModels.viewModelCreator
+import com.software.core_utils.presentation.view_models.viewModelCreator
 import com.software.feature_add_product.AddProductNavigationApi
 import com.software.feature_add_product_impl.databinding.FragmentAddProductBinding
 import com.software.feature_add_product_impl.di.components.AddProductFeatureComponent

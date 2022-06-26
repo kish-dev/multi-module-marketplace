@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.WorkInfo
 import com.software.core_utils.models.ServerResponse
 import com.software.core_utils.presentation.common.UiState
+import com.software.core_utils.presentation.common.safeLaunch
 import com.software.feature_products_api.ProductsNavigationApi
 import com.software.feature_products_impl.domain.interactors.ProductListUseCase
 import com.software.feature_products_impl.presentation.view_objects.ProductInListVO
@@ -22,9 +23,8 @@ class ProductsViewModel(
         private val TAG = ProductsViewModel::class.java.simpleName
     }
 
-    private val five_minutes = 5000L
-
-    private var autoUpdateScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
+    private val five_minutes = 300000L
+    private var autoUpdateJob : Job? = null
 
     private val _productLD: MutableLiveData<UiState<List<ProductInListVO>>> =
         MutableLiveData(UiState.Init())
@@ -39,7 +39,7 @@ class ProductsViewModel(
     }
 
     fun autoUpdateProducts() {
-        autoUpdateScope.launch(Dispatchers.IO) {
+        autoUpdateJob = viewModelScope.safeLaunch(Dispatchers.IO) {
             Log.d(TAG, "autoUpdateProducts: inViewModelScope")
             delay(five_minutes)
             getProducts()
@@ -49,7 +49,7 @@ class ProductsViewModel(
     }
 
     fun getProducts() {
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.safeLaunch(Dispatchers.Main) {
             _productLD.value = UiState.Loading()
 
             val responseFlow = interactor.loadProducts()
@@ -88,7 +88,7 @@ class ProductsViewModel(
     }
 
     private fun updateUiState() {
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.safeLaunch(Dispatchers.Main) {
             when (val products = interactor.getProducts()) {
                 is ServerResponse.Success -> {
                     _productLD.value =
@@ -103,7 +103,7 @@ class ProductsViewModel(
     }
 
     fun addViewCount(guid: String) {
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.safeLaunch(Dispatchers.Main) {
             _lastChangedProduct.value = UiState.Loading()
             when (val product = interactor.addViewToProductInList(guid)) {
                 is ServerResponse.Success -> {
@@ -119,7 +119,6 @@ class ProductsViewModel(
     }
 
     fun stopAutoUpdate() {
-        autoUpdateScope.cancel(null)
-        autoUpdateScope = CoroutineScope(Dispatchers.IO)
+        autoUpdateJob?.cancel("Fragment invoke this method")
     }
 }

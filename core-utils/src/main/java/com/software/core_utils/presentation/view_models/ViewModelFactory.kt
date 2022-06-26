@@ -1,4 +1,4 @@
-package com.software.core_utils.presentation.viewModels
+package com.software.core_utils.presentation.view_models
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels

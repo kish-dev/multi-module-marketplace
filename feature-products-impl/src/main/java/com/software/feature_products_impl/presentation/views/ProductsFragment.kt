@@ -8,13 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.software.core_utils.R
 import com.software.core_utils.presentation.common.UiState
-import com.software.core_utils.presentation.viewModels.viewModelCreator
+import com.software.core_utils.presentation.view_models.viewModelCreator
 import com.software.feature_api.ProductsApi
 import com.software.feature_products_api.ProductsNavigationApi
 import com.software.feature_products_impl.databinding.FragmentProductsBinding
@@ -23,7 +20,6 @@ import com.software.feature_products_impl.domain.interactors.ProductListUseCase
 import com.software.feature_products_impl.presentation.adapters.ProductsAdapter
 import com.software.feature_products_impl.presentation.view_holders.ProductViewHolder
 import com.software.feature_products_impl.presentation.view_models.ProductsViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ProductsFragment : Fragment() {

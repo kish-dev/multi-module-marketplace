@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.software.core_utils.models.ServerResponse
 import com.software.core_utils.presentation.common.UiState
+import com.software.core_utils.presentation.common.safeLaunch
 import com.software.core_utils.presentation.view_objects.ProductVO
 import com.software.feature_pdp_impl.domain.interactors.ProductDetailUseCase
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +22,7 @@ class PDPViewModel(private val interactor: ProductDetailUseCase) : ViewModel() {
         _productLD
 
     fun getProduct(productId: String) {
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.safeLaunch(Dispatchers.Main) {
             _productLD.value = UiState.Loading()
             withContext(Dispatchers.Main) {
                 when (val product = interactor.getProductById(productId)) {

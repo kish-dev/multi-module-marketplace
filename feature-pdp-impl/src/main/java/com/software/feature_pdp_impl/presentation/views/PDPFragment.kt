@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.SnapHelper
 import com.software.core_utils.R
 import com.software.core_utils.presentation.common.UiState
-import com.software.core_utils.presentation.viewModels.viewModelCreator
+import com.software.core_utils.presentation.view_models.viewModelCreator
 import com.software.core_utils.presentation.view_objects.ProductVO
 import com.software.feature_pdp_api.PDPNavigationApi
 import com.software.feature_pdp_impl.databinding.PdpFragmentBinding
