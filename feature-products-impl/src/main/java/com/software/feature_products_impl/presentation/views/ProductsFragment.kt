@@ -16,6 +16,7 @@ import com.software.feature_api.ProductsApi
 import com.software.feature_products_api.ProductsNavigationApi
 import com.software.feature_products_impl.databinding.FragmentProductsBinding
 import com.software.feature_products_impl.di.components.ProductsFeatureComponent
+import com.software.feature_products_impl.domain.interactors.LoadWithWorkersUseCase
 import com.software.feature_products_impl.domain.interactors.ProductListUseCase
 import com.software.feature_products_impl.presentation.adapters.ProductsAdapter
 import com.software.feature_products_impl.presentation.view_holders.ProductViewHolder
@@ -37,9 +38,13 @@ class ProductsFragment : Fragment() {
     @Inject
     lateinit var productsNavigationApi: ProductsNavigationApi
 
+    @Inject
+    lateinit var loadInteractor: LoadWithWorkersUseCase
+
     private val productsViewModel: ProductsViewModel by viewModelCreator {
         ProductsViewModel(
             productsInteractor,
+            loadInteractor,
             productsNavigationApi
         )
     }

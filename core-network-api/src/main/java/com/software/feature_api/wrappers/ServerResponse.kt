@@ -1,4 +1,4 @@
-package com.software.core_utils.models
+package com.software.feature_api.wrappers
 
 sealed class ServerResponse<T> {
     data class Error<T>(val throwable: Throwable) : ServerResponse<T>()

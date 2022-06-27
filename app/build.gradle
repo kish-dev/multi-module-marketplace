@@ -8,12 +8,12 @@ plugins {
 apply from: "../dependencies.gradle"
 
 android {
-    compileSdk 31
+    compileSdk sdkVersion
 
     defaultConfig {
         applicationId "ru.ozon.route256.marketplace"
         minSdk 24
-        targetSdk 31
+        targetSdk sdkVersion
         versionCode 1
         versionName "1.0"
 

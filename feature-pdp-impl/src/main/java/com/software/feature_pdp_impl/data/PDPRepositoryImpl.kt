@@ -1,7 +1,7 @@
 package com.software.feature_pdp_impl.data
 
 import com.software.core_utils.models.ProductDTO
-import com.software.core_utils.models.ServerResponse
+import com.software.feature_api.wrappers.ServerResponse
 import com.software.feature_pdp_impl.domain.repository.PDPRepository
 import com.software.storage_api.SharedPreferencesApi
 import javax.inject.Inject

@@ -2,7 +2,7 @@ package com.software.feature_api
 
 import com.software.core_utils.models.ProductDTO
 import com.software.core_utils.models.ProductInListDTO
-import com.software.core_utils.models.ServerResponse
+import com.software.feature_api.wrappers.ServerResponse
 import retrofit2.http.GET
 
 interface ProductsApi {

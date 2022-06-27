@@ -3,6 +3,8 @@ ext {
             applicationId: "ru.ozon.route256.marketplace"
     ]
 
+    sdkVersion = 32
+
     versions = [
             kotlin                : '1.6.10',
             coreKtx               : '1.7.0',

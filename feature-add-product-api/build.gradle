@@ -6,11 +6,11 @@ plugins {
 apply from: "../dependencies.gradle"
 
 android {
-    compileSdk 32
+    compileSdk sdkVersion
 
     defaultConfig {
         minSdk 24
-        targetSdk 32
+        targetSdk sdkVersion
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
