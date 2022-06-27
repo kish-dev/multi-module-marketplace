@@ -84,25 +84,16 @@ fun addProductInListToListEntities(
 ) : List<ProductInListEntity> =
     when(listEntity?.findLast { it.guid == productEntity.guid }) {
         null -> {
-            val resultList = mutableListOf<ProductInListEntity>()
+            var resultList = mutableListOf<ProductInListEntity>()
             if(listEntity == null) {
                 resultList.add(productEntity)
             }
             listEntity?.let {
-                var i = 0
-                while(it.size > i) {
-                    if(it[i].name < productEntity.name) {
-                        resultList.add(it[i])
-                        ++i
-                    } else {
-                        resultList.add(productEntity)
-                        resultList.addAll(listEntity.subList(i, listEntity.size))
-                        break
-                    }
-                }
+                resultList.addAll(listEntity)
+                resultList.add(productEntity)
             }
 
-            resultList
+            resultList.sortedBy { it.name }
         }
 
         else -> {
@@ -117,25 +108,16 @@ fun addProductToListEntities(
 ) : List<ProductEntity> =
     when(listEntity?.findLast { it.guid == productEntity.guid }) {
         null -> {
-            val resultList = mutableListOf<ProductEntity>()
+            var resultList = mutableListOf<ProductEntity>()
             if(listEntity == null) {
                 resultList.add(productEntity)
             }
             listEntity?.let {
-                var i = 0
-                while(it.size > i) {
-                    if(it[i].name < productEntity.name) {
-                        resultList.add(it[i])
-                        ++i
-                    } else {
-                        resultList.add(productEntity)
-                        resultList.addAll(listEntity.subList(i, listEntity.size))
-                        break
-                    }
-                }
+                resultList.addAll(listEntity)
+                resultList.add(productEntity)
             }
 
-            resultList
+            resultList.sortedBy { it.name }
         }
 
         else -> {
@@ -159,29 +141,8 @@ fun mapProductsInListDTOtoProductsInListEntity(
     listDTO: List<ProductInListDTO>,
     listEntity: MutableList<ProductInListEntity>?
 ): List<ProductInListEntity> {
-    listDTO.sortedBy { it.name }
-
-    if (listEntity == null) {
-        return listDTO.map { it.mapToEntity(it.viewsCount) }
-    }
-
-    var entityIndex = 0
-    var i = 0
-    while (listDTO.size > i) {
-        if (listEntity[entityIndex].guid == listDTO[i].guid) {
-            listEntity[entityIndex] = listDTO[i].mapToEntity(listEntity[entityIndex].viewsCount)
-            ++i
-        }
-        ++entityIndex
-    }
-
-    if(listEntity.size <= entityIndex) {
-        while(listDTO.size > i) {
-            listEntity.add(listDTO[i].mapToEntity(listDTO[i].viewsCount))
-            ++i
-        }
-    }
-    return listEntity
+    val uniqueCacheItems = listEntity?.filter { entity -> listDTO.none { it.guid == entity.guid } }
+    return listDTO.map { it.mapToEntity(it.viewsCount) }.plus(uniqueCacheItems ?: emptyList()).sortedBy { it.name }
 }
 
 /**
@@ -198,30 +159,8 @@ fun mapProductsDTOtoProductsEntity(
     listDTO: List<ProductDTO>,
     listEntity: MutableList<ProductEntity>?
 ): List<ProductEntity> {
-    listDTO.sortedBy { it.name }
-
-    if (listEntity == null) {
-        return listDTO.map { it.mapToEntity() }
-    }
-
-    var entityIndex = 0
-    var i = 0
-    while (listDTO.size > i && listEntity.size > entityIndex) {
-        if (listEntity[entityIndex].guid == listDTO[i].guid) {
-            listEntity[entityIndex] = listDTO[i].mapToEntity()
-            ++i
-        }
-        ++entityIndex
-    }
-
-    if(listEntity.size <= entityIndex) {
-        while(listDTO.size > i) {
-            listEntity.add(listDTO[i].mapToEntity())
-            ++i
-        }
-    }
-
-    return listEntity
+    val uniqueCacheItems = listEntity?.filter { entity -> listDTO.none { it.guid == entity.guid } }
+    return listDTO.map { it.mapToEntity() }.plus(uniqueCacheItems ?: emptyList()).sortedBy { it.name }
 }
 
 

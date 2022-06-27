@@ -23,9 +23,11 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
     SharedPreferencesApi {
 
     companion object {
-        private const val PRODUCTS = "com.software.storage_impl.products"
-        private const val PRODUCTS_IN_LIST = "com.software.storage_impl.products_in_list"
+        private const val PRODUCTS = "${BuildConfig.LIBRARY_PACKAGE_NAME}.products"
+        private const val PRODUCTS_IN_LIST = "${BuildConfig.LIBRARY_PACKAGE_NAME}.products_in_list"
     }
+
+    private val gson = Gson()
 
     override fun insertProductsDTO(productsDTO: List<ProductDTO>) {
         val sp = appContext.getSharedPreferences(PRODUCTS_SP, 0)
@@ -35,7 +37,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
             listEntity =
                 Gson().fromJson(jsonList, object : TypeToken<List<ProductEntity?>?>() {}.type)
         }
-        val result = JSONConverterProductsEntity.fromProductsListEntity(
+        val result = JSONConverterProductsEntity(gson).fromProductsListEntity(
             mapProductsDTOtoProductsEntity(
                 listDTO = productsDTO,
                 listEntity = listEntity
@@ -49,10 +51,10 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
         val jsonList = sp.getString(PRODUCTS_IN_LIST, "")
         var listEntity: MutableList<ProductInListEntity>? = null
         jsonList?.let {
-            listEntity = JSONConverterProductsInListEntity
+            listEntity = JSONConverterProductsInListEntity(gson)
                 .toProductInListEntityList(jsonList)?.toMutableList()
         }
-        val result = JSONConverterProductsInListEntity.fromProductInListEntityList(
+        val result = JSONConverterProductsInListEntity(gson).fromProductInListEntityList(
             mapProductsInListDTOtoProductsInListEntity(
                 listDTO = productsInListDTO,
                 listEntity = listEntity
@@ -66,7 +68,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
         val jsonList = sp.getString(PRODUCTS_IN_LIST, "")
         var listEntity: MutableList<ProductInListEntity>? = null
         jsonList?.let {
-            listEntity = JSONConverterProductsInListEntity
+            listEntity = JSONConverterProductsInListEntity(gson)
                 .toProductInListEntityList(jsonList)?.toMutableList()
         }
         val result =
@@ -74,7 +76,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
                 productInListDTO.mapToEntity(0),
                 listEntity = listEntity
             )
-        val jsonResult = JSONConverterProductsInListEntity.fromProductInListEntityList(result)
+        val jsonResult = JSONConverterProductsInListEntity(gson).fromProductInListEntityList(result)
         sp.edit().putString(PRODUCTS_IN_LIST, jsonResult).apply()
         return result.size > (listEntity?.size ?: 0)
     }
@@ -84,7 +86,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
         val jsonList = sp.getString(PRODUCTS, "")
         var listEntity: MutableList<ProductEntity>? = null
         jsonList?.let {
-            listEntity = JSONConverterProductsEntity
+            listEntity = JSONConverterProductsEntity(gson)
                 .toProductsListEntity(jsonList)?.toMutableList()
         }
         val result =
@@ -92,7 +94,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
                 productDTO.mapToEntity(),
                 listEntity = listEntity
             )
-        val jsonResult = JSONConverterProductsEntity.fromProductsListEntity(result)
+        val jsonResult = JSONConverterProductsEntity(gson).fromProductsListEntity(result)
         sp.edit().putString(PRODUCTS, jsonResult).apply()
         return result.size > (listEntity?.size ?: 0)
     }
@@ -102,7 +104,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
         val jsonList = sp.getString(PRODUCTS_IN_LIST, "")
         var listEntity: MutableList<ProductInListEntity>? = null
         jsonList?.let {
-            listEntity = JSONConverterProductsInListEntity
+            listEntity = JSONConverterProductsInListEntity(gson)
                 .toProductInListEntityList(jsonList)?.toMutableList()
         }
         return listEntity?.map { it.mapToDTO() }
@@ -113,7 +115,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
         val jsonList = sp.getString(PRODUCTS, "")
         var listEntity: MutableList<ProductEntity>? = null
         jsonList?.let {
-            listEntity = JSONConverterProductsEntity
+            listEntity = JSONConverterProductsEntity(gson)
                 .toProductsListEntity(jsonList)?.toMutableList()
         }
         return listEntity?.map { it.mapToDTO() }
@@ -124,7 +126,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
         val jsonList = sp.getString(PRODUCTS, "")
         var listEntity: MutableList<ProductEntity>? = null
         jsonList?.let {
-            listEntity = JSONConverterProductsEntity
+            listEntity = JSONConverterProductsEntity(gson)
                 .toProductsListEntity(jsonList)?.toMutableList()
         }
         return listEntity?.findLast { it.guid == guid }?.mapToDTO()
@@ -135,14 +137,14 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
         val jsonList = sp.getString(PRODUCTS_IN_LIST, "")
         var listEntity: MutableList<ProductInListEntity>? = null
         jsonList?.let {
-            listEntity = JSONConverterProductsInListEntity
+            listEntity = JSONConverterProductsInListEntity(gson)
                 .toProductInListEntityList(jsonList)?.toMutableList()
         }
         listEntity?.findLast { it.guid == guid }?.let {
             it.viewsCount += 1
         }
         listEntity?.let {
-            val newJsonList = JSONConverterProductsInListEntity.fromProductInListEntityList(it)
+            val newJsonList = JSONConverterProductsInListEntity(gson).fromProductInListEntityList(it)
             sp.edit().putString(PRODUCTS_IN_LIST, newJsonList).apply()
         }
         return listEntity?.findLast { it.guid == guid }?.mapToDTO()
