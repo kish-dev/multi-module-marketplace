@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.software.core_utils.R
 import com.software.core_utils.presentation.common.UiState
 import com.software.core_utils.presentation.viewModels.viewModelCreator
@@ -48,6 +49,11 @@ class ProductsFragment : Fragment() {
             productsNavigationApi
         )
     }
+
+    private val swipeRefreshListener = SwipeRefreshLayout.OnRefreshListener {
+        productsViewModel.getProducts()
+    }
+
     private val productsAdapter: ProductsAdapter by lazy {
         ProductsAdapter(object : ProductsAdapter.Listener {
             override fun onClickProduct(holder: ProductViewHolder, productId: String) {
@@ -79,7 +85,12 @@ class ProductsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        productsViewModel.getProducts()
+        with(binding) {
+            swipeRefreshLayout.post {
+                swipeRefreshLayout.isRefreshing = true
+                swipeRefreshListener.onRefresh()
+            }
+        }
     }
 
     private fun initViews() {
@@ -91,7 +102,7 @@ class ProductsFragment : Fragment() {
             }
 
             swipeRefreshLayout.setOnRefreshListener {
-                productsViewModel.getProducts()
+                swipeRefreshListener
             }
 
             addProductButton.setOnClickListener {
