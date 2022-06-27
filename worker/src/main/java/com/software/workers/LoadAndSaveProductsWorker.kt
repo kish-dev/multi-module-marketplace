@@ -4,13 +4,13 @@ import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.software.feature_api.wrappers.ServerResponse
 import com.software.feature_api.NetworkApi
+import com.software.feature_api.wrappers.ServerResponse
 import com.software.storage_api.StorageApi
 import com.software.workers.di.WorkerComponent
 import javax.inject.Inject
 
-class LoadAndSaveProductsWorker (
+class LoadAndSaveProductsWorker(
     context: Context,
     workerParameters: WorkerParameters,
 ) : CoroutineWorker(context, workerParameters) {

@@ -1,4 +1,4 @@
-package com.software.core_utils.models
+package com.software.feature_api.wrappers
 
 data class ProductDTO(
     val guid: String,

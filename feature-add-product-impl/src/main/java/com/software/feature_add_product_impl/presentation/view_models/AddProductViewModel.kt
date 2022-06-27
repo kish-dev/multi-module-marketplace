@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.software.core_utils.models.DomainWrapper
-import com.software.feature_api.wrappers.ServerResponse
 import com.software.core_utils.presentation.common.UiState
 import com.software.core_utils.presentation.common.safeLaunch
 import com.software.feature_add_product_impl.domain.interactors.AddProductUseCase

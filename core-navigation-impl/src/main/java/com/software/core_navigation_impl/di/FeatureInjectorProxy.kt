@@ -2,7 +2,6 @@ package com.software.core_navigation_impl.di
 
 import android.content.Context
 import com.software.core_network_impl.di.CoreNetworkComponent
-import com.software.core_network_impl.di.DaggerCoreNetworkComponent
 import com.software.feature_add_product_impl.di.components.AddProductFeatureComponent
 import com.software.feature_add_product_impl.di.components.DaggerAddProductFeatureDependenciesComponent
 import com.software.feature_pdp_impl.di.components.DaggerPDPFeatureDependenciesComponent
@@ -20,7 +19,7 @@ object FeatureInjectorProxy {
     fun initFeatureProductsDI(appContext: Context) {
         ProductsFeatureComponent.initAndGet(
             DaggerProductsFeatureDependenciesComponent.builder()
-                .networkApi(CoreNetworkComponent.initAndGet())
+                .networkApi(CoreNetworkComponent.initAndGet(appContext))
                 .productsNavigationApi(
                     DaggerCoreNavigationComponent.builder().build().getProductNavigation()
                 )
@@ -28,7 +27,7 @@ object FeatureInjectorProxy {
                 .workerComponentInterface(
                     WorkerComponent.initAndGet(
                         DaggerWorkerDependenciesComponent.builder()
-                            .networkApi(CoreNetworkComponent.initAndGet())
+                            .networkApi(CoreNetworkComponent.initAndGet(appContext))
                             .storageApi(StorageComponent.initAndGet(appContext))
                             .build()
                     )
@@ -41,7 +40,7 @@ object FeatureInjectorProxy {
     fun initFeaturePDPDI(appContext: Context) {
         PDPFeatureComponent.initAndGet(
             DaggerPDPFeatureDependenciesComponent.builder()
-                .networkApi(DaggerCoreNetworkComponent.builder().build())
+                .networkApi(CoreNetworkComponent.initAndGet(appContext))
                 .pDPNavigationApi(
                     DaggerCoreNavigationComponent.builder().build().getPDPNavigation()
                 )
@@ -53,7 +52,7 @@ object FeatureInjectorProxy {
     fun initFeatureAddProductDI(appContext: Context) {
         AddProductFeatureComponent.initAndGet(
             DaggerAddProductFeatureDependenciesComponent.builder()
-                .networkApi(DaggerCoreNetworkComponent.builder().build())
+                .networkApi(CoreNetworkComponent.initAndGet(appContext))
                 .addProductNavigationApi(
                     DaggerCoreNavigationComponent.builder().build().getAddProductNavigation()
                 )

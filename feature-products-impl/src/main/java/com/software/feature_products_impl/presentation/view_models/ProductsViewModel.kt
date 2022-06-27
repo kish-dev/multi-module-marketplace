@@ -56,7 +56,8 @@ class ProductsViewModel(
 
                     WorkInfo.State.CANCELLED -> {
                         Log.d(TAG, "WorkInfo.State.CANCELLED: ")
-                        _productLD.value = UiState.Error(Throwable("Something went wrong, CANCELLED"))
+                        _productLD.value =
+                            UiState.Error(Throwable("Something went wrong, CANCELLED"))
                     }
 
                     WorkInfo.State.ENQUEUED -> {

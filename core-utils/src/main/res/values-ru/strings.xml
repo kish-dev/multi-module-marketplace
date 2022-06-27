@@ -8,4 +8,6 @@
     <string name="loading_error">При загрузке произошла ошибка</string>
     <string name="add_product_success">Продукт успешно добавлен</string>
     <string name="fill_all_strokes">Заполните все поля</string>
+    <string name="internet_error">Connection</string>
+    <string name="connection_error">Waiting for network</string>
 </resources>

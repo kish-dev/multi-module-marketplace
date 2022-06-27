@@ -7,23 +7,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.SnapHelper
 import com.software.core_utils.R
+import com.software.core_utils.presentation.base.BaseFragment
 import com.software.core_utils.presentation.common.UiState
 import com.software.core_utils.presentation.view_models.viewModelCreator
 import com.software.core_utils.presentation.view_objects.ProductVO
+import com.software.feature_api.wrappers.ConnectionStatus
 import com.software.feature_pdp_api.PDPNavigationApi
 import com.software.feature_pdp_impl.databinding.PdpFragmentBinding
 import com.software.feature_pdp_impl.di.components.PDPFeatureComponent
 import com.software.feature_pdp_impl.domain.interactors.ProductDetailUseCase
 import com.software.feature_pdp_impl.presentation.adapters.ProductImageAdapter
 import com.software.feature_pdp_impl.presentation.view_models.PDPViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class PDPFragment : Fragment() {
+class PDPFragment : BaseFragment() {
 
     private var _binding: PdpFragmentBinding? = null
     private val binding
@@ -79,6 +86,33 @@ class PDPFragment : Fragment() {
     }
 
     private fun initObservers() {
+        observeNetworkConnection(binding.connectionProblems)
+
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                connectionStateApi.getConnectionStatusFlow().collect {
+                    val internetAndConnectionTV =
+                        binding.connectionProblems.findViewById<AppCompatTextView>(R.id.internetErrorAndConnectionTV)
+                    when (it) {
+                        is ConnectionStatus.Success -> {
+                            binding.connectionProblems.isVisible = false
+                        }
+
+                        is ConnectionStatus.ConnectionError -> {
+                            internetAndConnectionTV.text = getString(R.string.connection_error)
+                            binding.connectionProblems.isVisible = true
+                        }
+
+                        is ConnectionStatus.InternetError -> {
+                            internetAndConnectionTV.text = getString(R.string.connection_error)
+                            binding.connectionProblems.isVisible = true
+                        }
+                    }
+                }
+            }
+        }
+
         pdpViewModel.productLD.observe(viewLifecycleOwner) {
             when (it) {
                 is UiState.Loading, is UiState.Init -> {

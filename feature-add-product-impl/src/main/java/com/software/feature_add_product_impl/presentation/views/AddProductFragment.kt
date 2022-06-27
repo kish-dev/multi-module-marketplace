@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import com.software.core_utils.R
+import com.software.core_utils.presentation.base.BaseFragment
 import com.software.core_utils.presentation.common.UiState
 import com.software.core_utils.presentation.view_models.viewModelCreator
 import com.software.feature_add_product.AddProductNavigationApi
@@ -18,7 +18,7 @@ import com.software.feature_add_product_impl.presentation.view_models.AddProduct
 import com.software.feature_add_product_impl.presentation.view_objects.createProduct
 import javax.inject.Inject
 
-class AddProductFragment : Fragment() {
+class AddProductFragment : BaseFragment() {
 
     private var _binding: FragmentAddProductBinding? = null
     private val binding
@@ -63,6 +63,8 @@ class AddProductFragment : Fragment() {
     }
 
     private fun initObservers() {
+        observeNetworkConnection(binding.connectionProblems)
+
         addProductViewModel.addProductState.observe(viewLifecycleOwner) {
             when (it) {
                 is UiState.Loading -> {

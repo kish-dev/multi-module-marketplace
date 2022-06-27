@@ -1,7 +1,7 @@
 package com.software.storage_api
 
-import com.software.core_utils.models.ProductDTO
-import com.software.core_utils.models.ProductInListDTO
+import com.software.feature_api.wrappers.ProductDTO
+import com.software.feature_api.wrappers.ProductInListDTO
 
 
 interface SharedPreferencesApi {

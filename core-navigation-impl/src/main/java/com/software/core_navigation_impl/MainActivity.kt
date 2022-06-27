@@ -2,6 +2,7 @@ package com.software.core_navigation_impl
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.software.core_navigation_impl.di.FeatureInjectorProxy
 import com.software.feature_add_product_impl.presentation.views.AddProductFragment
 import com.software.feature_pdp_impl.presentation.views.PDPFragment
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
                 .beginTransaction()
                 .replace(
                     R.id.fragmentContainer,
-                    newFragment,
+                    newFragment as Fragment,
                     ProductsFragment::class.java.simpleName
                 )
                 .addToBackStack(ProductsFragment::class.java.simpleName)

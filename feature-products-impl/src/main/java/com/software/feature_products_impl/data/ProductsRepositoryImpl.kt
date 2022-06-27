@@ -5,7 +5,7 @@ import androidx.lifecycle.asFlow
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
-import com.software.core_utils.models.ProductInListDTO
+import com.software.feature_api.wrappers.ProductInListDTO
 import com.software.feature_api.wrappers.ServerResponse
 import com.software.feature_products_impl.domain.repositories.ProductsRepository
 import com.software.storage_api.SharedPreferencesApi
@@ -38,7 +38,8 @@ class ProductsRepositoryImpl @Inject constructor(
     override suspend fun loadProducts(): Flow<WorkInfo> {
         val requestProducts = OneTimeWorkRequestBuilder<LoadAndSaveProductsWorker>().build()
 
-        val requestProductsInList = OneTimeWorkRequestBuilder<LoadAndSaveProductsInListWorker>().build()
+        val requestProductsInList =
+            OneTimeWorkRequestBuilder<LoadAndSaveProductsInListWorker>().build()
 
         workManager
             .beginWith(requestProducts)

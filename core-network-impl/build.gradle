@@ -37,6 +37,7 @@ dependencies {
     implementation project(":core-network-api")
     implementation project(":core-utils")
 
+    implementation coroutines
     implementation junit
     testImplementation junit
     androidTestImplementation androidTestJunit

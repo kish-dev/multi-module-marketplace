@@ -9,7 +9,6 @@ import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import javax.inject.Singleton
 
 @Module
 class InteractorModule {
@@ -22,13 +21,19 @@ class InteractorModule {
 
     @Provides
     @PerFeature
-    fun provideProductsInteractor(productsRepository: ProductsRepository, ioDispatcher: CoroutineDispatcher): ProductListUseCase {
+    fun provideProductsInteractor(
+        productsRepository: ProductsRepository,
+        ioDispatcher: CoroutineDispatcher
+    ): ProductListUseCase {
         return ProductsInteractorImpl(productsRepository, ioDispatcher)
     }
 
     @Provides
     @PerFeature
-    fun provideLoadWithWorkersInteractor(productsRepository: ProductsRepository, ioDispatcher: CoroutineDispatcher): LoadWithWorkersUseCase {
+    fun provideLoadWithWorkersInteractor(
+        productsRepository: ProductsRepository,
+        ioDispatcher: CoroutineDispatcher
+    ): LoadWithWorkersUseCase {
         return ProductsInteractorImpl(productsRepository, ioDispatcher)
     }
 }

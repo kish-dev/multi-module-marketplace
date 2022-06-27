@@ -10,4 +10,6 @@
     <string name="add_product_success">Product added successfully</string>
     <string name="fill_all_strokes">Fill all strokes</string>
     <string name="shared_preferences" translatable="false">SharedPreferences</string>
+    <string name="internet_error">Connection</string>
+    <string name="connection_error">Waiting for network</string>
 </resources>

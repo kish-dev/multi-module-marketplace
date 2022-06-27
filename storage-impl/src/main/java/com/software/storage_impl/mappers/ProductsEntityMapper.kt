@@ -1,7 +1,7 @@
 package com.software.storage_impl.mappers
 
-import com.software.core_utils.models.ProductDTO
-import com.software.core_utils.models.ProductInListDTO
+import com.software.feature_api.wrappers.ProductDTO
+import com.software.feature_api.wrappers.ProductInListDTO
 import com.software.storage_impl.models.ProductEntity
 import com.software.storage_impl.models.ProductInListEntity
 
@@ -81,11 +81,11 @@ fun ProductEntity.mapToProductInListEntity(): ProductInListEntity {
 fun addProductInListToListEntities(
     productEntity: ProductInListEntity,
     listEntity: MutableList<ProductInListEntity>?
-) : List<ProductInListEntity> =
-    when(listEntity?.findLast { it.guid == productEntity.guid }) {
+): List<ProductInListEntity> =
+    when (listEntity?.findLast { it.guid == productEntity.guid }) {
         null -> {
-            var resultList = mutableListOf<ProductInListEntity>()
-            if(listEntity == null) {
+            val resultList = mutableListOf<ProductInListEntity>()
+            if (listEntity == null) {
                 resultList.add(productEntity)
             }
             listEntity?.let {
@@ -105,11 +105,11 @@ fun addProductInListToListEntities(
 fun addProductToListEntities(
     productEntity: ProductEntity,
     listEntity: MutableList<ProductEntity>?
-) : List<ProductEntity> =
-    when(listEntity?.findLast { it.guid == productEntity.guid }) {
+): List<ProductEntity> =
+    when (listEntity?.findLast { it.guid == productEntity.guid }) {
         null -> {
-            var resultList = mutableListOf<ProductEntity>()
-            if(listEntity == null) {
+            val resultList = mutableListOf<ProductEntity>()
+            if (listEntity == null) {
                 resultList.add(productEntity)
             }
             listEntity?.let {
@@ -142,7 +142,8 @@ fun mapProductsInListDTOtoProductsInListEntity(
     listEntity: MutableList<ProductInListEntity>?
 ): List<ProductInListEntity> {
     val uniqueCacheItems = listEntity?.filter { entity -> listDTO.none { it.guid == entity.guid } }
-    return listDTO.map { it.mapToEntity(it.viewsCount) }.plus(uniqueCacheItems ?: emptyList()).sortedBy { it.name }
+    return listDTO.map { it.mapToEntity(it.viewsCount) }.plus(uniqueCacheItems ?: emptyList())
+        .sortedBy { it.name }
 }
 
 /**
@@ -160,7 +161,8 @@ fun mapProductsDTOtoProductsEntity(
     listEntity: MutableList<ProductEntity>?
 ): List<ProductEntity> {
     val uniqueCacheItems = listEntity?.filter { entity -> listDTO.none { it.guid == entity.guid } }
-    return listDTO.map { it.mapToEntity() }.plus(uniqueCacheItems ?: emptyList()).sortedBy { it.name }
+    return listDTO.map { it.mapToEntity() }.plus(uniqueCacheItems ?: emptyList())
+        .sortedBy { it.name }
 }
 
 

@@ -17,4 +17,4 @@ data class ProductEntity(
     val count: Int?,
     val availableCount: Int?,
     val additionalParams: Map<String, String>
-): Parcelable
+) : Parcelable

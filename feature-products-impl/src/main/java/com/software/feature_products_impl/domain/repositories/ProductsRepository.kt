@@ -1,7 +1,7 @@
 package com.software.feature_products_impl.domain.repositories
 
 import androidx.work.WorkInfo
-import com.software.core_utils.models.ProductInListDTO
+import com.software.feature_api.wrappers.ProductInListDTO
 import com.software.feature_api.wrappers.ServerResponse
 import kotlinx.coroutines.flow.Flow
 

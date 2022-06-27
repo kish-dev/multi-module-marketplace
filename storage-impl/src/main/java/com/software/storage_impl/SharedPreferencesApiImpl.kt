@@ -2,12 +2,11 @@ package com.software.storage_impl
 
 import android.content.Context
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.software.core_utils.Constants.PRODUCTS_IN_LIST_SP
 import com.software.core_utils.Constants.PRODUCTS_SP
-import com.software.core_utils.models.ProductDTO
-import com.software.core_utils.models.ProductInListDTO
-import com.software.core_utils.models.mapToProductInListDTO
+import com.software.feature_api.wrappers.ProductDTO
+import com.software.feature_api.wrappers.ProductInListDTO
+import com.software.feature_api.wrappers.mapToProductInListDTO
 import com.software.storage_api.SharedPreferencesApi
 import com.software.storage_impl.mappers.*
 import com.software.storage_impl.models.ProductEntity
@@ -143,7 +142,8 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
             it.viewsCount += 1
         }
         listEntity?.let {
-            val newJsonList = JSONConverterProductsInListEntity(gson).fromProductInListEntityList(it)
+            val newJsonList =
+                JSONConverterProductsInListEntity(gson).fromProductInListEntityList(it)
             sp.edit().putString(PRODUCTS_IN_LIST, newJsonList).apply()
         }
         return listEntity?.findLast { it.guid == guid }?.mapToDTO()

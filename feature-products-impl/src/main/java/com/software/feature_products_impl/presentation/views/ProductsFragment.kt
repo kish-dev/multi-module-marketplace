@@ -7,13 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.software.core_utils.R
+import com.software.core_utils.presentation.base.BaseFragment
 import com.software.core_utils.presentation.common.UiState
-import com.software.core_utils.presentation.viewModels.viewModelCreator
+import com.software.core_utils.presentation.view_models.viewModelCreator
 import com.software.feature_api.ProductsApi
+import com.software.feature_api.wrappers.ConnectionStatus
 import com.software.feature_products_api.ProductsNavigationApi
 import com.software.feature_products_impl.databinding.FragmentProductsBinding
 import com.software.feature_products_impl.di.components.ProductsFeatureComponent
@@ -22,9 +28,10 @@ import com.software.feature_products_impl.domain.interactors.ProductListUseCase
 import com.software.feature_products_impl.presentation.adapters.ProductsAdapter
 import com.software.feature_products_impl.presentation.view_holders.ProductViewHolder
 import com.software.feature_products_impl.presentation.view_models.ProductsViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class ProductsFragment : Fragment() {
+class ProductsFragment : BaseFragment() {
 
     private var _binding: FragmentProductsBinding? = null
     private val binding
@@ -102,7 +109,7 @@ class ProductsFragment : Fragment() {
             }
 
             swipeRefreshLayout.setOnRefreshListener {
-                swipeRefreshListener
+                productsViewModel.getProducts()
             }
 
             addProductButton.setOnClickListener {
@@ -112,6 +119,32 @@ class ProductsFragment : Fragment() {
     }
 
     private fun initObservers() {
+        observeNetworkConnection(binding.connectionProblems)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                connectionStateApi.getConnectionStatusFlow().collect {
+                    val internetAndConnectionTV =
+                        binding.connectionProblems.findViewById<AppCompatTextView>(R.id.internetErrorAndConnectionTV)
+                    when (it) {
+                        is ConnectionStatus.Success -> {
+                            binding.connectionProblems.isVisible = false
+                        }
+
+                        is ConnectionStatus.ConnectionError -> {
+                            internetAndConnectionTV.text = getString(R.string.connection_error)
+                            binding.connectionProblems.isVisible = true
+                        }
+
+                        is ConnectionStatus.InternetError -> {
+                            internetAndConnectionTV.text = getString(R.string.connection_error)
+                            binding.connectionProblems.isVisible = true
+                        }
+                    }
+                }
+            }
+        }
+
         productsViewModel.productLD.observe(viewLifecycleOwner) {
             when (it) {
                 is UiState.Loading, is UiState.Init -> {

@@ -1,6 +1,8 @@
 package com.software.core_network_impl.di
 
+import android.content.Context
 import com.software.feature_api.NetworkApi
+import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
 
@@ -15,10 +17,11 @@ abstract class CoreNetworkComponent : NetworkApi {
             private set
 
         @Synchronized
-        fun initAndGet() =
+        fun initAndGet(appContext: Context) =
             when (networkComponent) {
                 null -> {
                     networkComponent = DaggerCoreNetworkComponent.builder()
+                        .appContext(appContext)
                         .build()
                     networkComponent
                 }
@@ -28,5 +31,12 @@ abstract class CoreNetworkComponent : NetworkApi {
                 }
             }
 
+    }
+
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        fun appContext(appContext: Context): Builder
+        fun build(): CoreNetworkComponent
     }
 }

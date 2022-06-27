@@ -7,7 +7,7 @@ import java.lang.reflect.Type
 
 class JSONConverterProductsEntity(private val gson: Gson) {
     fun fromProductsListEntity(productsEntities: List<ProductEntity>?): String? {
-        if(productsEntities == null) {
+        if (productsEntities == null) {
             return null
         }
         val type: Type = object : TypeToken<List<ProductEntity>>() {}.type
@@ -15,7 +15,7 @@ class JSONConverterProductsEntity(private val gson: Gson) {
     }
 
     fun toProductsListEntity(productsEntitiesString: String?): List<ProductEntity>? {
-        if(productsEntitiesString == null) {
+        if (productsEntitiesString == null) {
             return null
         }
         val type: Type = object : TypeToken<List<ProductEntity>>() {}.type

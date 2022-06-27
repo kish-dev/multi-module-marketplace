@@ -28,7 +28,7 @@ class ProductsNavigationImpl @Inject constructor() : ProductsNavigationApi {
                     .beginTransaction()
                     .replace(
                         R.id.fragmentContainer,
-                        newFragment,
+                        newFragment as Fragment,
                         PDPFragment::class.java.simpleName
                     )
                     .addToBackStack(fragment.javaClass.simpleName)
@@ -51,7 +51,7 @@ class ProductsNavigationImpl @Inject constructor() : ProductsNavigationApi {
                     .beginTransaction()
                     .replace(
                         R.id.fragmentContainer,
-                        newFragment,
+                        newFragment as Fragment,
                         AddProductFragment::class.java.simpleName
                     )
                     .addToBackStack(fragment.javaClass.simpleName)
