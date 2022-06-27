@@ -77,6 +77,11 @@ class ProductsFragment : Fragment() {
         initObservers()
     }
 
+    override fun onResume() {
+        super.onResume()
+        productsViewModel.getProducts()
+    }
+
     private fun initViews() {
         with(binding) {
             productsRV.apply {

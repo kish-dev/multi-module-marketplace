@@ -33,10 +33,6 @@ class ProductsViewModel(
         MutableLiveData(UiState.Init())
     var lastChangedProduct: MutableLiveData<UiState<ProductInListVO>> = _lastChangedProduct
 
-    init {
-        getProducts()
-    }
-
     fun getProducts() {
         viewModelScope.launch(Dispatchers.Main) {
             _productLD.value = UiState.Loading()
