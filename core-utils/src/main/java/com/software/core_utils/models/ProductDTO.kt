@@ -1,4 +1,4 @@
-package com.software.feature_api.models
+package com.software.core_utils.models
 
 data class ProductDTO(
     val guid: String,
@@ -14,3 +14,19 @@ data class ProductDTO(
     val availableCount: Int?,
     val additionalParams: Map<String, String>
 )
+
+fun ProductDTO.mapToProductInListDTO(): ProductInListDTO {
+    return ProductInListDTO(
+        guid = guid,
+        image = images[0],
+        name = name,
+        price = price,
+        rating = rating,
+        isFavorite = isFavorite,
+        isInCart = isInCart,
+        viewsCount = 0,
+    )
+}
+
+
+

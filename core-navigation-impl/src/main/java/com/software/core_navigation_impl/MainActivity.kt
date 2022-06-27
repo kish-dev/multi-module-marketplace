@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun navigateProduct() {
         if (FeatureInjectorProxy.isFirst) {
-            FeatureInjectorProxy.initFeatureProductsDI()
+            FeatureInjectorProxy.initFeatureProductsDI(this.applicationContext)
             val newFragment = ProductsFragment()
             supportFragmentManager
                 .beginTransaction()
@@ -35,17 +35,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun restoreComponents() {
-        FeatureInjectorProxy.initFeatureProductsDI()
-        if(!FeatureInjectorProxy.isFirst) {
+        FeatureInjectorProxy.initFeatureProductsDI(this.applicationContext)
+        if (!FeatureInjectorProxy.isFirst) {
             for (i in 0 until supportFragmentManager.backStackEntryCount) {
                 val entry = supportFragmentManager.getBackStackEntryAt(i)
                 entry.name?.let {
                     when (it) {
                         PDPFragment::class.java.simpleName ->
-                            FeatureInjectorProxy.initFeaturePDPDI()
+                            FeatureInjectorProxy.initFeaturePDPDI(this.applicationContext)
 
                         AddProductFragment::class.java.simpleName ->
-                            FeatureInjectorProxy.initFeatureAddProductDI()
+                            FeatureInjectorProxy.initFeatureAddProductDI(this.applicationContext)
                     }
                 }
             }

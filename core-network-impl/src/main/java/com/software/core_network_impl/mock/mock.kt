@@ -1,7 +1,7 @@
 package com.software.core_network_impl.mock
 
-import com.software.feature_api.models.ProductDTO
-import com.software.feature_api.models.ProductInListDTO
+import com.software.core_utils.models.ProductDTO
+import com.software.core_utils.models.ProductInListDTO
 
 
 val productInListDTOs = mutableListOf(
@@ -45,7 +45,7 @@ val productInListDTOs = mutableListOf(
         isInCart = false,
         viewsCount = 0
     ),
-   ProductInListDTO(
+    ProductInListDTO(
         guid = "493ef2ba-cd2f-4ca5-b3af-f9091115700e",
         image = "https://cdn1.ozone.ru/s3/multimedia-z/6267606395.jpg",
         name = "Мармелад клюква с ягелем",

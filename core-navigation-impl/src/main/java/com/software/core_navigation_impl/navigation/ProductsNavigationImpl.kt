@@ -9,10 +9,10 @@ import com.software.feature_products_api.ProductsNavigationApi
 import com.software.feature_products_impl.presentation.views.ProductsFragment
 import javax.inject.Inject
 
-class ProductsNavigationImpl @Inject constructor(): ProductsNavigationApi {
+class ProductsNavigationImpl @Inject constructor() : ProductsNavigationApi {
 
     override fun isClosed(fragment: Fragment): Boolean {
-        return if(fragment.javaClass.simpleName != ProductsFragment::class.simpleName) {
+        return if (fragment.javaClass.simpleName != ProductsFragment::class.simpleName) {
             fragment.activity?.supportFragmentManager?.findFragmentByTag(ProductsFragment::class.java.simpleName) == null
         } else {
             true
@@ -20,24 +20,49 @@ class ProductsNavigationImpl @Inject constructor(): ProductsNavigationApi {
     }
 
     override fun navigateToPDP(fragment: Fragment, guid: String) {
-        FeatureInjectorProxy.initFeaturePDPDI()
-        val newFragment = PDPFragment.newInstance(guid)
-        fragment.activity
-            ?.supportFragmentManager
-            ?.beginTransaction()
-            ?.replace(R.id.fragmentContainer, newFragment, PDPFragment::class.java.simpleName)
-            ?.addToBackStack(fragment.javaClass.simpleName)
-            ?.commit()
+        if (fragment.activity != null) {
+            fragment.activity?.let {
+                FeatureInjectorProxy.initFeaturePDPDI(it.applicationContext)
+                val newFragment = PDPFragment.newInstance(guid)
+                it.supportFragmentManager
+                    .beginTransaction()
+                    .replace(
+                        R.id.fragmentContainer,
+                        newFragment,
+                        PDPFragment::class.java.simpleName
+                    )
+                    .addToBackStack(fragment.javaClass.simpleName)
+                    .commit()
+            }
+        } else {
+            throw NullPointerException(
+                "Fragment($fragment) activity is null," +
+                        " fragment.activity=${fragment.activity}"
+            )
+        }
     }
 
     override fun navigateToAddProduct(fragment: Fragment) {
-        FeatureInjectorProxy.initFeatureAddProductDI()
-        val newFragment = AddProductFragment()
-        fragment.activity
-            ?.supportFragmentManager
-            ?.beginTransaction()
-            ?.replace(R.id.fragmentContainer, newFragment, AddProductFragment::class.java.simpleName)
-            ?.addToBackStack(fragment.javaClass.simpleName)
-            ?.commit()
+        if (fragment.activity != null) {
+            fragment.activity?.let {
+                FeatureInjectorProxy.initFeatureAddProductDI(it.applicationContext)
+                val newFragment = AddProductFragment()
+                it.supportFragmentManager
+                    .beginTransaction()
+                    .replace(
+                        R.id.fragmentContainer,
+                        newFragment,
+                        AddProductFragment::class.java.simpleName
+                    )
+                    .addToBackStack(fragment.javaClass.simpleName)
+                    .commit()
+            }
+        } else {
+            throw NullPointerException(
+                "Fragment($fragment) activity is null," +
+                        " fragment.activity=${fragment.activity}"
+            )
+        }
+
     }
 }

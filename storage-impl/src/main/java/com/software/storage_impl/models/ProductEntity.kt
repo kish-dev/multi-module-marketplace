@@ -1,8 +1,10 @@
-package com.software.feature_pdp_impl.presentation.view_objects
+package com.software.storage_impl.models
 
-import java.util.*
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
-data class ProductVO(
+@Parcelize
+data class ProductEntity(
     val guid: String,
     val name: String,
     val price: String,
@@ -15,4 +17,4 @@ data class ProductVO(
     val count: Int?,
     val availableCount: Int?,
     val additionalParams: Map<String, String>
-)
+): Parcelable

@@ -1,13 +1,14 @@
 package com.software.feature_products_impl.di.components
 
+import android.content.Context
 import android.util.Log
 import com.software.core_utils.di.PerFeature
 import com.software.feature_products_impl.di.modules.InteractorModule
 import com.software.feature_products_impl.di.modules.ProductsFeatureDependencies
 import com.software.feature_products_impl.di.modules.RepositoryModule
 import com.software.feature_products_impl.presentation.views.ProductsFragment
+import dagger.BindsInstance
 import dagger.Component
-import java.lang.RuntimeException
 
 @Component(
     modules = [InteractorModule::class, RepositoryModule::class],
@@ -23,10 +24,14 @@ abstract class ProductsFeatureComponent {
             private set
 
         @Synchronized
-        fun initAndGet(productsFeatureDependencies: ProductsFeatureDependencies): ProductsFeatureComponent? =
-            when(productsFeatureComponent) {
+        fun initAndGet(
+            productsFeatureDependencies: ProductsFeatureDependencies,
+            appContext: Context
+        ): ProductsFeatureComponent? =
+            when (productsFeatureComponent) {
                 null -> {
                     productsFeatureComponent = DaggerProductsFeatureComponent.builder()
+                        .appContext(appContext)
                         .productsFeatureDependencies(productsFeatureDependencies)
                         .build()
                     productsFeatureComponent
@@ -39,7 +44,7 @@ abstract class ProductsFeatureComponent {
             }
 
         fun get(): ProductsFeatureComponent? =
-            when(productsFeatureComponent) {
+            when (productsFeatureComponent) {
                 null -> {
                     throw RuntimeException("You must call 'initAndGet(productFeatureDependencies: ProductFeatureDependencies)' method")
                 }
@@ -54,6 +59,15 @@ abstract class ProductsFeatureComponent {
             Log.d("initFeatureProductsDI", "reset: ")
         }
 
+    }
+
+    @Component.Builder
+    interface Builder {
+
+        @BindsInstance
+        fun appContext(appContext: Context): Builder
+        fun productsFeatureDependencies(productsFeatureDependencies: ProductsFeatureDependencies): Builder
+        fun build(): ProductsFeatureComponent
     }
 
     abstract fun inject(fragment: ProductsFragment)

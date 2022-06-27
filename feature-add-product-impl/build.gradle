@@ -7,11 +7,11 @@ plugins {
 apply from: "../dependencies.gradle"
 
 android {
-    compileSdk 31
+    compileSdk sdkVersion
 
     defaultConfig {
         minSdk 24
-        targetSdk 31
+        targetSdk sdkVersion
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -42,8 +42,12 @@ dependencies {
     implementation project(":core-utils")
     implementation project(":core-network-api")
     implementation project(":feature-add-product-api")
+    implementation project(":storage-api")
 
-
+    implementation junit
+    testImplementation junit
+    androidTestImplementation androidTestJunit
+    androidTestImplementation espresso
     implementation coreKtx
     implementation appCompat
     implementation material

@@ -1,14 +1,21 @@
 package com.software.feature_products_impl.di.modules
 
-import com.software.core_utils.di.PerFeature
+import android.content.Context
 import com.software.feature_products_impl.data.ProductsRepositoryImpl
 import com.software.feature_products_impl.domain.repositories.ProductsRepository
-import dagger.Binds
+import com.software.storage_api.StorageApi
 import dagger.Module
+import dagger.Provides
 
 @Module
-interface RepositoryModule {
+class RepositoryModule {
 
-    @Binds
-    fun bindRepository(repository: ProductsRepositoryImpl): ProductsRepository
+    @Provides
+    fun provideRepository(
+        storageApi: StorageApi,
+        appContext: Context
+    ): ProductsRepository {
+        return ProductsRepositoryImpl(storageApi.getSharedPreferencesApi(), appContext)
+    }
+
 }

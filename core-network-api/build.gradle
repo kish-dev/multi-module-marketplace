@@ -1,14 +1,17 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-android-extensions'
 }
 
+apply from: "../dependencies.gradle"
+
 android {
-    compileSdk 31
+    compileSdk sdkVersion
 
     defaultConfig {
         minSdk 24
-        targetSdk 31
+        targetSdk sdkVersion
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -30,5 +33,13 @@ android {
 }
 
 dependencies {
+    implementation project(":core-utils")
+
+    implementation retrofit
+    implementation retrofitConverter
+    implementation junit
+    testImplementation junit
+    androidTestImplementation androidTestJunit
+    androidTestImplementation espresso
 
 }

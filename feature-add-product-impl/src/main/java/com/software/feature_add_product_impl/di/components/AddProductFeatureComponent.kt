@@ -6,7 +6,6 @@ import com.software.feature_add_product_impl.di.modules.AddProductInteractorModu
 import com.software.feature_add_product_impl.di.modules.RepositoryModule
 import com.software.feature_add_product_impl.presentation.views.AddProductFragment
 import dagger.Component
-import java.lang.RuntimeException
 
 @Component(
     modules = [AddProductInteractorModule::class, RepositoryModule::class],
@@ -23,7 +22,7 @@ abstract class AddProductFeatureComponent {
 
         @Synchronized
         fun initAndGet(addProductFeatureDependencies: AddProductFeatureDependencies): AddProductFeatureComponent? =
-            when(addProductFeatureComponent) {
+            when (addProductFeatureComponent) {
                 null -> {
                     addProductFeatureComponent = DaggerAddProductFeatureComponent.builder()
                         .addProductFeatureDependencies(addProductFeatureDependencies)
@@ -38,7 +37,7 @@ abstract class AddProductFeatureComponent {
             }
 
         fun get(): AddProductFeatureComponent? =
-            when(addProductFeatureComponent) {
+            when (addProductFeatureComponent) {
                 null -> {
                     throw RuntimeException("You must call 'initAndGet(addProductFeatureDependencies: AddProductFeatureDependencies)' method")
                 }

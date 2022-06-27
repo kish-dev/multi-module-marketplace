@@ -1,4 +1,4 @@
-package com.software.feature_api.models
+package com.software.core_utils.models
 
 data class ProductInListDTO(
     val guid: String,
@@ -10,6 +10,8 @@ data class ProductInListDTO(
     val isInCart: Boolean,
     var viewsCount: Int,
 )
+
+
 
 
 

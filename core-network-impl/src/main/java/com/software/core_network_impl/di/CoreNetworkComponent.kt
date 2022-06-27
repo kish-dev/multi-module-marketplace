@@ -6,4 +6,27 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [NetworkModule::class])
-interface CoreNetworkComponent : NetworkApi
+abstract class CoreNetworkComponent : NetworkApi {
+
+    companion object {
+
+        @Volatile
+        var networkComponent: CoreNetworkComponent? = null
+            private set
+
+        @Synchronized
+        fun initAndGet() =
+            when (networkComponent) {
+                null -> {
+                    networkComponent = DaggerCoreNetworkComponent.builder()
+                        .build()
+                    networkComponent
+                }
+
+                else -> {
+                    networkComponent
+                }
+            }
+
+    }
+}

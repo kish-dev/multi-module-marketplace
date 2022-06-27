@@ -8,12 +8,12 @@ plugins {
 apply from: "../dependencies.gradle"
 
 android {
-    compileSdk 31
+    compileSdk sdkVersion
 
     defaultConfig {
         applicationId "ru.ozon.route256.marketplace"
         minSdk 24
-        targetSdk 31
+        targetSdk sdkVersion
         versionCode 1
         versionName "1.0"
 
@@ -47,7 +47,12 @@ dependencies {
     implementation project(":core-navigation-impl")
     implementation project(":feature-add-product-api")
     implementation project(":feature-add-product-impl")
+    implementation project(":storage-api")
+    implementation project(":storage-impl")
+    implementation project(":worker-api")
+    implementation project(":worker")
 
+    implementation coroutineWorker
     implementation coreKtx
     implementation appCompat
     implementation material
@@ -56,6 +61,10 @@ dependencies {
     implementation lifecycle
     implementation liveData
     implementation glide
+    implementation junit
+    testImplementation junit
+    androidTestImplementation androidTestJunit
+    androidTestImplementation espresso
 
     implementation dagger
     kapt daggerCompiler

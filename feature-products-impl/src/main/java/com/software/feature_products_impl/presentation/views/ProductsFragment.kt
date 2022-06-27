@@ -9,12 +9,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.software.core_utils.R
 import com.software.core_utils.presentation.common.UiState
 import com.software.core_utils.presentation.viewModels.viewModelCreator
+import com.software.feature_api.ProductsApi
 import com.software.feature_products_api.ProductsNavigationApi
 import com.software.feature_products_impl.databinding.FragmentProductsBinding
 import com.software.feature_products_impl.di.components.ProductsFeatureComponent
+import com.software.feature_products_impl.domain.interactors.LoadWithWorkersUseCase
 import com.software.feature_products_impl.domain.interactors.ProductListUseCase
 import com.software.feature_products_impl.presentation.adapters.ProductsAdapter
 import com.software.feature_products_impl.presentation.view_holders.ProductViewHolder
@@ -28,17 +31,29 @@ class ProductsFragment : Fragment() {
         get() = _binding!!
 
     @Inject
+    lateinit var productsApi: ProductsApi
+
+    @Inject
     lateinit var productsInteractor: ProductListUseCase
 
     @Inject
     lateinit var productsNavigationApi: ProductsNavigationApi
 
+    @Inject
+    lateinit var loadInteractor: LoadWithWorkersUseCase
+
     private val productsViewModel: ProductsViewModel by viewModelCreator {
         ProductsViewModel(
             productsInteractor,
+            loadInteractor,
             productsNavigationApi
         )
     }
+
+    private val swipeRefreshListener = SwipeRefreshLayout.OnRefreshListener {
+        productsViewModel.getProducts()
+    }
+
     private val productsAdapter: ProductsAdapter by lazy {
         ProductsAdapter(object : ProductsAdapter.Listener {
             override fun onClickProduct(holder: ProductViewHolder, productId: String) {
@@ -51,6 +66,7 @@ class ProductsFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         ProductsFeatureComponent.productsFeatureComponent?.inject(this)
+        productsApi
     }
 
     override fun onCreateView(
@@ -67,6 +83,16 @@ class ProductsFragment : Fragment() {
         initObservers()
     }
 
+    override fun onResume() {
+        super.onResume()
+        with(binding) {
+            swipeRefreshLayout.post {
+                swipeRefreshLayout.isRefreshing = true
+                swipeRefreshListener.onRefresh()
+            }
+        }
+    }
+
     private fun initViews() {
         with(binding) {
             productsRV.apply {
@@ -76,7 +102,7 @@ class ProductsFragment : Fragment() {
             }
 
             swipeRefreshLayout.setOnRefreshListener {
-                productsViewModel.getProducts()
+                swipeRefreshListener
             }
 
             addProductButton.setOnClickListener {

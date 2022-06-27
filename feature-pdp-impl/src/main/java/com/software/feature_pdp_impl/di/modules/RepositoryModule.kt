@@ -2,12 +2,15 @@ package com.software.feature_pdp_impl.di.modules
 
 import com.software.feature_pdp_impl.data.PDPRepositoryImpl
 import com.software.feature_pdp_impl.domain.repository.PDPRepository
-import dagger.Binds
+import com.software.storage_api.StorageApi
 import dagger.Module
+import dagger.Provides
 
 @Module
-interface RepositoryModule {
+class RepositoryModule {
 
-    @Binds
-    fun bindPDPRepository(repository: PDPRepositoryImpl): PDPRepository
+    @Provides
+    fun providePDPRepository(storageApi: StorageApi): PDPRepository {
+        return PDPRepositoryImpl(storageApi.getSharedPreferencesApi())
+    }
 }

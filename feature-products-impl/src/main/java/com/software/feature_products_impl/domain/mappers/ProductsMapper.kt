@@ -1,7 +1,7 @@
 package com.software.feature_products_impl.domain.mappers
 
-import com.software.feature_api.models.ProductDTO
-import com.software.feature_api.models.ProductInListDTO
+import com.software.core_utils.models.ProductDTO
+import com.software.core_utils.models.ProductInListDTO
 import com.software.feature_products_impl.presentation.view_objects.ProductInListVO
 
 fun ProductInListDTO.mapToVO(): ProductInListVO {

@@ -8,11 +8,11 @@ plugins {
 apply from: "../dependencies.gradle"
 
 android {
-    compileSdk 31
+    compileSdk sdkVersion
 
     defaultConfig {
         minSdk 24
-        targetSdk 31
+        targetSdk sdkVersion
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -35,7 +35,15 @@ android {
 
 dependencies {
     implementation project(":core-network-api")
+    implementation project(":core-utils")
 
+    implementation junit
+    testImplementation junit
+    androidTestImplementation androidTestJunit
+    androidTestImplementation espresso
+    implementation retrofit
+    implementation retrofitConverter
+    implementation okHttp
     implementation dagger
     kapt daggerCompiler
 }

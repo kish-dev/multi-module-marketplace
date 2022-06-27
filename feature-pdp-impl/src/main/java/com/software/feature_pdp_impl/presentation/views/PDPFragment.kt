@@ -11,16 +11,16 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.SnapHelper
-import com.software.core_utils.presentation.viewModels.viewModelCreator
-import com.software.feature_pdp_api.PDPNavigationApi
 import com.software.core_utils.R
 import com.software.core_utils.presentation.common.UiState
+import com.software.core_utils.presentation.viewModels.viewModelCreator
+import com.software.core_utils.presentation.view_objects.ProductVO
+import com.software.feature_pdp_api.PDPNavigationApi
 import com.software.feature_pdp_impl.databinding.PdpFragmentBinding
 import com.software.feature_pdp_impl.di.components.PDPFeatureComponent
 import com.software.feature_pdp_impl.domain.interactors.ProductDetailUseCase
 import com.software.feature_pdp_impl.presentation.adapters.ProductImageAdapter
 import com.software.feature_pdp_impl.presentation.view_models.PDPViewModel
-import com.software.feature_pdp_impl.presentation.view_objects.ProductVO
 import javax.inject.Inject
 
 class PDPFragment : Fragment() {
@@ -131,8 +131,8 @@ class PDPFragment : Fragment() {
     }
 
     override fun onPause() {
-        if(isRemoving) {
-            if(pdpNavigationApi.isClosed(this)) {
+        if (isRemoving) {
+            if (pdpNavigationApi.isClosed(this)) {
                 PDPFeatureComponent.reset()
             }
         }
