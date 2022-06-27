@@ -1,7 +1,9 @@
 package com.software.feature_products_impl.domain.interactors
 
 import androidx.work.WorkInfo
-import com.software.core_utils.models.ServerResponse
+import com.software.core_utils.di.PerFeature
+import com.software.core_utils.models.DomainWrapper
+import com.software.feature_api.wrappers.ServerResponse
 import com.software.feature_products_impl.domain.mappers.mapToVO
 import com.software.feature_products_impl.domain.repositories.ProductsRepository
 import com.software.feature_products_impl.presentation.view_objects.ProductInListVO
@@ -9,33 +11,34 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
+@PerFeature
 class ProductsInteractorImpl(
     private val productsRepository: ProductsRepository,
     private val dispatcher: CoroutineDispatcher
-) : ProductListUseCase {
+) : ProductListUseCase, LoadWithWorkersUseCase {
 
-    override suspend fun getProducts(): ServerResponse<List<ProductInListVO>> =
+    override suspend fun getProducts(): DomainWrapper<List<ProductInListVO>> =
         withContext(dispatcher) {
             when (val products = productsRepository.getProducts()) {
                 is ServerResponse.Success -> {
-                    ServerResponse.Success(products.value.map { it.mapToVO() })
+                    DomainWrapper.Success(products.value.map { it.mapToVO() })
                 }
 
                 is ServerResponse.Error -> {
-                    ServerResponse.Error(products.throwable)
+                    DomainWrapper.Error(products.throwable)
                 }
             }
         }
 
-    override suspend fun addViewToProductInList(guid: String): ServerResponse<ProductInListVO> =
+    override suspend fun addViewToProductInList(guid: String): DomainWrapper<ProductInListVO> =
         withContext(dispatcher) {
             when (val product = productsRepository.addViewToProductInList(guid)) {
                 is ServerResponse.Success -> {
-                    ServerResponse.Success(product.value.mapToVO())
+                    DomainWrapper.Success(product.value.mapToVO())
                 }
 
                 is ServerResponse.Error -> {
-                    ServerResponse.Error(product.throwable)
+                    DomainWrapper.Error(product.throwable)
                 }
             }
         }

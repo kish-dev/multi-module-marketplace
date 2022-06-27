@@ -1,6 +1,6 @@
 package com.software.core_network_impl.call_adapters
 
-import com.software.core_utils.models.ServerResponse
+import com.software.feature_api.wrappers.ServerResponse
 import okhttp3.Request
 import okio.IOException
 import okio.Timeout

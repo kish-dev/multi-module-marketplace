@@ -1,7 +1,9 @@
 ext {
     general = [
-            applicationId: "ru.ozon.route256.marketplace"
+            applicationId: "ru.ozon.route256.marketplace",
     ]
+
+    sdkVersion = 32
 
     versions = [
             kotlin                : '1.6.10',
