@@ -34,8 +34,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
         val jsonList = sp.getString(PRODUCTS, "")
         var listEntity: MutableList<ProductEntity>? = null
         jsonList?.let {
-            listEntity =
-                Gson().fromJson(jsonList, object : TypeToken<List<ProductEntity?>?>() {}.type)
+            listEntity = JSONConverterProductsEntity(gson).toProductsListEntity(it)?.toMutableList()
         }
         val result = JSONConverterProductsEntity(gson).fromProductsListEntity(
             mapProductsDTOtoProductsEntity(
