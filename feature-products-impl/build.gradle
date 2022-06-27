@@ -7,7 +7,7 @@ plugins {
 apply from: "../dependencies.gradle"
 
 android {
-    compileSdkVersion sdkVersion
+    compileSdk sdkVersion
 
     defaultConfig {
         minSdk 24
@@ -46,8 +46,6 @@ dependencies {
     implementation project(":worker")
     implementation project(":storage-api")
 
-    implementation viewModelSavedState
-    implementation lifecycleCommon
     implementation junit
     testImplementation junit
     androidTestImplementation androidTestJunit

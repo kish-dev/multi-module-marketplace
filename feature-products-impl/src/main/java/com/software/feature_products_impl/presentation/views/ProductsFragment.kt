@@ -9,9 +9,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.software.core_utils.R
 import com.software.core_utils.presentation.common.UiState
-import com.software.core_utils.presentation.view_models.viewModelCreator
+import com.software.core_utils.presentation.viewModels.viewModelCreator
 import com.software.feature_api.ProductsApi
 import com.software.feature_products_api.ProductsNavigationApi
 import com.software.feature_products_impl.databinding.FragmentProductsBinding
@@ -36,18 +37,23 @@ class ProductsFragment : Fragment() {
     lateinit var productsInteractor: ProductListUseCase
 
     @Inject
-    lateinit var loadWithWorkersInteractor: LoadWithWorkersUseCase
+    lateinit var productsNavigationApi: ProductsNavigationApi
 
     @Inject
-    lateinit var productsNavigationApi: ProductsNavigationApi
+    lateinit var loadInteractor: LoadWithWorkersUseCase
 
     private val productsViewModel: ProductsViewModel by viewModelCreator {
         ProductsViewModel(
             productsInteractor,
-            loadWithWorkersInteractor,
+            loadInteractor,
             productsNavigationApi
         )
     }
+
+    private val swipeRefreshListener = SwipeRefreshLayout.OnRefreshListener {
+        productsViewModel.getProducts()
+    }
+
     private val productsAdapter: ProductsAdapter by lazy {
         ProductsAdapter(object : ProductsAdapter.Listener {
             override fun onClickProduct(holder: ProductViewHolder, productId: String) {
@@ -79,7 +85,12 @@ class ProductsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        productsViewModel.autoUpdateProducts()
+        with(binding) {
+            swipeRefreshLayout.post {
+                swipeRefreshLayout.isRefreshing = true
+                swipeRefreshListener.onRefresh()
+            }
+        }
     }
 
     private fun initViews() {
@@ -91,7 +102,7 @@ class ProductsFragment : Fragment() {
             }
 
             swipeRefreshLayout.setOnRefreshListener {
-                productsViewModel.getProducts()
+                swipeRefreshListener
             }
 
             addProductButton.setOnClickListener {
@@ -157,7 +168,6 @@ class ProductsFragment : Fragment() {
         if (isRemoving) {
             if (productsNavigationApi.isClosed(this)) {
                 ProductsFeatureComponent.reset()
-                productsViewModel.stopAutoUpdate()
             }
         }
         super.onPause()

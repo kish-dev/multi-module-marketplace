@@ -5,12 +5,11 @@ import com.google.gson.reflect.TypeToken
 import com.software.storage_impl.models.ProductInListEntity
 import java.lang.reflect.Type
 
-object JSONConverterProductsInListEntity {
+class JSONConverterProductsInListEntity(private val gson: Gson) {
     fun fromProductInListEntityList(productInListEntities: List<ProductInListEntity>?): String? {
         if (productInListEntities == null) {
             return null
         }
-        val gson = Gson()
         val type: Type = object : TypeToken<List<ProductInListEntity>>() {}.type
         return gson.toJson(productInListEntities, type)
     }
@@ -19,7 +18,6 @@ object JSONConverterProductsInListEntity {
         if(productInListEntitiesString == null) {
             return null
         }
-        val gson = Gson()
         val type: Type = object : TypeToken<List<ProductInListEntity>>() {}.type
         return gson.fromJson(productInListEntitiesString, type)
     }

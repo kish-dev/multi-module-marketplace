@@ -15,15 +15,14 @@ class AddProductInteractorImpl(
 
     override suspend fun addProductToAllPlaces(product: ProductVO) =
         withContext(dispatcher) {
-            when(val result = addProductRepository.addProduct(product.mapToDTO())) {
+            when (val response = addProductRepository.addProduct(product.mapToDTO())) {
                 is ServerResponse.Success -> {
-                    DomainWrapper.Success(result.value)
+                    DomainWrapper.Success(response.value)
                 }
 
                 is ServerResponse.Error -> {
-                    DomainWrapper.Error(result.throwable)
+                    DomainWrapper.Error(response.throwable)
                 }
             }
-
         }
 }

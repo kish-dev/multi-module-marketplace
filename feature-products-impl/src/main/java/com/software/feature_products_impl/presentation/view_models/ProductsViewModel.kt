@@ -8,25 +8,22 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.WorkInfo
 import com.software.core_utils.models.DomainWrapper
 import com.software.core_utils.presentation.common.UiState
-import com.software.core_utils.presentation.common.safeLaunch
 import com.software.feature_products_api.ProductsNavigationApi
 import com.software.feature_products_impl.domain.interactors.LoadWithWorkersUseCase
 import com.software.feature_products_impl.domain.interactors.ProductListUseCase
 import com.software.feature_products_impl.presentation.view_objects.ProductInListVO
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ProductsViewModel(
-    private val productsInteractor: ProductListUseCase,
-    private val loadWithWorkersInteractor: LoadWithWorkersUseCase,
+    private val interactor: ProductListUseCase,
+    private val loadInteractor: LoadWithWorkersUseCase,
     private val router: ProductsNavigationApi
 ) : ViewModel() {
 
     companion object {
         private val TAG = ProductsViewModel::class.java.simpleName
     }
-
-    private val five_minutes = 300000L
-    private var autoUpdateJob : Job? = null
 
     private val _productLD: MutableLiveData<UiState<List<ProductInListVO>>> =
         MutableLiveData(UiState.Init())
@@ -36,25 +33,11 @@ class ProductsViewModel(
         MutableLiveData(UiState.Init())
     var lastChangedProduct: MutableLiveData<UiState<ProductInListVO>> = _lastChangedProduct
 
-    init {
-        getProducts()
-    }
-
-    fun autoUpdateProducts() {
-        autoUpdateJob = viewModelScope.safeLaunch(Dispatchers.IO) {
-            Log.d(TAG, "autoUpdateProducts: inViewModelScope")
-            delay(five_minutes)
-            getProducts()
-            autoUpdateProducts()
-        }
-        Log.d(TAG, "autoUpdateProducts: afterViewModelScope")
-    }
-
     fun getProducts() {
-        viewModelScope.safeLaunch(Dispatchers.Main) {
+        viewModelScope.launch(Dispatchers.Main) {
             _productLD.value = UiState.Loading()
 
-            val responseFlow = loadWithWorkersInteractor.loadProducts()
+            val responseFlow = loadInteractor.loadProducts()
             responseFlow.collect {
                 when (it.state) {
                     WorkInfo.State.SUCCEEDED -> {
@@ -73,8 +56,7 @@ class ProductsViewModel(
 
                     WorkInfo.State.CANCELLED -> {
                         Log.d(TAG, "WorkInfo.State.CANCELLED: ")
-                        _productLD.value =
-                            UiState.Error(Throwable("Something went wrong, CANCELLED"))
+                        _productLD.value = UiState.Error(Throwable("Something went wrong, CANCELLED"))
                     }
 
                     WorkInfo.State.ENQUEUED -> {
@@ -90,8 +72,8 @@ class ProductsViewModel(
     }
 
     private fun updateUiState() {
-        viewModelScope.safeLaunch(Dispatchers.Main) {
-            when (val products = productsInteractor.getProducts()) {
+        viewModelScope.launch(Dispatchers.Main) {
+            when (val products = interactor.getProducts()) {
                 is DomainWrapper.Success -> {
                     _productLD.value =
                         UiState.Success(products.value)
@@ -105,9 +87,9 @@ class ProductsViewModel(
     }
 
     fun addViewCount(guid: String) {
-        viewModelScope.safeLaunch(Dispatchers.Main) {
+        viewModelScope.launch(Dispatchers.Main) {
             _lastChangedProduct.value = UiState.Loading()
-            when (val product = productsInteractor.addViewToProductInList(guid)) {
+            when (val product = interactor.addViewToProductInList(guid)) {
                 is DomainWrapper.Success -> {
                     _lastChangedProduct.value =
                         UiState.Success(product.value)
@@ -118,9 +100,5 @@ class ProductsViewModel(
                 }
             }
         }
-    }
-
-    fun stopAutoUpdate() {
-        autoUpdateJob?.cancel("Fragment invoke this method")
     }
 }

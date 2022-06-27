@@ -7,7 +7,7 @@ plugins {
 apply from: "../dependencies.gradle"
 
 android {
-    compileSdkVersion sdkVersion
+    compileSdk sdkVersion
 
     defaultConfig {
         minSdk 24
