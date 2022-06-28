@@ -33,7 +33,7 @@ class ProductsViewModel(
         MutableLiveData(UiState.Init())
     var lastChangedProduct: MutableLiveData<UiState<ProductInListVO>> = _lastChangedProduct
 
-    private val five_minutes = 2000L
+    private val five_minutes = 300000L
     private var autoUpdateJob : Job? = null
 
     fun getProducts() {
