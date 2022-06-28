@@ -8,12 +8,12 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.WorkInfo
 import com.software.core_utils.models.DomainWrapper
 import com.software.core_utils.presentation.common.UiState
+import com.software.core_utils.presentation.common.safeLaunch
 import com.software.feature_products_api.ProductsNavigationApi
 import com.software.feature_products_impl.domain.interactors.LoadWithWorkersUseCase
 import com.software.feature_products_impl.domain.interactors.ProductListUseCase
 import com.software.feature_products_impl.presentation.view_objects.ProductInListVO
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class ProductsViewModel(
     private val interactor: ProductListUseCase,
@@ -33,8 +33,11 @@ class ProductsViewModel(
         MutableLiveData(UiState.Init())
     var lastChangedProduct: MutableLiveData<UiState<ProductInListVO>> = _lastChangedProduct
 
+    private val five_minutes = 2000L
+    private var autoUpdateJob : Job? = null
+
     fun getProducts() {
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.safeLaunch(Dispatchers.Main) {
             _productLD.value = UiState.Loading()
 
             val responseFlow = loadInteractor.loadProducts()
@@ -73,7 +76,7 @@ class ProductsViewModel(
     }
 
     private fun updateUiState() {
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.safeLaunch(Dispatchers.Main) {
             when (val products = interactor.getProducts()) {
                 is DomainWrapper.Success -> {
                     _productLD.value =
@@ -88,7 +91,7 @@ class ProductsViewModel(
     }
 
     fun addViewCount(guid: String) {
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.safeLaunch(Dispatchers.Main) {
             _lastChangedProduct.value = UiState.Loading()
             when (val product = interactor.addViewToProductInList(guid)) {
                 is DomainWrapper.Success -> {
@@ -101,5 +104,17 @@ class ProductsViewModel(
                 }
             }
         }
+    }
+
+    fun autoUpdateProducts() {
+        autoUpdateJob = viewModelScope.safeLaunch(Dispatchers.IO) {
+            delay(five_minutes)
+            getProducts()
+            autoUpdateProducts()
+        }
+    }
+
+    fun stopAutoUpdate() {
+        autoUpdateJob?.cancel("Fragment invoke this method")
     }
 }

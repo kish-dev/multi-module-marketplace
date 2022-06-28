@@ -92,6 +92,7 @@ class ProductsFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
+        productsViewModel.autoUpdateProducts()
         with(binding) {
             swipeRefreshLayout.post {
                 swipeRefreshLayout.isRefreshing = true
@@ -201,6 +202,7 @@ class ProductsFragment : BaseFragment() {
         if (isRemoving) {
             if (productsNavigationApi.isClosed(this)) {
                 ProductsFeatureComponent.reset()
+                productsViewModel.stopAutoUpdate()
             }
         }
         super.onPause()

@@ -27,7 +27,7 @@ fun CoroutineScope.safeLaunch(
         throwable.printStackTrace()
     }
 
-    return this.launch(context + coroutineExceptionHandler) {
+    return this.launch(coroutineExceptionHandler + context) {
         launchBody.invoke()
     }
 }
