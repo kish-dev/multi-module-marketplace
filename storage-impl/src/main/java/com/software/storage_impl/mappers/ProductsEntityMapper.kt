@@ -93,7 +93,7 @@ fun addProductInListToListEntities(
                 resultList.add(productEntity)
             }
 
-            resultList.sortedBy { it.name }
+            resultList.sortedBy { it.name.lowercase() }
         }
 
         else -> {
@@ -117,7 +117,7 @@ fun addProductToListEntities(
                 resultList.add(productEntity)
             }
 
-            resultList.sortedBy { it.name }
+            resultList.sortedBy { it.name.lowercase() }
         }
 
         else -> {
@@ -142,8 +142,12 @@ fun mapProductsInListDTOtoProductsInListEntity(
     listEntity: MutableList<ProductInListEntity>?
 ): List<ProductInListEntity> {
     val uniqueCacheItems = listEntity?.filter { entity -> listDTO.none { it.guid == entity.guid } }
-    return listDTO.map { it.mapToEntity(it.viewsCount) }.plus(uniqueCacheItems ?: emptyList())
-        .sortedBy { it.name }
+    return listDTO.map { dto ->
+        dto.mapToEntity(
+            listEntity?.findLast { it.guid == dto.guid }?.viewsCount ?: 0
+        )
+    }.plus(uniqueCacheItems ?: emptyList())
+        .sortedBy { it.name.lowercase() }
 }
 
 /**
@@ -162,7 +166,7 @@ fun mapProductsDTOtoProductsEntity(
 ): List<ProductEntity> {
     val uniqueCacheItems = listEntity?.filter { entity -> listDTO.none { it.guid == entity.guid } }
     return listDTO.map { it.mapToEntity() }.plus(uniqueCacheItems ?: emptyList())
-        .sortedBy { it.name }
+        .sortedBy { it.name.lowercase() }
 }
 
 
