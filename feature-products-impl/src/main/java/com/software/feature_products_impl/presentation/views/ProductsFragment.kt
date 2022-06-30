@@ -202,9 +202,9 @@ class ProductsFragment : BaseFragment() {
         if (isRemoving) {
             if (productsNavigationApi.isClosed(this)) {
                 ProductsFeatureComponent.reset()
-                productsViewModel.stopAutoUpdate()
             }
         }
+        productsViewModel.stopAutoUpdate()
         super.onPause()
     }
 
