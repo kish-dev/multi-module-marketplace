@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="internet_error">Connection</string>
+    <string name="connection_error">Waiting for network</string>
+</resources>

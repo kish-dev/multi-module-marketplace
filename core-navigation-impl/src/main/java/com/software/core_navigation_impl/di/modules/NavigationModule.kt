@@ -1,4 +1,4 @@
-package com.software.core_navigation_impl.di
+package com.software.core_navigation_impl.di.modules
 
 import com.software.core_navigation_impl.navigation.AddProductNavigationImpl
 import com.software.core_navigation_impl.navigation.PDPNavigationImpl

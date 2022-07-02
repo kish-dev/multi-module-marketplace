@@ -31,6 +31,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -55,6 +58,7 @@ dependencies {
     testImplementation junit
     androidTestImplementation androidTestJunit
     androidTestImplementation espresso
+    implementation lifecycle
 
     implementation dagger
     kapt daggerCompiler

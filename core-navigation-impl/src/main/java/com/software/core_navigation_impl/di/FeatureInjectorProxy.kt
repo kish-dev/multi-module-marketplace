@@ -1,6 +1,8 @@
 package com.software.core_navigation_impl.di
 
 import android.content.Context
+import com.software.core_navigation_impl.di.components.CoreNavigationComponent
+import com.software.core_navigation_impl.di.components.DaggerNavigationDependenciesComponent
 import com.software.core_network_impl.di.CoreNetworkComponent
 import com.software.feature_add_product_impl.di.components.AddProductFeatureComponent
 import com.software.feature_add_product_impl.di.components.DaggerAddProductFeatureDependenciesComponent
@@ -21,7 +23,11 @@ object FeatureInjectorProxy {
             DaggerProductsFeatureDependenciesComponent.builder()
                 .networkApi(CoreNetworkComponent.initAndGet(appContext))
                 .productsNavigationApi(
-                    DaggerCoreNavigationComponent.builder().build().getProductNavigation()
+                    CoreNavigationComponent.initAndGet(
+                        DaggerNavigationDependenciesComponent.builder()
+                            .networkApi(CoreNetworkComponent.initAndGet(appContext))
+                            .build()
+                    )?.getProductNavigation()
                 )
                 .storageApi(StorageComponent.initAndGet(appContext))
                 .workerComponentInterface(
@@ -42,7 +48,11 @@ object FeatureInjectorProxy {
             DaggerPDPFeatureDependenciesComponent.builder()
                 .networkApi(CoreNetworkComponent.initAndGet(appContext))
                 .pDPNavigationApi(
-                    DaggerCoreNavigationComponent.builder().build().getPDPNavigation()
+                    CoreNavigationComponent.initAndGet(
+                        DaggerNavigationDependenciesComponent.builder()
+                            .networkApi(CoreNetworkComponent.initAndGet(appContext))
+                            .build()
+                    )?.getPDPNavigation()
                 )
                 .storageApi(StorageComponent.initAndGet(appContext))
                 .build()
@@ -54,7 +64,11 @@ object FeatureInjectorProxy {
             DaggerAddProductFeatureDependenciesComponent.builder()
                 .networkApi(CoreNetworkComponent.initAndGet(appContext))
                 .addProductNavigationApi(
-                    DaggerCoreNavigationComponent.builder().build().getAddProductNavigation()
+                    CoreNavigationComponent.initAndGet(
+                        DaggerNavigationDependenciesComponent.builder()
+                            .networkApi(CoreNetworkComponent.initAndGet(appContext))
+                            .build()
+                    )?.getAddProductNavigation()
                 )
                 .storageApi(StorageComponent.initAndGet(appContext))
                 .build()

@@ -33,8 +33,6 @@ android {
 }
 
 dependencies {
-    implementation project(":core-network-api")
-
     implementation retrofit
     implementation junit
     testImplementation junit

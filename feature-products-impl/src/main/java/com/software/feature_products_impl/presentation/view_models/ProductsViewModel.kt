@@ -13,7 +13,10 @@ import com.software.feature_products_api.ProductsNavigationApi
 import com.software.feature_products_impl.domain.interactors.LoadWithWorkersUseCase
 import com.software.feature_products_impl.domain.interactors.ProductListUseCase
 import com.software.feature_products_impl.presentation.view_objects.ProductInListVO
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 
 class ProductsViewModel(
     private val interactor: ProductListUseCase,
@@ -34,7 +37,7 @@ class ProductsViewModel(
     var lastChangedProduct: MutableLiveData<UiState<ProductInListVO>> = _lastChangedProduct
 
     private val five_minutes = 300000L
-    private var autoUpdateJob : Job? = null
+    private var autoUpdateJob: Job? = null
 
     fun getProducts() {
         viewModelScope.safeLaunch(Dispatchers.Main) {
