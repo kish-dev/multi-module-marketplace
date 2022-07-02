@@ -19,11 +19,10 @@ import javax.inject.Singleton
 class ConnectionStateImpl @Inject constructor(context: Context) : ConnectionStateApi {
 
     override val connectionStatusFlow: StateFlow<ConnectionStatus>
-        get() = connectionStatus
+        get() = _connectionStatus.asStateFlow()
 
     private var _connectionStatus: MutableStateFlow<ConnectionStatus> =
         MutableStateFlow(ConnectionStatus.Connected)
-    var connectionStatus: StateFlow<ConnectionStatus> = _connectionStatus.asStateFlow()
 
     private val connectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
