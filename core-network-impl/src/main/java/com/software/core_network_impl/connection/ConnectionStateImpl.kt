@@ -10,6 +10,7 @@ import com.software.feature_api.ConnectionStateApi
 import com.software.feature_api.wrappers.ConnectionStatus
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -24,7 +25,7 @@ class ConnectionStateImpl @Inject constructor(context: Context) : ConnectionStat
 
     private var _connectionStatus: MutableStateFlow<ConnectionStatus> =
         MutableStateFlow(ConnectionStatus.Success)
-    var connectionStatus: StateFlow<ConnectionStatus> = _connectionStatus
+    var connectionStatus: StateFlow<ConnectionStatus> = _connectionStatus.asStateFlow()
 
     @Volatile
     private var networkCapabilities: NetworkCapabilities? = null
@@ -76,7 +77,7 @@ class ConnectionStateImpl @Inject constructor(context: Context) : ConnectionStat
     }
 
     @Synchronized
-    internal fun updateConnection() {
+    private fun updateConnection() {
         if (network == null) {
             _connectionStatus.value = ConnectionStatus.ConnectionError
         }

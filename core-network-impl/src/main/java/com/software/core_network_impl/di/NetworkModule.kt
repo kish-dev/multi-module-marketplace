@@ -1,10 +1,7 @@
 package com.software.core_network_impl.di
 
-import android.content.Context
 import com.software.core_network_impl.call_adapters.ServerResponseCallAdapterFactory
-import com.software.core_network_impl.connection.ConnectionStateImpl
 import com.software.feature_api.BuildConfig
-import com.software.feature_api.ConnectionStateApi
 import com.software.feature_api.ProductsApi
 import dagger.Module
 import dagger.Provides
@@ -16,12 +13,6 @@ import javax.inject.Singleton
 
 @Module
 class NetworkModule {
-
-    @Singleton
-    @Provides
-    fun provideConnectionStateListener(appContext: Context): ConnectionStateApi {
-        return ConnectionStateImpl(appContext)
-    }
 
     @Singleton
     @Provides

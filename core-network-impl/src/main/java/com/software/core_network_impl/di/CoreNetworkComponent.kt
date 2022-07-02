@@ -7,7 +7,7 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [NetworkModule::class])
+@Component(modules = [NetworkModule::class, ConnectionStatusModule::class])
 abstract class CoreNetworkComponent : NetworkApi {
 
     companion object {
