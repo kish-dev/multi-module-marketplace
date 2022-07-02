@@ -16,14 +16,19 @@ abstract class CoreNetworkComponent : NetworkApi {
         var networkComponent: CoreNetworkComponent? = null
             private set
 
-        @Synchronized
         fun initAndGet(appContext: Context) =
             when (networkComponent) {
                 null -> {
-                    networkComponent = DaggerCoreNetworkComponent.builder()
-                        .appContext(appContext)
-                        .build()
-                    networkComponent
+                    synchronized(this) {
+                        when(networkComponent) {
+                            null -> {
+                                networkComponent = DaggerCoreNetworkComponent.builder()
+                                    .appContext(appContext)
+                                    .build()
+                            }
+                        }
+                        networkComponent
+                    }
                 }
 
                 else -> {

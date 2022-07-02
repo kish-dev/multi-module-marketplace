@@ -20,14 +20,20 @@ abstract class PDPFeatureComponent {
         var pdpFeatureComponent: PDPFeatureComponent? = null
             private set
 
-        @Synchronized
         fun initAndGet(pdpFeatureDependencies: PDPFeatureDependencies): PDPFeatureComponent? =
             when (pdpFeatureComponent) {
                 null -> {
-                    pdpFeatureComponent = DaggerPDPFeatureComponent.builder()
-                        .pDPFeatureDependencies(pdpFeatureDependencies)
-                        .build()
-                    pdpFeatureComponent
+                    synchronized(this) {
+                        when(pdpFeatureComponent) {
+                            null -> {
+                                pdpFeatureComponent = DaggerPDPFeatureComponent.builder()
+                                    .pDPFeatureDependencies(pdpFeatureDependencies)
+                                    .build()
+                            }
+                        }
+
+                        pdpFeatureComponent
+                    }
                 }
 
                 else -> {

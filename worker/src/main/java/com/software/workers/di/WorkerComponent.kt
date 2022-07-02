@@ -19,14 +19,19 @@ abstract class WorkerComponent : WorkerComponentInterface {
         var workerComponent: WorkerComponent? = null
             private set
 
-        @Synchronized
         fun initAndGet(workerDependencies: WorkerDependencies): WorkerComponent? =
             when (workerComponent) {
                 null -> {
-                    workerComponent = DaggerWorkerComponent.builder()
-                        .workerDependencies(workerDependencies)
-                        .build()
-                    workerComponent
+                    synchronized(this) {
+                        when (workerComponent) {
+                            null -> {
+                                workerComponent = DaggerWorkerComponent.builder()
+                                    .workerDependencies(workerDependencies)
+                                    .build()
+                            }
+                        }
+                        workerComponent
+                    }
                 }
 
                 else -> {

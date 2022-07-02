@@ -23,18 +23,23 @@ abstract class ProductsFeatureComponent {
         var productsFeatureComponent: ProductsFeatureComponent? = null
             private set
 
-        @Synchronized
         fun initAndGet(
             productsFeatureDependencies: ProductsFeatureDependencies,
             appContext: Context
         ): ProductsFeatureComponent? =
             when (productsFeatureComponent) {
                 null -> {
-                    productsFeatureComponent = DaggerProductsFeatureComponent.builder()
-                        .appContext(appContext)
-                        .productsFeatureDependencies(productsFeatureDependencies)
-                        .build()
-                    productsFeatureComponent
+                    synchronized(this) {
+                        when (productsFeatureComponent) {
+                            null -> {
+                                productsFeatureComponent = DaggerProductsFeatureComponent.builder()
+                                    .appContext(appContext)
+                                    .productsFeatureDependencies(productsFeatureDependencies)
+                                    .build()
+                            }
+                        }
+                        productsFeatureComponent
+                    }
                 }
 
                 else -> {

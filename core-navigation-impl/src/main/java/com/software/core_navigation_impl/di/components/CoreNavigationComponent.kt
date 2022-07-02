@@ -20,7 +20,6 @@ abstract class CoreNavigationComponent : NavigationApi {
         var coreNavigationComponent: CoreNavigationComponent? = null
             private set
 
-        @Synchronized
         fun initAndGet(
             navigationDependencies: NavigationDependencies
         ): CoreNavigationComponent? =

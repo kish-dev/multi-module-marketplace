@@ -15,14 +15,20 @@ interface StorageComponent : StorageApi {
         @Volatile
         private var storageComponent: StorageComponent? = null
 
-        @Synchronized
         fun initAndGet(appContext: Context): StorageComponent? =
             when (storageComponent) {
                 null -> {
-                    storageComponent = DaggerStorageComponent.builder()
-                        .appContext(appContext)
-                        .build()
-                    storageComponent
+                    synchronized(this) {
+                        when(storageComponent) {
+                            null -> {
+                                storageComponent = DaggerStorageComponent.builder()
+                                    .appContext(appContext)
+                                    .build()
+                            }
+                        }
+                        storageComponent
+                    }
+
                 }
                 else -> {
                     storageComponent

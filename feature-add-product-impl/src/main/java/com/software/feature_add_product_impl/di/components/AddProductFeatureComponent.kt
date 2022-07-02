@@ -20,14 +20,20 @@ abstract class AddProductFeatureComponent {
         var addProductFeatureComponent: AddProductFeatureComponent? = null
             private set
 
-        @Synchronized
         fun initAndGet(addProductFeatureDependencies: AddProductFeatureDependencies): AddProductFeatureComponent? =
             when (addProductFeatureComponent) {
                 null -> {
-                    addProductFeatureComponent = DaggerAddProductFeatureComponent.builder()
-                        .addProductFeatureDependencies(addProductFeatureDependencies)
-                        .build()
-                    addProductFeatureComponent
+                    synchronized(this) {
+                        when (addProductFeatureComponent) {
+                            null -> {
+                                addProductFeatureComponent =
+                                    DaggerAddProductFeatureComponent.builder()
+                                        .addProductFeatureDependencies(addProductFeatureDependencies)
+                                        .build()
+                            }
+                        }
+                        addProductFeatureComponent
+                    }
                 }
 
                 else -> {
