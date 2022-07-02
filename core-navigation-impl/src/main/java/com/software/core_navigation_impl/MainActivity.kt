@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun navigateProduct() {
-        if (FeatureInjectorProxy.isFirst) {
+        if (FeatureInjectorProxy.isFirstAppLaunch) {
             FeatureInjectorProxy.initFeatureProductsDI(this.applicationContext)
             val newFragment = ProductsFragment()
             supportFragmentManager
@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
                 )
                 .addToBackStack(ProductsFragment::class.java.simpleName)
                 .commit()
-            FeatureInjectorProxy.isFirst = false
+            FeatureInjectorProxy.isFirstAppLaunch = false
         } else {
             supportFragmentManager.restoreBackStack("")
         }
@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun restoreComponents() {
         FeatureInjectorProxy.initFeatureProductsDI(this.applicationContext)
-        if (!FeatureInjectorProxy.isFirst) {
+        if (!FeatureInjectorProxy.isFirstAppLaunch) {
             for (i in 0 until supportFragmentManager.backStackEntryCount) {
                 val entry = supportFragmentManager.getBackStackEntryAt(i)
                 entry.name?.let {

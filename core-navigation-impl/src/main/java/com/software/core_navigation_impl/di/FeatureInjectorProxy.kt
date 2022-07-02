@@ -16,7 +16,7 @@ import com.software.workers.di.WorkerComponent
 
 object FeatureInjectorProxy {
 
-    var isFirst = true
+    var isFirstAppLaunch = true
 
     fun initFeatureProductsDI(appContext: Context) {
         ProductsFeatureComponent.initAndGet(
