@@ -19,15 +19,16 @@ fun AppCompatImageView.setImageFromUrl(imageUrl: String) {
         .into(this)
 }
 
+private var defaultCoroutineExceptionHandler: CoroutineExceptionHandler =
+    CoroutineExceptionHandler { _, throwable ->
+        throwable.printStackTrace()
+    }
+
 fun CoroutineScope.safeLaunch(
     context: CoroutineContext = EmptyCoroutineContext,
     launchBody: suspend () -> Unit
 ): Job {
-    val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        throwable.printStackTrace()
-    }
-
-    return this.launch(coroutineExceptionHandler + context) {
+    return this.launch(defaultCoroutineExceptionHandler + context) {
         launchBody.invoke()
     }
 }
