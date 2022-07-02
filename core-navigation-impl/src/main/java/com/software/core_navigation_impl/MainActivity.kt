@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         with(binding) {
             lifecycleScope.launch {
                 repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                    connectionStateApi.getConnectionStatusFlow().collect {
+                    connectionStateApi.connectionStatusFlow.collect {
                         val internetAndConnectionTV =
                             connectionProblems.internetErrorAndConnectionTV
                         when (it) {

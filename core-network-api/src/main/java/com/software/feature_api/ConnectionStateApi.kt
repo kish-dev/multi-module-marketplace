@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface ConnectionStateApi {
 
-    fun getConnectionStatusFlow(): StateFlow<ConnectionStatus>
+    val connectionStatusFlow: StateFlow<ConnectionStatus>
 }

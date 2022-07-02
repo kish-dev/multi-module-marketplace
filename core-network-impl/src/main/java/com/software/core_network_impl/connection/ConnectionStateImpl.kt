@@ -18,10 +18,8 @@ import javax.inject.Singleton
 @Singleton
 class ConnectionStateImpl @Inject constructor(context: Context) : ConnectionStateApi {
 
-
-    override fun getConnectionStatusFlow(): StateFlow<ConnectionStatus> {
-        return connectionStatus
-    }
+    override val connectionStatusFlow: StateFlow<ConnectionStatus>
+        get() = connectionStatus
 
     private var _connectionStatus: MutableStateFlow<ConnectionStatus> =
         MutableStateFlow(ConnectionStatus.Success)
