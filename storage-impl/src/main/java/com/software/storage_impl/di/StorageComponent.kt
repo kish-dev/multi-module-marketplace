@@ -19,7 +19,7 @@ interface StorageComponent : StorageApi {
             when (storageComponent) {
                 null -> {
                     synchronized(this) {
-                        when(storageComponent) {
+                        when (storageComponent) {
                             null -> {
                                 storageComponent = DaggerStorageComponent.builder()
                                     .appContext(appContext)

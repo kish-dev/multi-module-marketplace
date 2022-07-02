@@ -24,7 +24,7 @@ abstract class PDPFeatureComponent {
             when (pdpFeatureComponent) {
                 null -> {
                     synchronized(this) {
-                        when(pdpFeatureComponent) {
+                        when (pdpFeatureComponent) {
                             null -> {
                                 pdpFeatureComponent = DaggerPDPFeatureComponent.builder()
                                     .pDPFeatureDependencies(pdpFeatureDependencies)

@@ -23,7 +23,7 @@ abstract class CoreNavigationComponent : NavigationApi {
         fun initAndGet(
             navigationDependencies: NavigationDependencies
         ): CoreNavigationComponent? =
-            when(coreNavigationComponent) {
+            when (coreNavigationComponent) {
                 null -> {
                     coreNavigationComponent = DaggerCoreNavigationComponent.builder()
                         .navigationDependencies(navigationDependencies)

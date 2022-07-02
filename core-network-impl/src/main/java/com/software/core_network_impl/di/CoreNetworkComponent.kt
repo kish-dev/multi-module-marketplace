@@ -20,7 +20,7 @@ abstract class CoreNetworkComponent : NetworkApi {
             when (networkComponent) {
                 null -> {
                     synchronized(this) {
-                        when(networkComponent) {
+                        when (networkComponent) {
                             null -> {
                                 networkComponent = DaggerCoreNetworkComponent.builder()
                                     .appContext(appContext)

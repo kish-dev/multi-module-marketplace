@@ -7,5 +7,5 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(dependencies = [NetworkApi::class])
-interface NavigationDependenciesComponent: NavigationDependencies {
+interface NavigationDependenciesComponent : NavigationDependencies {
 }
