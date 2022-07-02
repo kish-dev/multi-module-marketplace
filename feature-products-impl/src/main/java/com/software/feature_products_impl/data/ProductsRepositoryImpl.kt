@@ -35,7 +35,7 @@ class ProductsRepositoryImpl @Inject constructor(
         }
 
 
-    override suspend fun loadProducts(): Flow<WorkInfo> {
+    override fun loadProducts(): Flow<WorkInfo> {
         val requestProducts = OneTimeWorkRequestBuilder<LoadAndSaveProductsWorker>().build()
 
         val requestProductsInList =

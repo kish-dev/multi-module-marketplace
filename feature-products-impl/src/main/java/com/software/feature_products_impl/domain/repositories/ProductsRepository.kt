@@ -9,7 +9,7 @@ interface ProductsRepository {
 
     suspend fun getProducts(): ServerResponse<List<ProductInListDTO>>
 
-    suspend fun loadProducts(): Flow<WorkInfo>
+    fun loadProducts(): Flow<WorkInfo>
 
     suspend fun addViewToProductInList(guid: String): ServerResponse<ProductInListDTO>
 
