@@ -30,8 +30,7 @@ class ConnectionStateImpl @Inject constructor(context: Context) : ConnectionStat
 
 
     init {
-        val builder = NetworkRequest.Builder()
-        connectivityManager.registerNetworkCallback(builder.build(),
+        connectivityManager.registerNetworkCallback(NetworkRequest.Builder().build(),
             object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
                     super.onAvailable(network)
