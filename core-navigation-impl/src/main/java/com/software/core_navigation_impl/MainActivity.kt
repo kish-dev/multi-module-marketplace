@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
                         val internetAndConnectionTV =
                             connectionProblems.internetErrorAndConnectionTV
                         when (it) {
-                            is ConnectionStatus.Success -> {
+                            is ConnectionStatus.Connected -> {
                                 connectionProblems.root.isVisible = false
                             }
 

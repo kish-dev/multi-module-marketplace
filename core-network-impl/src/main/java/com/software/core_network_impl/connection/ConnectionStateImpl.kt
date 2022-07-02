@@ -22,14 +22,8 @@ class ConnectionStateImpl @Inject constructor(context: Context) : ConnectionStat
         get() = connectionStatus
 
     private var _connectionStatus: MutableStateFlow<ConnectionStatus> =
-        MutableStateFlow(ConnectionStatus.Success)
+        MutableStateFlow(ConnectionStatus.Connected)
     var connectionStatus: StateFlow<ConnectionStatus> = _connectionStatus.asStateFlow()
-
-    @Volatile
-    private var networkCapabilities: NetworkCapabilities? = null
-
-    @Volatile
-    private var network: Network? = null
 
     private val connectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -40,27 +34,23 @@ class ConnectionStateImpl @Inject constructor(context: Context) : ConnectionStat
         connectivityManager.registerNetworkCallback(builder.build(),
             object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
-                    this@ConnectionStateImpl.network = network
-                    networkCapabilities = connectivityManager.getNetworkCapabilities(network)
-                    updateConnection()
+                    super.onAvailable(network)
+                    updateConnection(network, connectivityManager.getNetworkCapabilities(network))
                 }
 
                 override fun onLosing(network: Network, maxMsToLive: Int) {
-                    _connectionStatus.value = (ConnectionStatus.ConnectionError)
-                    this@ConnectionStateImpl.network = network
-                    networkCapabilities = connectivityManager.getNetworkCapabilities(network)
+                    super.onLosing(network, maxMsToLive)
+                    updateConnection(null, connectivityManager.getNetworkCapabilities(network))
                 }
 
                 override fun onLost(network: Network) {
-                    networkCapabilities = null
-                    this@ConnectionStateImpl.network = network
-                    _connectionStatus.value = (ConnectionStatus.ConnectionError)
+                    super.onLost(network)
+                    updateConnection(null, connectivityManager.getNetworkCapabilities(network))
                 }
 
                 override fun onUnavailable() {
-                    networkCapabilities = null
-                    network = null
-                    _connectionStatus.value = (ConnectionStatus.ConnectionError)
+                    super.onUnavailable()
+                    updateConnection(null, connectivityManager.getNetworkCapabilities(null))
                 }
 
                 override fun onCapabilitiesChanged(
@@ -68,22 +58,22 @@ class ConnectionStateImpl @Inject constructor(context: Context) : ConnectionStat
                     networkCapabilities: NetworkCapabilities
                 ) {
                     super.onCapabilitiesChanged(network, networkCapabilities)
-                    this@ConnectionStateImpl.networkCapabilities = networkCapabilities
-                    updateConnection()
+                    updateConnection(network, connectivityManager.getNetworkCapabilities(network))
                 }
             })
     }
 
     @Synchronized
-    private fun updateConnection() {
-        if (network == null) {
-            _connectionStatus.value = ConnectionStatus.ConnectionError
-        }
+    private fun updateConnection(network: Network?, networkCapabilities: NetworkCapabilities?) {
+        when {
+            network == null || networkCapabilities == null -> {
+                _connectionStatus.value = ConnectionStatus.ConnectionError
+            }
 
-        when (networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED) == true &&
-                networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true) {
-            true -> {
-                _connectionStatus.value = ConnectionStatus.Success
+            (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED) &&
+                    networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) -> {
+                _connectionStatus.value = ConnectionStatus.Connected
+
             }
 
             else -> {

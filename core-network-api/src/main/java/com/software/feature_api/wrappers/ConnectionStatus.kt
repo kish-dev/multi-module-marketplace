@@ -12,7 +12,7 @@ sealed class ConnectionStatus {
     object ConnectionError : ConnectionStatus()
 
     /**
-     * Success means that device connected to stable Internet
+     * Connected means that device connected to stable Internet
      * */
-    object Success : ConnectionStatus()
+    object Connected : ConnectionStatus()
 }
