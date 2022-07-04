@@ -21,7 +21,7 @@ fun ProductInListDTO.mapToEntity(views: Int): ProductInListEntity {
 fun ProductInListEntity.mapToDTO(): ProductInListDTO {
     return ProductInListDTO(
         guid,
-        image,
+        images,
         name,
         price,
         rating,
@@ -68,9 +68,9 @@ fun ProductEntity.mapToDTO(): ProductDTO {
 fun ProductEntity.mapToProductInListEntity(): ProductInListEntity {
     return ProductInListEntity(
         guid,
+        images,
         name,
         price,
-        description,
         rating,
         isFavorite,
         isInCart,

@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.software.core_utils.models.DomainWrapper
 import com.software.core_utils.presentation.common.UiState
 import com.software.core_utils.presentation.common.safeLaunch
+import com.software.core_utils.presentation.view_objects.ProductVO
 import com.software.feature_add_product_impl.domain.interactors.AddProductUseCase
-import com.software.feature_add_product_impl.presentation.view_objects.ProductVO
 import kotlinx.coroutines.Dispatchers
 
 class AddProductViewModel(

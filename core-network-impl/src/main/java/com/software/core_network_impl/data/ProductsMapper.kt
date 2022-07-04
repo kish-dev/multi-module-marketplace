@@ -6,7 +6,7 @@ import com.software.feature_api.wrappers.ProductInListDTO
 fun ProductDTO.mapToProductListDTO(): ProductInListDTO {
     return ProductInListDTO(
         guid,
-        images[0],
+        images,
         name,
         price,
         rating,

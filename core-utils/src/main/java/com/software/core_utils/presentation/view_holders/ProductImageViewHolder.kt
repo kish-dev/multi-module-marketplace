@@ -1,10 +1,10 @@
-package com.software.feature_pdp_impl.presentation.view_holders
+package com.software.core_utils.presentation.view_holders
 
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.software.core_utils.R
 import com.software.core_utils.presentation.common.setImageFromUrl
-import com.software.feature_pdp_impl.R
 
 class ProductImageViewHolder(
     itemView: View

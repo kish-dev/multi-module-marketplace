@@ -46,9 +46,4 @@ class LoadAndSaveProductsInListWorker(
             }
         }
     }
-
-//    @AssistedFactory
-//    interface Factory {
-//        fun create(appContext: Context, params: WorkerParameters): LoadAndSaveProductsInListWorker
-//    }
 }

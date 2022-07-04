@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class ProductInListEntity(
     var guid: String,
-    val image: String,
+    val images: List<String>,
     val name: String,
     val price: String,
     val rating: Double,

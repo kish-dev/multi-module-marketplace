@@ -18,7 +18,7 @@ data class ProductDTO(
 fun ProductDTO.mapToProductInListDTO(): ProductInListDTO {
     return ProductInListDTO(
         guid = guid,
-        image = images[0],
+        image = images,
         name = name,
         price = price,
         rating = rating,

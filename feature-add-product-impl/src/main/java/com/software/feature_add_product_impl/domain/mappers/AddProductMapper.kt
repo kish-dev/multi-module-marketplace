@@ -1,6 +1,6 @@
 package com.software.feature_add_product_impl.domain.mappers
 
-import com.software.feature_add_product_impl.presentation.view_objects.ProductVO
+import com.software.core_utils.presentation.view_objects.ProductVO
 import com.software.feature_api.wrappers.ProductDTO
 
 fun ProductVO.mapToDTO(): ProductDTO {

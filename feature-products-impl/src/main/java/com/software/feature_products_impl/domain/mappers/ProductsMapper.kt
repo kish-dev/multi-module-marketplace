@@ -20,7 +20,7 @@ fun ProductInListDTO.mapToVO(): ProductInListVO {
 fun ProductInListVO.mapToDTO(): ProductInListDTO {
     return ProductInListDTO(
         guid,
-        image,
+        images,
         name,
         price,
         rating,
@@ -33,7 +33,7 @@ fun ProductInListVO.mapToDTO(): ProductInListDTO {
 fun ProductDTO.mapToProductListDTO(): ProductInListDTO {
     return ProductInListDTO(
         guid,
-        images[0],
+        images,
         name,
         price,
         rating,

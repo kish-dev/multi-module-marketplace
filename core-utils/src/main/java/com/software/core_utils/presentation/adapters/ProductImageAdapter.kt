@@ -1,11 +1,11 @@
-package com.software.feature_pdp_impl.presentation.adapters
+package com.software.core_utils.presentation.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.software.feature_pdp_impl.R
-import com.software.feature_pdp_impl.presentation.view_holders.ProductImageViewHolder
+import com.software.core_utils.R
+import com.software.core_utils.presentation.view_holders.ProductImageViewHolder
 
 class ProductImageAdapter : ListAdapter<String, ProductImageViewHolder>(
     StringDiffUtil()
