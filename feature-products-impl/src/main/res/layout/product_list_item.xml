@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/materialCardView"
     android:layout_width="match_parent"
-    android:layout_height="84dp"
+    android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
     android:layout_marginTop="16dp"
     app:cardCornerRadius="8dp"
@@ -24,13 +24,12 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/nameTV"
+            style="@style/UsualText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="8dp"
             android:maxLines="1"
-            android:textColor="@color/black"
-            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/productIV"
             app:layout_constraintTop_toTopOf="parent"
@@ -54,9 +53,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:isIndicator="true"
             android:rating="3"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/productsBucketButton"
             app:layout_constraintStart_toEndOf="@id/productIV"
             app:layout_constraintTop_toBottomOf="@id/priceTV" />
 
@@ -81,6 +81,16 @@
             app:layout_constraintStart_toEndOf="@+id/eyeIV"
             app:layout_constraintTop_toTopOf="@+id/eyeIV"
             tools:text="16" />
+
+        <com.software.feature_products_impl.presentation.views.ProductsBucketButton
+            android:id="@+id/productsBucketButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/productIV" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

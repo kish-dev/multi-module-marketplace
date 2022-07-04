@@ -10,4 +10,6 @@
     <string name="add_product_success">Product added successfully</string>
     <string name="fill_all_strokes">Fill all strokes</string>
     <string name="shared_preferences" translatable="false">SharedPreferences</string>
+    <string name="add_to_a_bucket">Add to a bucket</string>
+    <string name="in_the_bucket">In the bucket</string>
 </resources>

@@ -6,9 +6,12 @@ import androidx.appcompat.widget.AppCompatRatingBar
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
+import com.software.core_utils.presentation.common.debounceClick
 import com.software.core_utils.presentation.common.setImageFromUrl
 import com.software.feature_products_impl.R
 import com.software.feature_products_impl.presentation.view_objects.ProductInListVO
+import com.software.feature_products_impl.presentation.views.ProductsBucketButton
+import kotlin.random.Random
 
 class ProductViewHolder(
     itemView: View,
@@ -21,6 +24,7 @@ class ProductViewHolder(
     private var ratingView: AppCompatRatingBar? = null
     private var viewsCountTV: AppCompatTextView? = null
     private var cardView: MaterialCardView? = null
+    private var productsBucketButton: ProductsBucketButton? = null
 
     init {
         itemView.apply {
@@ -30,13 +34,25 @@ class ProductViewHolder(
             ratingView = findViewById(R.id.ratingView)
             cardView = findViewById(R.id.materialCardView)
             viewsCountTV = findViewById(R.id.viewsCountTV)
+            productsBucketButton = findViewById(R.id.productsBucketButton)
         }
     }
 
     fun bind(productInListVO: ProductInListVO) {
 
+        //TODO добавить в VO модельки количество товаров в корзине, хранить в репе, мерджить после запроса
+        //TODO возвращать через интерактор и инитить стейт кнопки
+        productsBucketButton?.setOnClickListener {
+            it.debounceClick {
+                productsBucketButton?.init()
+                productsBucketButton?.setBucketState(Random.nextBoolean())
+            }
+        }
+
         cardView?.setOnClickListener {
-            listener.onClickProduct(this, productInListVO.guid)
+            it.debounceClick {
+                listener.onClickProduct(this, productInListVO.guid)
+            }
         }
 
         productIV?.setImageFromUrl(productInListVO.image)
