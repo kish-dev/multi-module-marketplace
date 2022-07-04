@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import com.software.core_utils.presentation.adapters.ProductImageAdapter
 import com.software.feature_products_impl.R
 import com.software.feature_products_impl.presentation.view_holders.ProductViewHolder
 import com.software.feature_products_impl.presentation.view_objects.ProductInListVO
@@ -19,7 +21,10 @@ class ProductsAdapter(private val listener: Listener) :
         val context = parent.context
         val inflater = LayoutInflater.from(context)
         val itemView = inflater.inflate(R.layout.product_list_item, parent, false)
-        return ProductViewHolder(itemView, listener)
+        val productImageAdapter = ProductImageAdapter()
+        return ProductViewHolder(
+            itemView, listener, productImageAdapter
+        )
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {

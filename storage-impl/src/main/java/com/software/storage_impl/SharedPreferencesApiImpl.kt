@@ -27,6 +27,11 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
         private const val PRODUCTS_IN_LIST = "${BuildConfig.LIBRARY_PACKAGE_NAME}.products_in_list"
     }
 
+    init {
+        spProducts.edit().remove(PRODUCTS).apply()
+        spProductInListEntity.edit().remove(PRODUCTS_IN_LIST).apply()
+    }
+
     private val gson = Gson()
 
     private val spProducts: SharedPreferences

@@ -9,11 +9,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.recyclerview.widget.SnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.software.core_utils.R
-import com.software.core_utils.presentation.adapters.ProductImageAdapter
 import com.software.core_utils.presentation.common.UiState
 import com.software.core_utils.presentation.view_models.viewModelCreator
 import com.software.feature_api.ProductsApi
@@ -23,6 +21,7 @@ import com.software.feature_products_impl.di.components.ProductsFeatureComponent
 import com.software.feature_products_impl.domain.interactors.LoadWithWorkersUseCase
 import com.software.feature_products_impl.domain.interactors.ProductListUseCase
 import com.software.feature_products_impl.presentation.adapters.ProductsAdapter
+import com.software.feature_products_impl.presentation.adapters.ViewTypes
 import com.software.feature_products_impl.presentation.view_holders.ProductViewHolder
 import com.software.feature_products_impl.presentation.view_models.ProductsViewModel
 import javax.inject.Inject
@@ -51,6 +50,11 @@ class ProductsFragment : Fragment() {
             loadInteractor,
             productsNavigationApi
         )
+    }
+
+    private val recyclerViewPool = RecyclerView.RecycledViewPool().apply {
+        this.setMaxRecycledViews(ViewTypes.PRODUCT_IN_LIST, 25)
+        this.setMaxRecycledViews(ViewTypes.PRODUCT_IN_LIST__IMAGE, 25)
     }
 
     private val swipeRefreshListener = SwipeRefreshLayout.OnRefreshListener {
@@ -103,6 +107,7 @@ class ProductsFragment : Fragment() {
                 layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                 adapter = productsAdapter
+                setRecycledViewPool(recyclerViewPool)
             }
 
             swipeRefreshLayout.setOnRefreshListener {
