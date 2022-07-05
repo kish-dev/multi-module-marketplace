@@ -27,11 +27,6 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
         private const val PRODUCTS_IN_LIST = "${BuildConfig.LIBRARY_PACKAGE_NAME}.products_in_list"
     }
 
-    init {
-        spProducts.edit().remove(PRODUCTS).apply()
-        spProductInListEntity.edit().remove(PRODUCTS_IN_LIST).apply()
-    }
-
     private val gson = Gson()
 
     private val spProducts: SharedPreferences
@@ -52,6 +47,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
                 listEntity = JSONConverterProductsInListEntity(gson)
                     .toProductInListEntityList(jsonList)?.toMutableList()
             }
+            listEntity?.sortedBy { it.name }
             return listEntity
         }
 
@@ -63,6 +59,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
                 listEntity =
                     JSONConverterProductsEntity(gson).toProductsListEntity(it)?.toMutableList()
             }
+            listEntity?.sortedBy { it.name }
             return listEntity
         }
 
@@ -119,7 +116,8 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
     }
 
     override fun getProductById(guid: String): ProductDTO? {
-        return listEntityProducts?.findLast { it.guid == guid }?.mapToDTO()
+        val list = listEntityProducts
+        return list?.findLast { it.guid == guid }?.mapToDTO()
     }
 
     override fun addViewToProductInListDTO(guid: String): ProductInListDTO? {

@@ -11,15 +11,15 @@ import com.google.android.material.card.MaterialCardView
 import com.software.core_utils.presentation.adapters.ProductImageAdapter
 import com.software.core_utils.presentation.common.debounceClick
 import com.software.feature_products_impl.R
-import com.software.feature_products_impl.presentation.view_objects.ProductInListVO
+import com.software.feature_products_impl.presentation.view_objects.BaseProductsTitleModel
 import com.software.feature_products_impl.presentation.views.ProductsBucketButton
 import kotlin.random.Random
 
 class ProductViewHolder(
     itemView: View,
-    private val listener: com.software.feature_products_impl.presentation.adapters.ProductsAdapter.Listener,
+    private val listener: com.software.feature_products_impl.presentation.adapters.ProductsAndTitlesAdapter.Listener,
     private val productImageAdapter: ProductImageAdapter,
-) : RecyclerView.ViewHolder(itemView) {
+) : BaseViewHolder<BaseProductsTitleModel.ProductInListVO>(itemView) {
 
     private val snapHelper: SnapHelper by lazy {
         PagerSnapHelper()
@@ -33,7 +33,7 @@ class ProductViewHolder(
     private var cardView: MaterialCardView? = null
     private var productsBucketButton: ProductsBucketButton? = null
 
-    private var productInListVO: ProductInListVO? = null
+    private var productInListVO: BaseProductsTitleModel.ProductInListVO? = null
 
     init {
         itemView.apply {
@@ -61,10 +61,11 @@ class ProductViewHolder(
             }
         }
 
-        //TODO fix misscache
         cardView?.setOnClickListener {
             it.debounceClick {
-                productInListVO?.guid?.let { product -> listener.onClickProduct(this, product) }
+                productInListVO?.guid?.let {
+                        product -> listener.onClickProduct(this, product)
+                }
             }
         }
     }
@@ -82,13 +83,13 @@ class ProductViewHolder(
         snapHelper.attachToRecyclerView(productImageRV)
     }
 
-    fun bind(productInListVO: ProductInListVO) {
-        this.productInListVO = productInListVO
+    override fun bind(item: BaseProductsTitleModel.ProductInListVO) {
+        this.productInListVO = item
 
-        productImageAdapter.submitList(productInListVO.images)
-        nameTV?.text = productInListVO.name
-        priceTV?.text = productInListVO.price
-        ratingView?.rating = productInListVO.rating.toFloat()
-        viewsCountTV?.text = productInListVO.viewsCount.toString()
+        productImageAdapter.submitList(item.images)
+        nameTV?.text = item.name
+        priceTV?.text = item.price
+        ratingView?.rating = item.rating.toFloat()
+        viewsCountTV?.text = item.viewsCount.toString()
     }
 }

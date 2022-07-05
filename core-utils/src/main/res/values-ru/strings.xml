@@ -10,4 +10,6 @@
     <string name="fill_all_strokes">Заполните все поля</string>
     <string name="add_to_a_bucket">В корзину</string>
     <string name="in_the_bucket">В корзине</string>
+    <string name="cheap_products">Дешёвые продукты:</string>
+    <string name="expensive_products">Дорогие продукты:</string>
 </resources>

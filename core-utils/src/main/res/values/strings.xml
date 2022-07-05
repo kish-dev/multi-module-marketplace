@@ -12,4 +12,6 @@
     <string name="shared_preferences" translatable="false">SharedPreferences</string>
     <string name="add_to_a_bucket">Add to a bucket</string>
     <string name="in_the_bucket">In the bucket</string>
+    <string name="cheap_products">Cheap products:</string>
+    <string name="expensive_products">Expensive products:</string>
 </resources>

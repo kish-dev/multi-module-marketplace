@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.software.core_utils.R
+import com.software.core_utils.presentation.adapters.ProductImageAdapter
 import com.software.core_utils.presentation.common.UiState
 import com.software.core_utils.presentation.view_models.viewModelCreator
 import com.software.feature_api.ProductsApi
@@ -20,10 +21,13 @@ import com.software.feature_products_impl.databinding.FragmentProductsBinding
 import com.software.feature_products_impl.di.components.ProductsFeatureComponent
 import com.software.feature_products_impl.domain.interactors.LoadWithWorkersUseCase
 import com.software.feature_products_impl.domain.interactors.ProductListUseCase
-import com.software.feature_products_impl.presentation.adapters.ProductsAdapter
+import com.software.feature_products_impl.presentation.adapters.ProductsAndTitlesAdapter
 import com.software.feature_products_impl.presentation.adapters.ViewTypes
 import com.software.feature_products_impl.presentation.view_holders.ProductViewHolder
+import com.software.feature_products_impl.presentation.view_holders.ViewHolderFactory
 import com.software.feature_products_impl.presentation.view_models.ProductsViewModel
+import com.software.feature_products_impl.presentation.view_objects.BaseProductsTitleModel
+import com.software.feature_products_impl.presentation.view_objects.mapToBaseRVModel
 import javax.inject.Inject
 
 class ProductsFragment : Fragment() {
@@ -54,20 +58,23 @@ class ProductsFragment : Fragment() {
 
     private val recyclerViewPool = RecyclerView.RecycledViewPool().apply {
         this.setMaxRecycledViews(ViewTypes.PRODUCT_IN_LIST, 25)
-        this.setMaxRecycledViews(ViewTypes.PRODUCT_IN_LIST__IMAGE, 25)
     }
 
     private val swipeRefreshListener = SwipeRefreshLayout.OnRefreshListener {
         productsViewModel.getProducts()
     }
 
-    private val productsAdapter: ProductsAdapter by lazy {
-        ProductsAdapter(object : ProductsAdapter.Listener {
-            override fun onClickProduct(holder: ProductViewHolder, productId: String) {
-                productsViewModel.addViewCount(productId)
-                productsNavigationApi.navigateToPDP(this@ProductsFragment, productId)
-            }
-        })
+    private val productsAndTitlesAdapter: ProductsAndTitlesAdapter by lazy {
+        ProductsAndTitlesAdapter(
+            object : ProductsAndTitlesAdapter.Listener {
+                override fun onClickProduct(holder: ProductViewHolder, productId: String) {
+                    productsViewModel.addViewCount(productId)
+                    productsNavigationApi.navigateToPDP(this@ProductsFragment, productId)
+                }
+            },
+            ViewHolderFactory(),
+            ProductImageAdapter()
+        )
     }
 
     override fun onAttach(context: Context) {
@@ -106,7 +113,7 @@ class ProductsFragment : Fragment() {
             productsRV.apply {
                 layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                adapter = productsAdapter
+                adapter = productsAndTitlesAdapter
                 setRecycledViewPool(recyclerViewPool)
             }
 
@@ -121,7 +128,7 @@ class ProductsFragment : Fragment() {
     }
 
     private fun initObservers() {
-        productsViewModel.productLD.observe(viewLifecycleOwner) {
+        productsViewModel.productRecyclerLD.observe(viewLifecycleOwner) {
             when (it) {
                 is UiState.Loading, is UiState.Init -> {
                     binding.swipeRefreshLayout.isRefreshing = true
@@ -140,7 +147,12 @@ class ProductsFragment : Fragment() {
 
                 is UiState.Success -> {
                     binding.swipeRefreshLayout.isRefreshing = false
-                    productsAdapter.submitList(it.value)
+                    val list = context?.let { context ->
+                        it.value.mapToBaseRVModel(
+                            context
+                        )
+                    }
+                    productsAndTitlesAdapter.submitList(list)
                 }
             }
         }
@@ -163,11 +175,12 @@ class ProductsFragment : Fragment() {
 
                 is UiState.Success -> {
                     binding.swipeRefreshLayout.isRefreshing = false
-                    productsAdapter.currentList
+                    productsAndTitlesAdapter.currentList
+                        .filterIsInstance<BaseProductsTitleModel.ProductInListVO>()
                         .filter { prev -> prev.guid == it.value.guid }
                         .map { prev -> prev.viewsCount = it.value.viewsCount }
-                    val position = productsAdapter.currentList.indexOf(it.value)
-                    productsAdapter.notifyItemChanged(position)
+                    val position = productsAndTitlesAdapter.currentList.indexOf(it.value)
+                    productsAndTitlesAdapter.notifyItemChanged(position)
                 }
             }
         }

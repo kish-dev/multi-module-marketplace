@@ -12,7 +12,8 @@ import com.software.core_utils.presentation.common.safeLaunch
 import com.software.feature_products_api.ProductsNavigationApi
 import com.software.feature_products_impl.domain.interactors.LoadWithWorkersUseCase
 import com.software.feature_products_impl.domain.interactors.ProductListUseCase
-import com.software.feature_products_impl.presentation.view_objects.ProductInListVO
+import com.software.feature_products_impl.presentation.view_objects.BaseProductsTitleModel
+import com.software.feature_products_impl.presentation.view_objects.DividedProductsInList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
@@ -28,20 +29,20 @@ class ProductsViewModel(
         private val TAG = ProductsViewModel::class.java.simpleName
     }
 
-    private val _productLD: MutableLiveData<UiState<List<ProductInListVO>>> =
+    private val _productRecyclerLD: MutableLiveData<UiState<DividedProductsInList>> =
         MutableLiveData(UiState.Init())
-    var productLD: LiveData<UiState<List<ProductInListVO>>> = _productLD
+    var productRecyclerLD: LiveData<UiState<DividedProductsInList>> = _productRecyclerLD
 
-    private val _lastChangedProduct: MutableLiveData<UiState<ProductInListVO>> =
+    private val _lastChangedProduct: MutableLiveData<UiState<BaseProductsTitleModel.ProductInListVO>> =
         MutableLiveData(UiState.Init())
-    var lastChangedProduct: MutableLiveData<UiState<ProductInListVO>> = _lastChangedProduct
+    var lastChangedProduct: MutableLiveData<UiState<BaseProductsTitleModel.ProductInListVO>> = _lastChangedProduct
 
     private val five_minutes = 300000L
     private var autoUpdateJob: Job? = null
 
     fun getProducts() {
         viewModelScope.safeLaunch(Dispatchers.Main) {
-            _productLD.value = UiState.Loading()
+            _productRecyclerLD.value = UiState.Loading()
 
             val responseFlow = loadInteractor.loadProducts()
             responseFlow.collect {
@@ -57,12 +58,12 @@ class ProductsViewModel(
 
                     WorkInfo.State.FAILED -> {
                         Log.d(TAG, "WorkInfo.State.FAILED: ")
-                        _productLD.value = UiState.Error(Throwable("Something went wrong, FAILED"))
+                        _productRecyclerLD.value = UiState.Error(Throwable("Something went wrong, FAILED"))
                     }
 
                     WorkInfo.State.CANCELLED -> {
                         Log.d(TAG, "WorkInfo.State.CANCELLED: ")
-                        _productLD.value =
+                        _productRecyclerLD.value =
                             UiState.Error(Throwable("Something went wrong, CANCELLED"))
                     }
 
@@ -82,11 +83,11 @@ class ProductsViewModel(
         viewModelScope.safeLaunch(Dispatchers.Main) {
             when (val products = interactor.getProducts()) {
                 is DomainWrapper.Success -> {
-                    _productLD.value =
+                    _productRecyclerLD.value =
                         UiState.Success(products.value)
                 }
                 is DomainWrapper.Error -> {
-                    _productLD.value =
+                    _productRecyclerLD.value =
                         UiState.Error(products.throwable)
                 }
             }
