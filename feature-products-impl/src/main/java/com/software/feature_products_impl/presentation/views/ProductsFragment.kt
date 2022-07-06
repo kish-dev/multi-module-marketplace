@@ -61,11 +61,6 @@ class ProductsFragment : BaseFragment() {
         )
     }
 
-    private val recyclerViewPool = RecyclerView.RecycledViewPool().apply {
-        this.setMaxRecycledViews(ViewTypes.PRODUCT_IN_LIST, 15)
-        this.setMaxRecycledViews(ViewTypes.TITLE, 2)
-    }
-
     private val swipeRefreshListener = SwipeRefreshLayout.OnRefreshListener {
         viewModel.getProducts()
     }
@@ -130,7 +125,6 @@ class ProductsFragment : BaseFragment() {
                         recycleChildrenOnDetach = true
                     }
                 adapter = productsAndTitlesAdapter
-                setRecycledViewPool(recyclerViewPool)
             }
 
             swipeRefreshLayout.setOnRefreshListener {
