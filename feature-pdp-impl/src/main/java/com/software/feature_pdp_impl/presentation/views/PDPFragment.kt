@@ -7,13 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.SnapHelper
 import com.software.core_utils.R
 import com.software.core_utils.presentation.adapters.ProductImageAdapter
 import com.software.core_utils.presentation.common.UiState
+import com.software.core_utils.presentation.fragments.BaseFragment
 import com.software.core_utils.presentation.view_models.viewModelCreator
 import com.software.core_utils.presentation.view_objects.ProductVO
 import com.software.feature_pdp_api.PDPNavigationApi
@@ -23,7 +23,7 @@ import com.software.feature_pdp_impl.domain.interactors.ProductDetailUseCase
 import com.software.feature_pdp_impl.presentation.view_models.PDPViewModel
 import javax.inject.Inject
 
-class PDPFragment : Fragment() {
+class PDPFragment : BaseFragment() {
 
     private var _binding: PdpFragmentBinding? = null
     private val binding
@@ -45,7 +45,7 @@ class PDPFragment : Fragment() {
     @Inject
     lateinit var pdpNavigationApi: PDPNavigationApi
 
-    private val pdpViewModel: PDPViewModel by viewModelCreator {
+    override val viewModel: PDPViewModel by viewModelCreator {
         PDPViewModel(pdpInteractor)
     }
 
@@ -75,11 +75,11 @@ class PDPFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initView()
         initObservers()
-        productId?.let { pdpViewModel.getProduct(productId!!) }
+        productId?.let { viewModel.getProduct(productId!!) }
     }
 
     private fun initObservers() {
-        pdpViewModel.productLD.observe(viewLifecycleOwner) {
+        viewModel.productLD.observe(viewLifecycleOwner) {
             when (it) {
                 is UiState.Loading, is UiState.Init -> {
                     binding.swipeRefreshLayout.isRefreshing = true
@@ -87,12 +87,6 @@ class PDPFragment : Fragment() {
 
                 is UiState.Error -> {
                     binding.swipeRefreshLayout.isRefreshing = false
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.loading_error),
-                        Toast.LENGTH_SHORT
-                    ).show()
-
                     Log.e(TAG, "UiState is Error because of ${it.throwable.message}")
                 }
 
@@ -125,7 +119,7 @@ class PDPFragment : Fragment() {
             snapHelper.attachToRecyclerView(productImageRV)
 
             swipeRefreshLayout.setOnRefreshListener {
-                productId?.let { pdpViewModel.getProduct(productId!!) }
+                productId?.let { viewModel.getProduct(productId!!) }
             }
         }
     }

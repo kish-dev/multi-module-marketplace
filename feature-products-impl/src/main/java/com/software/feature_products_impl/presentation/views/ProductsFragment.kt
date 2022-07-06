@@ -18,6 +18,7 @@ import com.software.core_utils.R
 import com.software.core_utils.presentation.adapters.ProductImageAdapter
 import com.software.core_utils.presentation.common.ActionState
 import com.software.core_utils.presentation.common.UiState
+import com.software.core_utils.presentation.fragments.BaseFragment
 import com.software.core_utils.presentation.view_models.viewModelCreator
 import com.software.feature_api.ProductsApi
 import com.software.feature_products_api.ProductsNavigationApi
@@ -34,7 +35,7 @@ import com.software.feature_products_impl.presentation.view_objects.mapToBaseRVM
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class ProductsFragment : Fragment() {
+class ProductsFragment : BaseFragment() {
 
     private var _binding: FragmentProductsBinding? = null
     private val binding
@@ -52,7 +53,7 @@ class ProductsFragment : Fragment() {
     @Inject
     lateinit var loadInteractor: LoadWithWorkersUseCase
 
-    private val productsViewModel: ProductsViewModel by viewModelCreator {
+    override val viewModel: ProductsViewModel by viewModelCreator {
         ProductsViewModel(
             productsInteractor,
             loadInteractor,
@@ -65,14 +66,14 @@ class ProductsFragment : Fragment() {
     }
 
     private val swipeRefreshListener = SwipeRefreshLayout.OnRefreshListener {
-        productsViewModel.getProducts()
+        viewModel.getProducts()
     }
 
     private val productsAndTitlesAdapter: ProductsAndTitlesAdapter by lazy {
         ProductsAndTitlesAdapter(
             object : ProductsAndTitlesAdapter.Listener {
                 override fun onClickProduct(holder: ProductViewHolder, productId: String) {
-                    productsViewModel.addViewCount(productId)
+                    viewModel.addViewCount(productId)
                     productsNavigationApi.navigateToPDP(this@ProductsFragment, productId)
                 }
 
@@ -81,7 +82,7 @@ class ProductsFragment : Fragment() {
                     productId: String,
                     inCart: Boolean
                 ) {
-                    productsViewModel.updateProductBucketState(productId, inCart)
+                    viewModel.updateProductBucketState(productId, inCart)
                 }
             },
             ViewHolderFactory(),
@@ -111,7 +112,7 @@ class ProductsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        productsViewModel.autoUpdateProducts()
+        viewModel.autoUpdateProducts()
         with(binding) {
             swipeRefreshLayout.post {
                 swipeRefreshLayout.isRefreshing = true
@@ -129,7 +130,7 @@ class ProductsFragment : Fragment() {
             }
 
             swipeRefreshLayout.setOnRefreshListener {
-                productsViewModel.getProducts()
+                viewModel.getProducts()
             }
 
             addProductButton.setOnClickListener {
@@ -139,7 +140,7 @@ class ProductsFragment : Fragment() {
     }
 
     private fun initObservers() {
-        productsViewModel.productRecyclerLD.observe(viewLifecycleOwner) {
+        viewModel.productRecyclerLD.observe(viewLifecycleOwner) {
             when (it) {
                 is UiState.Loading, is UiState.Init -> {
                     binding.swipeRefreshLayout.isRefreshing = true
@@ -152,6 +153,7 @@ class ProductsFragment : Fragment() {
 
                 is UiState.Success -> {
                     binding.swipeRefreshLayout.isRefreshing = false
+                    val prevList = productsAndTitlesAdapter.currentList
                     val list = context?.let { context ->
                         it.value.mapToBaseRVModel(
                             context
@@ -161,29 +163,6 @@ class ProductsFragment : Fragment() {
                 }
             }
         }
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                productsViewModel.action.collect {
-                    when (it) {
-                        is ActionState.Success -> {
-                            showToast(it.value)
-                        }
-
-                        is ActionState.Error -> {
-                            showToast(getString(R.string.loading_error))
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(
-            requireContext(),
-            message,
-            Toast.LENGTH_SHORT
-        ).show()
     }
 
     override fun onPause() {
@@ -192,7 +171,7 @@ class ProductsFragment : Fragment() {
                 ProductsFeatureComponent.reset()
             }
         }
-        productsViewModel.stopAutoUpdate()
+        viewModel.stopAutoUpdate()
         super.onPause()
     }
 

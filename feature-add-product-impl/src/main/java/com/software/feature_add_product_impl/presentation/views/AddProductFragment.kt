@@ -6,9 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.software.core_utils.R
+import com.software.core_utils.presentation.common.ActionState
 import com.software.core_utils.presentation.common.UiState
+import com.software.core_utils.presentation.fragments.BaseFragment
 import com.software.core_utils.presentation.view_models.viewModelCreator
 import com.software.core_utils.presentation.view_objects.createProduct
 import com.software.feature_add_product.AddProductNavigationApi
@@ -16,9 +20,10 @@ import com.software.feature_add_product_impl.databinding.FragmentAddProductBindi
 import com.software.feature_add_product_impl.di.components.AddProductFeatureComponent
 import com.software.feature_add_product_impl.domain.interactors.AddProductUseCase
 import com.software.feature_add_product_impl.presentation.view_models.AddProductViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class AddProductFragment : Fragment() {
+class AddProductFragment : BaseFragment() {
 
     private var _binding: FragmentAddProductBinding? = null
     private val binding
@@ -30,7 +35,7 @@ class AddProductFragment : Fragment() {
     @Inject
     lateinit var addProductNavigationApi: AddProductNavigationApi
 
-    private val addProductViewModel: AddProductViewModel by viewModelCreator {
+    override val viewModel: AddProductViewModel by viewModelCreator {
         AddProductViewModel(addProductInteractor)
     }
 
@@ -63,7 +68,7 @@ class AddProductFragment : Fragment() {
     }
 
     private fun initObservers() {
-        addProductViewModel.addProductState.observe(viewLifecycleOwner) {
+        viewModel.addProductState.observe(viewLifecycleOwner) {
             when (it) {
                 is UiState.Loading -> {
                     binding.swipeRefreshLayout.isRefreshing = true
@@ -71,25 +76,32 @@ class AddProductFragment : Fragment() {
 
                 is UiState.Error -> {
                     binding.swipeRefreshLayout.isRefreshing = false
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.loading_error),
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
 
                 is UiState.Success -> {
                     binding.swipeRefreshLayout.isRefreshing = false
-                    Toast.makeText(
-                        requireContext(),
-                        R.string.add_product_success,
-                        Toast.LENGTH_SHORT
-                    ).show()
                     parentFragmentManager.popBackStack()
                 }
 
                 is UiState.Init -> {
                     binding.swipeRefreshLayout.isRefreshing = false
+                }
+            }
+        }
+    }
+
+    override fun initActionStateObservers() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.action.collect {
+                    when (it) {
+                        is ActionState.Success -> {
+                            showToast(getString(R.string.add_product_success))
+                        }
+                        is ActionState.Error -> {
+                            showToast(getString(R.string.loading_error))
+                        }
+                    }
                 }
             }
         }
@@ -106,7 +118,7 @@ class AddProductFragment : Fragment() {
                         image = imageLinkEditText.text!!.toString(),
                         rating = ratingBar.rating.toDouble()
                     )
-                    addProductViewModel.addProduct(product)
+                    viewModel.addProduct(product)
                 } else {
                     Toast.makeText(
                         requireContext(),

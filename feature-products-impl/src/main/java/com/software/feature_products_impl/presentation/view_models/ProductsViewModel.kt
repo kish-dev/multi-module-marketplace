@@ -10,6 +10,7 @@ import com.software.core_utils.models.DomainWrapper
 import com.software.core_utils.presentation.common.ActionState
 import com.software.core_utils.presentation.common.UiState
 import com.software.core_utils.presentation.common.safeLaunch
+import com.software.core_utils.presentation.view_models.BaseViewModel
 import com.software.feature_products_api.ProductsNavigationApi
 import com.software.feature_products_impl.domain.interactors.LoadWithWorkersUseCase
 import com.software.feature_products_impl.domain.interactors.ProductListUseCase
@@ -17,16 +18,13 @@ import com.software.feature_products_impl.presentation.view_objects.DividedProdu
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.receiveAsFlow
 
 class ProductsViewModel(
     private val interactor: ProductListUseCase,
     private val loadInteractor: LoadWithWorkersUseCase,
     private val router: ProductsNavigationApi
-) : ViewModel() {
+) : BaseViewModel() {
 
     companion object {
         private val TAG = ProductsViewModel::class.java.simpleName
@@ -35,10 +33,6 @@ class ProductsViewModel(
     private val _productRecyclerLD: MutableLiveData<UiState<DividedProductsInList>> =
         MutableLiveData(UiState.Init())
     var productRecyclerLD: LiveData<UiState<DividedProductsInList>> = _productRecyclerLD
-
-    private val _action = Channel<ActionState<String>>()
-    var action: Flow<ActionState<String>> =
-        _action.receiveAsFlow()
 
     private val five_minutes = 300000L
     private var autoUpdateJob: Job? = null
@@ -61,6 +55,7 @@ class ProductsViewModel(
 
                     WorkInfo.State.FAILED -> {
                         Log.d(TAG, "WorkInfo.State.FAILED: ")
+                        updateUiState()
                         val thx = Throwable("Something went wrong, FAILED")
                         _productRecyclerLD.value =
                             UiState.Error(thx)
@@ -68,6 +63,7 @@ class ProductsViewModel(
                     }
 
                     WorkInfo.State.CANCELLED -> {
+                        updateUiState()
                         Log.d(TAG, "WorkInfo.State.CANCELLED: ")
                         val thx = Throwable("Something went wrong, CANCELLED")
                         _productRecyclerLD.value =

@@ -17,10 +17,10 @@ class ProductsAndTitlesAdapter(
     BaseProductsTitleDiffUtil()
 ) {
 
-//    companion object {
-//        const val PAYLOAD_IS_IN_CART = "payload_is_in_cart"
-//        const val PAYLOAD_VIEWS_COUNT = "payload_views_count"
-//    }
+    companion object {
+        const val PAYLOAD_IS_IN_CART = "payload_is_in_cart"
+        const val PAYLOAD_VIEWS_COUNT = "payload_views_count"
+    }
 
     interface Listener {
         fun onClickProduct(holder: ProductViewHolder, productId: String)
@@ -46,42 +46,42 @@ class ProductsAndTitlesAdapter(
         holder.initBind(getItem(position))
     }
 
-//    override fun onBindViewHolder(
-//        holder: BaseViewHolder<out BaseProductsTitleModel>,
-//        position: Int,
-//        payloads: MutableList<Any>
-//    ) {
-//        if (payloads.isEmpty()) {
-//            onBindViewHolder(holder, position)
-//        } else {
-//            when (holder) {
-//                is ProductViewHolder -> {
-//                    when (payloads[0]) {
-//                        PAYLOAD_IS_IN_CART -> {
-//                            (getItem(position) as? BaseProductsTitleModel.ProductInListVO)?.let {
-//                                holder.bindIsInCartState(
-//                                    it
-//                                )
-//                            }
-//                        }
-//                        PAYLOAD_VIEWS_COUNT -> {
-//                            (getItem(position) as? BaseProductsTitleModel.ProductInListVO)?.let {
-//                                holder.bindViewsCount(
-//                                    it
-//                                )
-//                            }
-//                        }
-//                        else -> {
-//                            onBindViewHolder(holder, position)
-//                        }
-//                    }
-//                }
-//                else -> {
-//                    onBindViewHolder(holder, position)
-//                }
-//            }
-//        }
-//    }
+    override fun onBindViewHolder(
+        holder: BaseViewHolder<out BaseProductsTitleModel>,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if (payloads.isEmpty()) {
+            onBindViewHolder(holder, position)
+        } else {
+            when (holder) {
+                is ProductViewHolder -> {
+                    when (payloads[0]) {
+                        PAYLOAD_IS_IN_CART -> {
+                            (getItem(position) as? BaseProductsTitleModel.ProductInListVO)?.let {
+                                holder.bindIsInCartState(
+                                    it
+                                )
+                            }
+                        }
+                        PAYLOAD_VIEWS_COUNT -> {
+                            (getItem(position) as? BaseProductsTitleModel.ProductInListVO)?.let {
+                                holder.bindViewsCount(
+                                    it
+                                )
+                            }
+                        }
+                        else -> {
+                            onBindViewHolder(holder, position)
+                        }
+                    }
+                }
+                else -> {
+                    onBindViewHolder(holder, position)
+                }
+            }
+        }
+    }
 
     override fun getItemViewType(position: Int): Int =
         when (getItem(position)) {
@@ -100,7 +100,7 @@ class ProductsAndTitlesAdapter(
         ): Boolean =
             when {
                 oldItem is BaseProductsTitleModel.ProductInListVO && newItem is BaseProductsTitleModel.ProductInListVO -> {
-                    oldItem == newItem
+                    oldItem.guid == newItem.guid
                 }
 
                 oldItem is BaseProductsTitleModel.TitleProductVO && newItem is BaseProductsTitleModel.TitleProductVO -> {
@@ -131,29 +131,30 @@ class ProductsAndTitlesAdapter(
                 }
             }
 
-//        override fun getChangePayload(
-//            oldItem: BaseProductsTitleModel,
-//            newItem: BaseProductsTitleModel
-//        ): Any? {
-//            return when {
-//                oldItem is BaseProductsTitleModel.ProductInListVO && newItem is BaseProductsTitleModel.ProductInListVO -> {
-//                    val diff = mutableListOf<Any>()
-////                    if(oldItem.guid == newItem.guid) {
-////                        if (oldItem.isInCart != newItem.isInCart) {
-////                            diff.add(PAYLOAD_IS_IN_CART)
-////                        }
-////                        if (oldItem.viewsCount != newItem.viewsCount) {
-////                            diff.add(PAYLOAD_VIEWS_COUNT)
-////                        }
-////                    }
-//                    diff
-//                }
-//
-//                else -> {
-//                    null
-//                }
-//            }
-//        }
+        override fun getChangePayload(
+            oldItem: BaseProductsTitleModel,
+            newItem: BaseProductsTitleModel
+        ): Any? {
+            return when {
+                oldItem is BaseProductsTitleModel.ProductInListVO && newItem is BaseProductsTitleModel.ProductInListVO -> {
+                    var diff: MutableList<String>? = null
+                    if(oldItem.guid == newItem.guid) {
+                        diff = mutableListOf()
+                        if (oldItem.isInCart != newItem.isInCart) {
+                            diff.add(PAYLOAD_IS_IN_CART)
+                        }
+                        if (oldItem.viewsCount != newItem.viewsCount) {
+                            diff.add(PAYLOAD_VIEWS_COUNT)
+                        }
+                    }
+                    diff
+                }
 
+                else -> {
+                    null
+                }
+            }
+        }
     }
+
 }

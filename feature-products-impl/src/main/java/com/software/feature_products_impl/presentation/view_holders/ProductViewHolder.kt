@@ -95,13 +95,11 @@ class ProductViewHolder(
         productsBucketButton?.setBucketState(item.isInCart)
     }
 
-//    fun bindIsInCartState(item: BaseProductsTitleModel.ProductInListVO) {
-//        this.productInListVO = item
-//        productsBucketButton?.setBucketState(item.isInCart)
-//    }
-//
-//    fun bindViewsCount(item: BaseProductsTitleModel.ProductInListVO) {
-//        this.productInListVO = item
-//        viewsCountTV?.text = item.viewsCount.toString()
-//    }
+    fun bindIsInCartState(item: BaseProductsTitleModel.ProductInListVO) {
+        productsBucketButton?.setBucketState(item.isInCart)
+    }
+
+    fun bindViewsCount(item: BaseProductsTitleModel.ProductInListVO) {
+        viewsCountTV?.text = item.viewsCount.toString()
+    }
 }
