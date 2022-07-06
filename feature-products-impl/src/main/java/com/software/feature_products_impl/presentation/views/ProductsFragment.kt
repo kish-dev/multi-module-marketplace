@@ -121,9 +121,7 @@ class ProductsFragment : BaseFragment() {
         with(binding) {
             productsRV.apply {
                 layoutManager =
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false).apply {
-                        recycleChildrenOnDetach = true
-                    }
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                 adapter = productsAndTitlesAdapter
             }
 
