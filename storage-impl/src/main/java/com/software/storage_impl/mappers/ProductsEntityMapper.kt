@@ -5,7 +5,7 @@ import com.software.feature_api.wrappers.ProductInListDTO
 import com.software.storage_impl.models.ProductEntity
 import com.software.storage_impl.models.ProductInListEntity
 
-fun ProductInListDTO.mapToEntity(views: Int): ProductInListEntity {
+fun ProductInListDTO.mapToEntity(views: Int, isInCart: Boolean): ProductInListEntity {
     return ProductInListEntity(
         guid,
         image,
@@ -31,7 +31,7 @@ fun ProductInListEntity.mapToDTO(): ProductInListDTO {
     )
 }
 
-fun ProductDTO.mapToEntity(): ProductEntity {
+fun ProductDTO.mapToEntity(isInCart: Boolean, count: Int? = null): ProductEntity {
     return ProductEntity(
         guid,
         name,
@@ -144,7 +144,8 @@ fun mapProductsInListDTOtoProductsInListEntity(
     val uniqueCacheItems = listEntity?.filter { entity -> listDTO.none { it.guid == entity.guid } }
     return listDTO.map { dto ->
         dto.mapToEntity(
-            listEntity?.findLast { it.guid == dto.guid }?.viewsCount ?: 0
+            views = listEntity?.findLast { it.guid == dto.guid }?.viewsCount ?: 0,
+            isInCart = listEntity?.findLast { it.guid == dto.guid }?.isInCart ?: false
         )
     }.plus(uniqueCacheItems ?: emptyList())
         .sortedBy { it.name.lowercase() }
@@ -165,7 +166,12 @@ fun mapProductsDTOtoProductsEntity(
     listEntity: MutableList<ProductEntity>?
 ): List<ProductEntity> {
     val uniqueCacheItems = listEntity?.filter { entity -> listDTO.none { it.guid == entity.guid } }
-    return listDTO.map { it.mapToEntity() }.plus(uniqueCacheItems ?: emptyList())
+    return listDTO.map { dto ->
+        dto.mapToEntity(
+            isInCart = listEntity?.findLast { it.guid == dto.guid }?.isInCart ?: false,
+            count = listEntity?.findLast { it.guid == dto.guid }?.count
+        )
+    }.plus(uniqueCacheItems ?: emptyList())
         .sortedBy { it.name.lowercase() }
 }
 

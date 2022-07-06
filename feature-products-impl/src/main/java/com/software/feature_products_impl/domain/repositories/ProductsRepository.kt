@@ -13,4 +13,9 @@ interface ProductsRepository {
 
     suspend fun addViewToProductInList(guid: String): ServerResponse<ProductInListDTO>
 
+    suspend fun updateProductBucketState(
+        guid: String,
+        inCart: Boolean
+    ): ServerResponse<ProductInListDTO>
+
 }

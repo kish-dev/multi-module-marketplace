@@ -2,18 +2,13 @@ package com.software.feature_products_impl.presentation.views
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.ContextThemeWrapper
 import android.view.View
-import android.widget.FrameLayout
 import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import com.google.android.material.card.MaterialCardView
 import com.software.feature_products_impl.R
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 
 class ProductsBucketButton @JvmOverloads constructor(
     context: Context,
@@ -47,7 +42,7 @@ class ProductsBucketButton @JvmOverloads constructor(
     }
 
     fun setBucketState(isInBucket: Boolean) {
-        when(isInBucket) {
+        when (isInBucket) {
             true -> {
                 addToBucket()
             }
@@ -60,15 +55,15 @@ class ProductsBucketButton @JvmOverloads constructor(
     }
 
     private fun addToBucket() {
-        cardView?.setCardBackgroundColor(context.getColor(com.software.core_utils.R.color.purple_200))
         progressBar?.isVisible = false
+        cardView?.setCardBackgroundColor(context.getColor(com.software.core_utils.R.color.purple_200))
         titleText?.text = context.getString(com.software.core_utils.R.string.in_the_bucket)
         titleText?.isVisible = true
     }
 
     private fun removeFromBucket() {
-        cardView?.setCardBackgroundColor(context.getColor(com.software.core_utils.R.color.gray))
         progressBar?.isVisible = false
+        cardView?.setCardBackgroundColor(context.getColor(com.software.core_utils.R.color.gray))
         titleText?.text = view?.context?.getString(com.software.core_utils.R.string.add_to_a_bucket)
         titleText?.isVisible = true
     }

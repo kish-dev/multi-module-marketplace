@@ -31,9 +31,11 @@ fun CoroutineScope.safeLaunch(
     }
 }
 
-fun View.debounceClick(delayInMillis: Long = 500,
-                               coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main.immediate),
-                               click: () -> Unit) {
+fun View.debounceClick(
+    delayInMillis: Long = 500,
+    coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main.immediate),
+    click: () -> Unit
+) {
     coroutineScope.launch {
         this@debounceClick.isEnabled = false
         click.invoke()

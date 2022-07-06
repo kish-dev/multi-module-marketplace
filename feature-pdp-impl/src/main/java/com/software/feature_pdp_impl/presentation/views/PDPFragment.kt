@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.SnapHelper
 import com.software.core_utils.R
+import com.software.core_utils.presentation.adapters.ProductImageAdapter
 import com.software.core_utils.presentation.common.UiState
 import com.software.core_utils.presentation.view_models.viewModelCreator
 import com.software.core_utils.presentation.view_objects.ProductVO
@@ -19,7 +20,6 @@ import com.software.feature_pdp_api.PDPNavigationApi
 import com.software.feature_pdp_impl.databinding.PdpFragmentBinding
 import com.software.feature_pdp_impl.di.components.PDPFeatureComponent
 import com.software.feature_pdp_impl.domain.interactors.ProductDetailUseCase
-import com.software.core_utils.presentation.adapters.ProductImageAdapter
 import com.software.feature_pdp_impl.presentation.view_models.PDPViewModel
 import javax.inject.Inject
 

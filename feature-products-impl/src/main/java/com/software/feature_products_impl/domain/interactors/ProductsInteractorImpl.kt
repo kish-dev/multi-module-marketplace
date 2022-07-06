@@ -11,7 +11,6 @@ import com.software.feature_products_impl.presentation.view_objects.DividedProdu
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
-import java.lang.NumberFormatException
 
 @PerFeature
 class ProductsInteractorImpl(
@@ -32,7 +31,10 @@ class ProductsInteractorImpl(
             }
         }
 
-    private fun createResult(list: List<BaseProductsTitleModel.ProductInListVO>, estimatedPrice: Int = 100): DomainWrapper<DividedProductsInList> =
+    private fun createResult(
+        list: List<BaseProductsTitleModel.ProductInListVO>,
+        estimatedPrice: Int = 100
+    ): DomainWrapper<DividedProductsInList> =
         try {
             val cheapList = list.filter { it.price.toInt() < estimatedPrice }
             val expensiveList = list.filter { it.price.toInt() >= estimatedPrice }
@@ -54,6 +56,23 @@ class ProductsInteractorImpl(
                 }
             }
         }
+
+    override suspend fun updateProductBucketState(
+        guid: String,
+        inCart: Boolean
+    ): DomainWrapper<BaseProductsTitleModel.ProductInListVO> =
+        withContext(dispatcher) {
+            when (val product = productsRepository.updateProductBucketState(guid, inCart)) {
+                is ServerResponse.Success -> {
+                    DomainWrapper.Success(product.value.mapToVO())
+                }
+
+                is ServerResponse.Error -> {
+                    DomainWrapper.Error(product.throwable)
+                }
+            }
+        }
+
 
     override suspend fun loadProducts(): Flow<WorkInfo> =
         productsRepository.loadProducts()

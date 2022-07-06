@@ -7,17 +7,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkInfo
 import com.software.core_utils.models.DomainWrapper
+import com.software.core_utils.presentation.common.ActionState
 import com.software.core_utils.presentation.common.UiState
 import com.software.core_utils.presentation.common.safeLaunch
 import com.software.feature_products_api.ProductsNavigationApi
 import com.software.feature_products_impl.domain.interactors.LoadWithWorkersUseCase
 import com.software.feature_products_impl.domain.interactors.ProductListUseCase
-import com.software.feature_products_impl.presentation.view_objects.BaseProductsTitleModel
 import com.software.feature_products_impl.presentation.view_objects.DividedProductsInList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.receiveAsFlow
 
 class ProductsViewModel(
     private val interactor: ProductListUseCase,
@@ -33,9 +36,9 @@ class ProductsViewModel(
         MutableLiveData(UiState.Init())
     var productRecyclerLD: LiveData<UiState<DividedProductsInList>> = _productRecyclerLD
 
-    private val _lastChangedProduct: MutableLiveData<UiState<BaseProductsTitleModel.ProductInListVO>> =
-        MutableLiveData(UiState.Init())
-    var lastChangedProduct: MutableLiveData<UiState<BaseProductsTitleModel.ProductInListVO>> = _lastChangedProduct
+    private val _action = Channel<ActionState<String>>()
+    var action: Flow<ActionState<String>> =
+        _action.receiveAsFlow()
 
     private val five_minutes = 300000L
     private var autoUpdateJob: Job? = null
@@ -58,13 +61,18 @@ class ProductsViewModel(
 
                     WorkInfo.State.FAILED -> {
                         Log.d(TAG, "WorkInfo.State.FAILED: ")
-                        _productRecyclerLD.value = UiState.Error(Throwable("Something went wrong, FAILED"))
+                        val thx = Throwable("Something went wrong, FAILED")
+                        _productRecyclerLD.value =
+                            UiState.Error(thx)
+                        _action.send(ActionState.Error(thx))
                     }
 
                     WorkInfo.State.CANCELLED -> {
                         Log.d(TAG, "WorkInfo.State.CANCELLED: ")
+                        val thx = Throwable("Something went wrong, CANCELLED")
                         _productRecyclerLD.value =
-                            UiState.Error(Throwable("Something went wrong, CANCELLED"))
+                            UiState.Error(thx)
+                        _action.send(ActionState.Error(thx))
                     }
 
                     WorkInfo.State.ENQUEUED -> {
@@ -89,6 +97,20 @@ class ProductsViewModel(
                 is DomainWrapper.Error -> {
                     _productRecyclerLD.value =
                         UiState.Error(products.throwable)
+                    _action.send(ActionState.Error(products.throwable))
+                }
+            }
+        }
+    }
+
+    fun updateProductBucketState(guid: String, inCart: Boolean) {
+        viewModelScope.safeLaunch(Dispatchers.Main) {
+            when (val product = interactor.updateProductBucketState(guid, inCart)) {
+                is DomainWrapper.Success -> {
+                    updateUiState()
+                }
+                is DomainWrapper.Error -> {
+                    _action.send(ActionState.Error(product.throwable))
                 }
             }
         }
@@ -96,15 +118,12 @@ class ProductsViewModel(
 
     fun addViewCount(guid: String) {
         viewModelScope.safeLaunch(Dispatchers.Main) {
-            _lastChangedProduct.value = UiState.Loading()
             when (val product = interactor.addViewToProductInList(guid)) {
                 is DomainWrapper.Success -> {
-                    _lastChangedProduct.value =
-                        UiState.Success(product.value)
+                    updateUiState()
                 }
                 is DomainWrapper.Error -> {
-                    _lastChangedProduct.value =
-                        UiState.Error(product.throwable)
+                    _action.send(ActionState.Error(product.throwable))
                 }
             }
         }

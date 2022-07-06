@@ -4,7 +4,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.software.feature_products_impl.presentation.view_objects.BaseProductsTitleModel
 
-abstract class BaseViewHolder<T: BaseProductsTitleModel>(
+abstract class BaseViewHolder<T : BaseProductsTitleModel>(
     itemView: View
 ) : RecyclerView.ViewHolder(itemView) {
 

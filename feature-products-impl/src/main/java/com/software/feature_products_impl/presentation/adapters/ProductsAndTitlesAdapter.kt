@@ -8,9 +8,6 @@ import com.software.feature_products_impl.presentation.view_holders.BaseViewHold
 import com.software.feature_products_impl.presentation.view_holders.ProductViewHolder
 import com.software.feature_products_impl.presentation.view_holders.ViewHolderFactory
 import com.software.feature_products_impl.presentation.view_objects.BaseProductsTitleModel
-import java.io.InvalidClassException
-import java.lang.ClassCastException
-import java.util.*
 
 class ProductsAndTitlesAdapter(
     private val listener: Listener,
@@ -20,8 +17,14 @@ class ProductsAndTitlesAdapter(
     BaseProductsTitleDiffUtil()
 ) {
 
+//    companion object {
+//        const val PAYLOAD_IS_IN_CART = "payload_is_in_cart"
+//        const val PAYLOAD_VIEWS_COUNT = "payload_views_count"
+//    }
+
     interface Listener {
         fun onClickProduct(holder: ProductViewHolder, productId: String)
+        fun onChangeCartState(holder: ProductViewHolder, productId: String, inCart: Boolean)
     }
 
     override fun onCreateViewHolder(
@@ -38,10 +41,47 @@ class ProductsAndTitlesAdapter(
 
     override fun onBindViewHolder(
         holder: BaseViewHolder<out BaseProductsTitleModel>,
-        position: Int
+        position: Int,
     ) {
         holder.initBind(getItem(position))
     }
+
+//    override fun onBindViewHolder(
+//        holder: BaseViewHolder<out BaseProductsTitleModel>,
+//        position: Int,
+//        payloads: MutableList<Any>
+//    ) {
+//        if (payloads.isEmpty()) {
+//            onBindViewHolder(holder, position)
+//        } else {
+//            when (holder) {
+//                is ProductViewHolder -> {
+//                    when (payloads[0]) {
+//                        PAYLOAD_IS_IN_CART -> {
+//                            (getItem(position) as? BaseProductsTitleModel.ProductInListVO)?.let {
+//                                holder.bindIsInCartState(
+//                                    it
+//                                )
+//                            }
+//                        }
+//                        PAYLOAD_VIEWS_COUNT -> {
+//                            (getItem(position) as? BaseProductsTitleModel.ProductInListVO)?.let {
+//                                holder.bindViewsCount(
+//                                    it
+//                                )
+//                            }
+//                        }
+//                        else -> {
+//                            onBindViewHolder(holder, position)
+//                        }
+//                    }
+//                }
+//                else -> {
+//                    onBindViewHolder(holder, position)
+//                }
+//            }
+//        }
+//    }
 
     override fun getItemViewType(position: Int): Int =
         when (getItem(position)) {
@@ -53,7 +93,6 @@ class ProductsAndTitlesAdapter(
             }
         }
 
-
     private class BaseProductsTitleDiffUtil : DiffUtil.ItemCallback<BaseProductsTitleModel>() {
         override fun areItemsTheSame(
             oldItem: BaseProductsTitleModel,
@@ -61,7 +100,7 @@ class ProductsAndTitlesAdapter(
         ): Boolean =
             when {
                 oldItem is BaseProductsTitleModel.ProductInListVO && newItem is BaseProductsTitleModel.ProductInListVO -> {
-                    oldItem.guid == newItem.guid
+                    oldItem == newItem
                 }
 
                 oldItem is BaseProductsTitleModel.TitleProductVO && newItem is BaseProductsTitleModel.TitleProductVO -> {
@@ -69,7 +108,7 @@ class ProductsAndTitlesAdapter(
                 }
 
                 else -> {
-                    throw ClassCastException("Unexpected class in BaseRVModelDiffUtil.areItemsTheSame")
+                    false
                 }
             }
 
@@ -88,9 +127,33 @@ class ProductsAndTitlesAdapter(
                 }
 
                 else -> {
-                    throw ClassCastException("Unexpected class in BaseRVModelDiffUtil.areItemsTheSame")
+                    false
                 }
             }
+
+//        override fun getChangePayload(
+//            oldItem: BaseProductsTitleModel,
+//            newItem: BaseProductsTitleModel
+//        ): Any? {
+//            return when {
+//                oldItem is BaseProductsTitleModel.ProductInListVO && newItem is BaseProductsTitleModel.ProductInListVO -> {
+//                    val diff = mutableListOf<Any>()
+////                    if(oldItem.guid == newItem.guid) {
+////                        if (oldItem.isInCart != newItem.isInCart) {
+////                            diff.add(PAYLOAD_IS_IN_CART)
+////                        }
+////                        if (oldItem.viewsCount != newItem.viewsCount) {
+////                            diff.add(PAYLOAD_VIEWS_COUNT)
+////                        }
+////                    }
+//                    diff
+//                }
+//
+//                else -> {
+//                    null
+//                }
+//            }
+//        }
 
     }
 }

@@ -8,11 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.software.core_utils.R
 import com.software.core_utils.presentation.adapters.ProductImageAdapter
+import com.software.core_utils.presentation.common.ActionState
 import com.software.core_utils.presentation.common.UiState
 import com.software.core_utils.presentation.view_models.viewModelCreator
 import com.software.feature_api.ProductsApi
@@ -26,8 +30,8 @@ import com.software.feature_products_impl.presentation.adapters.ViewTypes
 import com.software.feature_products_impl.presentation.view_holders.ProductViewHolder
 import com.software.feature_products_impl.presentation.view_holders.ViewHolderFactory
 import com.software.feature_products_impl.presentation.view_models.ProductsViewModel
-import com.software.feature_products_impl.presentation.view_objects.BaseProductsTitleModel
 import com.software.feature_products_impl.presentation.view_objects.mapToBaseRVModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ProductsFragment : Fragment() {
@@ -70,6 +74,14 @@ class ProductsFragment : Fragment() {
                 override fun onClickProduct(holder: ProductViewHolder, productId: String) {
                     productsViewModel.addViewCount(productId)
                     productsNavigationApi.navigateToPDP(this@ProductsFragment, productId)
+                }
+
+                override fun onChangeCartState(
+                    holder: ProductViewHolder,
+                    productId: String,
+                    inCart: Boolean
+                ) {
+                    productsViewModel.updateProductBucketState(productId, inCart)
                 }
             },
             ViewHolderFactory(),
@@ -114,7 +126,6 @@ class ProductsFragment : Fragment() {
                 layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                 adapter = productsAndTitlesAdapter
-                setRecycledViewPool(recyclerViewPool)
             }
 
             swipeRefreshLayout.setOnRefreshListener {
@@ -136,12 +147,6 @@ class ProductsFragment : Fragment() {
 
                 is UiState.Error -> {
                     binding.swipeRefreshLayout.isRefreshing = false
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.loading_error),
-                        Toast.LENGTH_SHORT
-                    ).show()
-
                     Log.e(TAG, "UiState is Error because of ${it.throwable.message}")
                 }
 
@@ -156,34 +161,29 @@ class ProductsFragment : Fragment() {
                 }
             }
         }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                productsViewModel.action.collect {
+                    when (it) {
+                        is ActionState.Success -> {
+                            showToast(it.value)
+                        }
 
-        productsViewModel.lastChangedProduct.observe(viewLifecycleOwner) {
-            when (it) {
-                is UiState.Loading, is UiState.Init -> {
-                }
-
-                is UiState.Error -> {
-                    binding.swipeRefreshLayout.isRefreshing = false
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.loading_error),
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    Log.e(TAG, "UiState is Error because of ${it.throwable.message}")
-                }
-
-                is UiState.Success -> {
-                    binding.swipeRefreshLayout.isRefreshing = false
-                    productsAndTitlesAdapter.currentList
-                        .filterIsInstance<BaseProductsTitleModel.ProductInListVO>()
-                        .filter { prev -> prev.guid == it.value.guid }
-                        .map { prev -> prev.viewsCount = it.value.viewsCount }
-                    val position = productsAndTitlesAdapter.currentList.indexOf(it.value)
-                    productsAndTitlesAdapter.notifyItemChanged(position)
+                        is ActionState.Error -> {
+                            showToast(getString(R.string.loading_error))
+                        }
+                    }
                 }
             }
         }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(
+            requireContext(),
+            message,
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     override fun onPause() {

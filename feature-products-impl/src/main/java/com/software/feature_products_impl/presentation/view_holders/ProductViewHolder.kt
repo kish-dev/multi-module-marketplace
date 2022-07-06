@@ -13,7 +13,6 @@ import com.software.core_utils.presentation.common.debounceClick
 import com.software.feature_products_impl.R
 import com.software.feature_products_impl.presentation.view_objects.BaseProductsTitleModel
 import com.software.feature_products_impl.presentation.views.ProductsBucketButton
-import kotlin.random.Random
 
 class ProductViewHolder(
     itemView: View,
@@ -54,17 +53,19 @@ class ProductViewHolder(
 
         //TODO добавить в VO модельки количество товаров в корзине, хранить в репе, мерджить после запроса
         //TODO возвращать через интерактор и инитить стейт кнопки
-        productsBucketButton?.setOnClickListener {
-            it.debounceClick {
-                productsBucketButton?.init()
-                productsBucketButton?.setBucketState(Random.nextBoolean())
+        productsBucketButton?.setOnClickListener { view ->
+            view.debounceClick {
+                productInListVO?.let {
+                    productsBucketButton?.init()
+                    listener.onChangeCartState(this, it.guid, !it.isInCart)
+                }
             }
         }
 
         cardView?.setOnClickListener {
             it.debounceClick {
-                productInListVO?.guid?.let {
-                        product -> listener.onClickProduct(this, product)
+                productInListVO?.guid?.let { product ->
+                    listener.onClickProduct(this, product)
                 }
             }
         }
@@ -91,5 +92,16 @@ class ProductViewHolder(
         priceTV?.text = item.price
         ratingView?.rating = item.rating.toFloat()
         viewsCountTV?.text = item.viewsCount.toString()
+        productsBucketButton?.setBucketState(item.isInCart)
     }
+
+//    fun bindIsInCartState(item: BaseProductsTitleModel.ProductInListVO) {
+//        this.productInListVO = item
+//        productsBucketButton?.setBucketState(item.isInCart)
+//    }
+//
+//    fun bindViewsCount(item: BaseProductsTitleModel.ProductInListVO) {
+//        this.productInListVO = item
+//        viewsCountTV?.text = item.viewsCount.toString()
+//    }
 }

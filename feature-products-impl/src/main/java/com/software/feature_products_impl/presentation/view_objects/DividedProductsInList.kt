@@ -10,7 +10,7 @@ data class DividedProductsInList(
 
 fun DividedProductsInList.mapToBaseRVModel(context: Context): List<BaseProductsTitleModel> {
     val resultList = mutableListOf<BaseProductsTitleModel>()
-    when(this.cheapProductsInList.size) {
+    when (this.cheapProductsInList.size) {
         0 -> {
 
         }
@@ -21,7 +21,7 @@ fun DividedProductsInList.mapToBaseRVModel(context: Context): List<BaseProductsT
         }
     }
 
-    when(this.expensiveProductsInList.size) {
+    when (this.expensiveProductsInList.size) {
         0 -> {
 
         }

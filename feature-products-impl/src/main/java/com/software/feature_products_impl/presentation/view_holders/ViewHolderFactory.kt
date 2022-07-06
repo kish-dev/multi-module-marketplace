@@ -45,7 +45,8 @@ class ViewHolderFactory {
 
             ViewTypes.TITLE -> {
                 resultVH = TitleProductViewHolder(
-                    LayoutInflater.from(parentView.context).inflate(R.layout.title_product_item, parentView, false)
+                    LayoutInflater.from(parentView.context)
+                        .inflate(R.layout.title_product_item, parentView, false)
                 )
             }
 

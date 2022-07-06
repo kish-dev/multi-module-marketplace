@@ -1,7 +1,5 @@
 package com.software.feature_products_impl.presentation.view_objects
 
-import com.software.feature_products_impl.presentation.adapters.ViewTypes
-
 //data class ProductInListVO(
 //    val guid: String,
 //    val images: List<String>,

@@ -11,10 +11,10 @@ data class ProductEntity(
     val description: String,
     val rating: Double,
     val isFavorite: Boolean,
-    val isInCart: Boolean,
+    var isInCart: Boolean,
     val images: List<String>,
     val weight: Double?,
-    val count: Int?,
+    var count: Int?,
     val availableCount: Int?,
     val additionalParams: Map<String, String>
 ) : Parcelable

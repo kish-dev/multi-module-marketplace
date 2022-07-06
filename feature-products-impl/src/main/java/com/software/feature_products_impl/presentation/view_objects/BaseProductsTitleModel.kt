@@ -31,7 +31,7 @@ sealed class BaseProductsTitleModel {
         val price: String,
         val rating: Double,
         val isFavorite: Boolean,
-        val isInCart: Boolean,
+        var isInCart: Boolean,
         var viewsCount: Int,
         override val viewType: Int = ViewTypes.PRODUCT_IN_LIST,
     ) : BaseProductsTitleModel()

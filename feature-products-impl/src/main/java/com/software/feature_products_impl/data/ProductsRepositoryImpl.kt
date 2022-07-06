@@ -59,4 +59,23 @@ class ProductsRepositoryImpl @Inject constructor(
                 ServerResponse.Success(addedProductInListDTO)
             }
         }
+
+    override suspend fun updateProductBucketState(
+        guid: String,
+        inCart: Boolean
+    ): ServerResponse<ProductInListDTO> =
+        when (val updatedProductInListDTO =
+            sharedPreferencesApi.updateProductBucketState(guid, inCart)) {
+            null -> {
+                ServerResponse.Error(RuntimeException("Cache is null after update"))
+            }
+
+            else -> {
+                when (updatedProductInListDTO.isInCart == inCart) {
+                    true -> ServerResponse.Success(updatedProductInListDTO)
+                    false -> ServerResponse.Error(RuntimeException("Cache is null after update"))
+                }
+            }
+        }
+
 }

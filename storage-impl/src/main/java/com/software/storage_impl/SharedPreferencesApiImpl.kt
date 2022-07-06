@@ -87,7 +87,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
         val prevListEntity = listEntityProductsInList
         val result =
             addProductInListToListEntities(
-                productInListDTO.mapToEntity(0),
+                productInListDTO.mapToEntity(0, productInListDTO.isInCart),
                 listEntity = prevListEntity
             )
         val jsonResult = JSONConverterProductsInListEntity(gson).fromProductInListEntityList(result)
@@ -99,7 +99,10 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
         val prevListEntity = listEntityProducts
         val result =
             addProductToListEntities(
-                productDTO.mapToEntity(),
+                productDTO.mapToEntity(
+                    productDTO.isInCart,
+                    productDTO.count
+                ),
                 listEntity = prevListEntity
             )
         val jsonResult = JSONConverterProductsEntity(gson).fromProductsListEntity(result)
@@ -131,6 +134,60 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
             spProductInListEntity.edit().putString(PRODUCTS_IN_LIST, newJsonList).apply()
         }
         return prevListEntity?.findLast { it.guid == guid }?.mapToDTO()
+    }
+
+    override fun updateProductBucketState(guid: String, inCart: Boolean): ProductInListDTO? {
+        val prevListProductsInListEntity = listEntityProductsInList
+        val prevListProductsEntity = listEntityProducts
+        when (inCart) {
+            true -> {
+                prevListProductsInListEntity?.findLast { it.guid == guid }
+                    ?.let { productInListEntity ->
+                        when (productInListEntity.isInCart) {
+                            true -> {
+                            }
+                            false -> {
+                                productInListEntity.isInCart = inCart
+                                prevListProductsEntity?.findLast { it.guid == guid }?.let {
+                                    it.isInCart = inCart
+                                    it.count = 1
+                                }
+                            }
+                        }
+                    }
+            }
+
+            else -> {
+                prevListProductsInListEntity?.findLast { it.guid == guid }
+                    ?.let { productInListEntity ->
+                        when (productInListEntity.isInCart) {
+                            true -> {
+                                productInListEntity.isInCart = inCart
+                                prevListProductsEntity?.findLast { it.guid == guid }?.let {
+                                    it.isInCart = inCart
+                                    it.count = null
+                                }
+                            }
+                            false -> {
+                            }
+                        }
+                    }
+            }
+        }
+
+        prevListProductsInListEntity?.let {
+            val newJsonList =
+                JSONConverterProductsInListEntity(gson).fromProductInListEntityList(it)
+            spProductInListEntity.edit().putString(PRODUCTS_IN_LIST, newJsonList).apply()
+        }
+
+        prevListProductsEntity?.let {
+            val newJsonList =
+                JSONConverterProductsEntity(gson).fromProductsListEntity(it)
+            spProducts.edit().putString(PRODUCTS, newJsonList).apply()
+        }
+
+        return prevListProductsInListEntity?.findLast { it.guid == guid }?.mapToDTO()
     }
 
     override fun insertNewProduct(productDTO: ProductDTO): Boolean {

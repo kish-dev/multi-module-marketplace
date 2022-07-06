@@ -11,6 +11,6 @@ data class ProductInListEntity(
     val price: String,
     val rating: Double,
     val isFavorite: Boolean,
-    val isInCart: Boolean,
+    var isInCart: Boolean,
     var viewsCount: Int,
 ) : Parcelable
