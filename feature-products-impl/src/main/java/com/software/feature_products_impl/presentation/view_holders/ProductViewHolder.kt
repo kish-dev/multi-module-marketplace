@@ -18,6 +18,7 @@ class ProductViewHolder(
     itemView: View,
     private val listener: com.software.feature_products_impl.presentation.adapters.ProductsAndTitlesAdapter.Listener,
     private val productImageAdapter: ProductImageAdapter,
+    private val nestedRecycledViewPool: RecyclerView.RecycledViewPool
 ) : BaseViewHolder<BaseProductsTitleModel.ProductInListVO>(itemView) {
 
     private val snapHelper: SnapHelper by lazy {
@@ -80,9 +81,11 @@ class ProductViewHolder(
                     }
 
             adapter = productImageAdapter
+            setRecycledViewPool(nestedRecycledViewPool)
         }
         snapHelper.attachToRecyclerView(productImageRV)
     }
+
 
     override fun bind(item: BaseProductsTitleModel.ProductInListVO) {
         this.productInListVO = item

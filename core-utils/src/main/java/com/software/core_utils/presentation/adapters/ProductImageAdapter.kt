@@ -2,6 +2,7 @@ package com.software.core_utils.presentation.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.software.core_utils.R
@@ -24,9 +25,13 @@ class ProductImageAdapter : ListAdapter<String, ProductImageViewHolder>(
         holder.bind(getItem(position))
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return 2
+    }
+
     private class StringDiffUtil : DiffUtil.ItemCallback<String>() {
         override fun areItemsTheSame(oldItem: String, newItem: String): Boolean =
-            oldItem == newItem
+            oldItem.hashCode() == newItem.hashCode()
 
         override fun areContentsTheSame(oldItem: String, newItem: String): Boolean =
             oldItem == newItem

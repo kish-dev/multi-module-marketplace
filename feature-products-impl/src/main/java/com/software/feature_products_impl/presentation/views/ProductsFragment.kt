@@ -62,7 +62,8 @@ class ProductsFragment : BaseFragment() {
     }
 
     private val recyclerViewPool = RecyclerView.RecycledViewPool().apply {
-        this.setMaxRecycledViews(ViewTypes.PRODUCT_IN_LIST, 25)
+        this.setMaxRecycledViews(ViewTypes.PRODUCT_IN_LIST, 15)
+        this.setMaxRecycledViews(ViewTypes.TITLE, 2)
     }
 
     private val swipeRefreshListener = SwipeRefreshLayout.OnRefreshListener {
@@ -86,8 +87,8 @@ class ProductsFragment : BaseFragment() {
                 }
             },
             ViewHolderFactory(),
-            ProductImageAdapter()
         )
+
     }
 
     override fun onAttach(context: Context) {
@@ -125,8 +126,11 @@ class ProductsFragment : BaseFragment() {
         with(binding) {
             productsRV.apply {
                 layoutManager =
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false).apply {
+                        recycleChildrenOnDetach = true
+                    }
                 adapter = productsAndTitlesAdapter
+                setRecycledViewPool(recyclerViewPool)
             }
 
             swipeRefreshLayout.setOnRefreshListener {
@@ -153,7 +157,6 @@ class ProductsFragment : BaseFragment() {
 
                 is UiState.Success -> {
                     binding.swipeRefreshLayout.isRefreshing = false
-                    val prevList = productsAndTitlesAdapter.currentList
                     val list = context?.let { context ->
                         it.value.mapToBaseRVModel(
                             context

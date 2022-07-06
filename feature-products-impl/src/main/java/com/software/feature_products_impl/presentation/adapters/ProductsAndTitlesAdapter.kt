@@ -3,7 +3,7 @@ package com.software.feature_products_impl.presentation.adapters
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.software.core_utils.presentation.adapters.ProductImageAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.software.feature_products_impl.presentation.view_holders.BaseViewHolder
 import com.software.feature_products_impl.presentation.view_holders.ProductViewHolder
 import com.software.feature_products_impl.presentation.view_holders.ViewHolderFactory
@@ -12,7 +12,6 @@ import com.software.feature_products_impl.presentation.view_objects.BaseProducts
 class ProductsAndTitlesAdapter(
     private val listener: Listener,
     private val viewHolderFactory: ViewHolderFactory,
-    private val productImageAdapter: ProductImageAdapter
 ) : ListAdapter<BaseProductsTitleModel, BaseViewHolder<out BaseProductsTitleModel>>(
     BaseProductsTitleDiffUtil()
 ) {
@@ -20,6 +19,10 @@ class ProductsAndTitlesAdapter(
     companion object {
         const val PAYLOAD_IS_IN_CART = "payload_is_in_cart"
         const val PAYLOAD_VIEWS_COUNT = "payload_views_count"
+    }
+
+    private val nestedRecyclerViewPool = RecyclerView.RecycledViewPool().apply {
+        this.setMaxRecycledViews(ViewTypes.IMAGES, 1)
     }
 
     interface Listener {
@@ -34,8 +37,8 @@ class ProductsAndTitlesAdapter(
         return viewHolderFactory.createViewHolder(
             parentView = parent,
             viewType = viewType,
-            productImageAdapter = productImageAdapter,
-            productListener = listener
+            productListener = listener,
+            recyclerViewPool = nestedRecyclerViewPool
         )
     }
 
