@@ -10,7 +10,7 @@ import androidx.core.view.isVisible
 import com.google.android.material.card.MaterialCardView
 import com.software.feature_products_impl.R
 
-class ProductsBucketButton @JvmOverloads constructor(
+class ProductsCartButton @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet?,
     defaultStyleAttr: Int = 0,
@@ -23,7 +23,7 @@ class ProductsBucketButton @JvmOverloads constructor(
     private var cardView: MaterialCardView? = null
 
     init {
-        view = View.inflate(context, R.layout.products_bucket_button_view, this)
+        view = View.inflate(context, R.layout.products_cart_button_view, this)
         initView(view)
     }
 

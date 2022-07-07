@@ -12,7 +12,7 @@ import com.software.core_utils.presentation.adapters.ProductImageAdapter
 import com.software.core_utils.presentation.common.debounceClick
 import com.software.feature_products_impl.R
 import com.software.feature_products_impl.presentation.view_objects.BaseProductsTitleModel
-import com.software.feature_products_impl.presentation.views.ProductsBucketButton
+import com.software.feature_products_impl.presentation.views.ProductsCartButton
 
 class ProductViewHolder(
     itemView: View,
@@ -31,7 +31,7 @@ class ProductViewHolder(
     private var ratingView: AppCompatRatingBar? = null
     private var viewsCountTV: AppCompatTextView? = null
     private var cardView: MaterialCardView? = null
-    private var productsBucketButton: ProductsBucketButton? = null
+    private var productsBucketButton: ProductsCartButton? = null
 
     private var productInListVO: BaseProductsTitleModel.ProductInListVO? = null
 

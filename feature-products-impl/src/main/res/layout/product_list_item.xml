@@ -82,7 +82,7 @@
             app:layout_constraintTop_toTopOf="@+id/eyeIV"
             tools:text="16" />
 
-        <com.software.feature_products_impl.presentation.views.ProductsBucketButton
+        <com.software.feature_products_impl.presentation.views.ProductsCartButton
             android:id="@+id/productsBucketButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
