@@ -24,5 +24,7 @@ interface SharedPreferencesApi {
 
     fun insertProductInListDTO(productInListDTO: ProductInListDTO): Boolean
 
-    fun updateProductBucketState(guid: String, inCart: Boolean): ProductInListDTO?
+    fun updateProductCartState(guid: String, inCart: Boolean): ProductInListDTO?
+
+    fun changeProductCount(guid: String, countDiff: Int): ProductDTO?
 }

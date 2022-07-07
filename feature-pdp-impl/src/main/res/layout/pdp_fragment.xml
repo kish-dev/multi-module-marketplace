@@ -54,12 +54,25 @@
                 style="@style/Widget.AppCompat.RatingBar.Indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:isIndicator="true"
                 android:rating="3"
+                app:layout_constraintEnd_toStartOf="@+id/cartCountView"
+                app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/priceTV" />
+
+            <com.software.feature_pdp_impl.presentation.views.PDPCartCountButtonView
+                android:id="@+id/cartCountView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                app:layout_constraintBottom_toBottomOf="@+id/ratingView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@+id/ratingView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

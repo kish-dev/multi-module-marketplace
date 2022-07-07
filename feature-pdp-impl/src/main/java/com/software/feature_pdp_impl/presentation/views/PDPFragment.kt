@@ -6,11 +6,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.SnapHelper
-import com.software.core_utils.R
 import com.software.core_utils.presentation.adapters.ProductImageAdapter
 import com.software.core_utils.presentation.common.UiState
 import com.software.core_utils.presentation.fragments.BaseFragment
@@ -105,6 +103,17 @@ class PDPFragment : BaseFragment() {
                 nameTV.text = name
                 priceTV.text = price
                 ratingView.rating = rating.toFloat()
+
+                cartCountView.initListeners(
+                    plusListener = {
+                        viewModel.changeCount(guid, 1)
+                    },
+                    minusListener = {
+                        viewModel.changeCount(guid, -1)
+                    }
+                )
+
+                cartCountView.setCartCountState(count, price)
             }
         }
     }
@@ -121,6 +130,8 @@ class PDPFragment : BaseFragment() {
             swipeRefreshLayout.setOnRefreshListener {
                 productId?.let { viewModel.getProduct(productId!!) }
             }
+
+
         }
     }
 

@@ -10,7 +10,7 @@ import androidx.core.view.isVisible
 import com.google.android.material.card.MaterialCardView
 import com.software.feature_products_impl.R
 
-class ProductsCartButton @JvmOverloads constructor(
+class ProductsCartButtonView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet?,
     defaultStyleAttr: Int = 0,
@@ -41,30 +41,30 @@ class ProductsCartButton @JvmOverloads constructor(
         titleText?.isVisible = false
     }
 
-    fun setBucketState(isInBucket: Boolean) {
-        when (isInBucket) {
+    fun setCartState(isInCart: Boolean) {
+        when (isInCart) {
             true -> {
-                addToBucket()
+                addToCart()
             }
 
             else -> {
-                removeFromBucket()
+                removeFromCart()
             }
         }
 
     }
 
-    private fun addToBucket() {
+    private fun addToCart() {
         progressBar?.isVisible = false
         cardView?.setCardBackgroundColor(context.getColor(com.software.core_utils.R.color.purple_200))
-        titleText?.text = context.getString(com.software.core_utils.R.string.in_the_bucket)
+        titleText?.text = context.getString(com.software.core_utils.R.string.in_the_cart)
         titleText?.isVisible = true
     }
 
-    private fun removeFromBucket() {
+    private fun removeFromCart() {
         progressBar?.isVisible = false
         cardView?.setCardBackgroundColor(context.getColor(com.software.core_utils.R.color.gray))
-        titleText?.text = view?.context?.getString(com.software.core_utils.R.string.add_to_a_bucket)
+        titleText?.text = view?.context?.getString(com.software.core_utils.R.string.add_to_a_cart)
         titleText?.isVisible = true
     }
 }

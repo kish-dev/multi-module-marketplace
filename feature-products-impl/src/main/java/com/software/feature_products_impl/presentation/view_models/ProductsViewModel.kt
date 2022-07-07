@@ -3,7 +3,6 @@ package com.software.feature_products_impl.presentation.view_models
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkInfo
 import com.software.core_utils.models.DomainWrapper
@@ -99,9 +98,9 @@ class ProductsViewModel(
         }
     }
 
-    fun updateProductBucketState(guid: String, inCart: Boolean) {
+    fun updateProductCartState(guid: String, inCart: Boolean) {
         viewModelScope.safeLaunch(Dispatchers.Main) {
-            when (val product = interactor.updateProductBucketState(guid, inCart)) {
+            when (val product = interactor.updateProductCartState(guid, inCart)) {
                 is DomainWrapper.Success -> {
                     updateUiState()
                 }

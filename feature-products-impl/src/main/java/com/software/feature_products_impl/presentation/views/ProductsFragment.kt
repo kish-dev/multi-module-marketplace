@@ -6,17 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.software.core_utils.R
-import com.software.core_utils.presentation.adapters.ProductImageAdapter
-import com.software.core_utils.presentation.common.ActionState
 import com.software.core_utils.presentation.common.UiState
 import com.software.core_utils.presentation.fragments.BaseFragment
 import com.software.core_utils.presentation.view_models.viewModelCreator
@@ -27,12 +18,10 @@ import com.software.feature_products_impl.di.components.ProductsFeatureComponent
 import com.software.feature_products_impl.domain.interactors.LoadWithWorkersUseCase
 import com.software.feature_products_impl.domain.interactors.ProductListUseCase
 import com.software.feature_products_impl.presentation.adapters.ProductsAndTitlesAdapter
-import com.software.feature_products_impl.presentation.adapters.ViewTypes
 import com.software.feature_products_impl.presentation.view_holders.ProductViewHolder
 import com.software.feature_products_impl.presentation.view_holders.ViewHolderFactory
 import com.software.feature_products_impl.presentation.view_models.ProductsViewModel
 import com.software.feature_products_impl.presentation.view_objects.mapToBaseRVModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ProductsFragment : BaseFragment() {
@@ -78,7 +67,7 @@ class ProductsFragment : BaseFragment() {
                     productId: String,
                     inCart: Boolean
                 ) {
-                    viewModel.updateProductBucketState(productId, inCart)
+                    viewModel.updateProductCartState(productId, inCart)
                 }
             },
             ViewHolderFactory(),

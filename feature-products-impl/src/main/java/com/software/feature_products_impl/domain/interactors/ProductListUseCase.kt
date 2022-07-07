@@ -7,7 +7,7 @@ import com.software.feature_products_impl.presentation.view_objects.DividedProdu
 interface ProductListUseCase {
     suspend fun getProducts(): DomainWrapper<DividedProductsInList>
     suspend fun addViewToProductInList(guid: String): DomainWrapper<BaseProductsTitleModel.ProductInListVO>
-    suspend fun updateProductBucketState(
+    suspend fun updateProductCartState(
         guid: String,
         inCart: Boolean
     ): DomainWrapper<BaseProductsTitleModel.ProductInListVO>

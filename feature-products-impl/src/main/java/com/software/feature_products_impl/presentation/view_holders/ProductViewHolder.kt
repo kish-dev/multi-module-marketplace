@@ -12,7 +12,7 @@ import com.software.core_utils.presentation.adapters.ProductImageAdapter
 import com.software.core_utils.presentation.common.debounceClick
 import com.software.feature_products_impl.R
 import com.software.feature_products_impl.presentation.view_objects.BaseProductsTitleModel
-import com.software.feature_products_impl.presentation.views.ProductsCartButton
+import com.software.feature_products_impl.presentation.views.ProductsCartButtonView
 
 class ProductViewHolder(
     itemView: View,
@@ -31,7 +31,7 @@ class ProductViewHolder(
     private var ratingView: AppCompatRatingBar? = null
     private var viewsCountTV: AppCompatTextView? = null
     private var cardView: MaterialCardView? = null
-    private var productsBucketButton: ProductsCartButton? = null
+    private var productsCartButtonView: ProductsCartButtonView? = null
 
     private var productInListVO: BaseProductsTitleModel.ProductInListVO? = null
 
@@ -43,7 +43,7 @@ class ProductViewHolder(
             ratingView = findViewById(R.id.ratingView)
             cardView = findViewById(R.id.materialCardView)
             viewsCountTV = findViewById(R.id.viewsCountTV)
-            productsBucketButton = findViewById(R.id.productsBucketButton)
+            productsCartButtonView = findViewById(R.id.productsCartButton)
 
             initRecycler()
             initListeners()
@@ -51,10 +51,10 @@ class ProductViewHolder(
     }
 
     private fun initListeners() {
-        productsBucketButton?.setOnClickListener { view ->
+        productsCartButtonView?.setOnClickListener { view ->
             view.debounceClick {
                 productInListVO?.let {
-                    productsBucketButton?.init()
+                    productsCartButtonView?.init()
                     listener.onChangeCartState(this, it.guid, !it.isInCart)
                 }
             }
@@ -92,11 +92,11 @@ class ProductViewHolder(
         priceTV?.text = item.price
         ratingView?.rating = item.rating.toFloat()
         viewsCountTV?.text = item.viewsCount.toString()
-        productsBucketButton?.setBucketState(item.isInCart)
+        productsCartButtonView?.setCartState(item.isInCart)
     }
 
     fun bindIsInCartState(item: BaseProductsTitleModel.ProductInListVO) {
-        productsBucketButton?.setBucketState(item.isInCart)
+        productsCartButtonView?.setCartState(item.isInCart)
     }
 
     fun bindViewsCount(item: BaseProductsTitleModel.ProductInListVO) {

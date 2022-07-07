@@ -56,7 +56,7 @@
             android:layout_marginTop="8dp"
             android:isIndicator="true"
             android:rating="3"
-            app:layout_constraintBottom_toTopOf="@id/productsBucketButton"
+            app:layout_constraintBottom_toTopOf="@id/productsCartButton"
             app:layout_constraintStart_toEndOf="@id/productIV"
             app:layout_constraintTop_toBottomOf="@id/priceTV" />
 
@@ -82,8 +82,8 @@
             app:layout_constraintTop_toTopOf="@+id/eyeIV"
             tools:text="16" />
 
-        <com.software.feature_products_impl.presentation.views.ProductsCartButton
-            android:id="@+id/productsBucketButton"
+        <com.software.feature_products_impl.presentation.views.ProductsCartButtonView
+            android:id="@+id/productsCartButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"

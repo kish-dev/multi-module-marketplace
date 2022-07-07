@@ -26,6 +26,11 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
         private const val PRODUCTS = "${BuildConfig.LIBRARY_PACKAGE_NAME}.products"
         private const val PRODUCTS_IN_LIST = "${BuildConfig.LIBRARY_PACKAGE_NAME}.products_in_list"
     }
+//
+//    init {
+//        spProducts.edit().remove(PRODUCTS).apply()
+//        spProductInListEntity.edit().remove(PRODUCTS_IN_LIST).apply()
+//    }
 
     private val gson = Gson()
 
@@ -136,21 +141,84 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
         return prevListEntity?.findLast { it.guid == guid }?.mapToDTO()
     }
 
-    override fun updateProductBucketState(guid: String, inCart: Boolean): ProductInListDTO? {
-        val prevListProductsInListEntity = listEntityProductsInList
-        val prevListProductsEntity = listEntityProducts
+    override fun updateProductCartState(guid: String, inCart: Boolean): ProductInListDTO? {
+        val productInList = listEntityProductsInList?.findLast { it.guid == guid }
+        val product = listEntityProducts?.findLast { it.guid == guid }
         when (inCart) {
             true -> {
+                if (productInList?.isInCart == false) {
+                    changeCount(guid, 1)
+                }
+            }
+
+            false -> {
+                if (productInList?.isInCart == true) {
+                    product?.count?.let { changeCount(guid, -it) }
+                }
+            }
+        }
+        return listEntityProductsInList?.findLast { it.guid == guid }?.mapToDTO()
+    }
+
+    override fun changeProductCount(guid: String, countDiff: Int): ProductDTO? {
+        changeCount(guid, countDiff)
+        return listEntityProducts?.findLast { it.guid == guid }?.mapToDTO()
+    }
+
+    private fun changeCount(guid: String, countDiff: Int) {
+        val prevListProductsInListEntity = listEntityProductsInList
+        val prevListProductsEntity = listEntityProducts
+        when {
+            countDiff > 0 -> {
                 prevListProductsInListEntity?.findLast { it.guid == guid }
                     ?.let { productInListEntity ->
                         when (productInListEntity.isInCart) {
                             true -> {
+                                prevListProductsEntity?.findLast { it.guid == guid }?.let {
+                                    it.count = it.count?.plus(countDiff) ?: countDiff
+                                }
                             }
                             false -> {
-                                productInListEntity.isInCart = inCart
+                                productInListEntity.isInCart = true
                                 prevListProductsEntity?.findLast { it.guid == guid }?.let {
-                                    it.isInCart = inCart
-                                    it.count = 1
+                                    it.isInCart = true
+                                    it.count = countDiff
+                                }
+                            }
+                        }
+                    }
+            }
+
+            countDiff < 0 -> {
+                prevListProductsInListEntity?.findLast { it.guid == guid }
+                    ?.let { productInListEntity ->
+                        when (productInListEntity.isInCart) {
+                            true -> {
+                                prevListProductsEntity?.findLast { it.guid == guid }
+                                    ?.let { productEntity ->
+                                        if (productEntity.count == null) {
+                                            productEntity.isInCart = false
+                                            productInListEntity.isInCart = false
+                                        } else {
+                                            productEntity.count?.let { count ->
+                                                if (count + countDiff > 0) {
+                                                    productEntity.count?.let {
+                                                        productEntity.count = it + countDiff
+                                                    }
+                                                } else {
+                                                    productEntity.count = null
+                                                    productInListEntity.isInCart = false
+                                                    productEntity.isInCart = false
+                                                }
+                                            }
+                                        }
+                                    }
+                            }
+                            false -> {
+                                productInListEntity.isInCart = false
+                                prevListProductsEntity?.findLast { it.guid == guid }?.let {
+                                    it.isInCart = false
+                                    it.count = null
                                 }
                             }
                         }
@@ -158,20 +226,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
             }
 
             else -> {
-                prevListProductsInListEntity?.findLast { it.guid == guid }
-                    ?.let { productInListEntity ->
-                        when (productInListEntity.isInCart) {
-                            true -> {
-                                productInListEntity.isInCart = inCart
-                                prevListProductsEntity?.findLast { it.guid == guid }?.let {
-                                    it.isInCart = inCart
-                                    it.count = null
-                                }
-                            }
-                            false -> {
-                            }
-                        }
-                    }
+
             }
         }
 
@@ -186,8 +241,6 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
                 JSONConverterProductsEntity(gson).fromProductsListEntity(it)
             spProducts.edit().putString(PRODUCTS, newJsonList).apply()
         }
-
-        return prevListProductsInListEntity?.findLast { it.guid == guid }?.mapToDTO()
     }
 
     override fun insertNewProduct(productDTO: ProductDTO): Boolean {

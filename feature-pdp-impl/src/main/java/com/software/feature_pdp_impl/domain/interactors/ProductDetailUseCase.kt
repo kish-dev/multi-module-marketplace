@@ -5,4 +5,5 @@ import com.software.core_utils.presentation.view_objects.ProductVO
 
 interface ProductDetailUseCase {
     suspend fun getProductById(guid: String): DomainWrapper<ProductVO>
+    suspend fun changeCount(guid: String, countDiff: Int): DomainWrapper<ProductVO>
 }

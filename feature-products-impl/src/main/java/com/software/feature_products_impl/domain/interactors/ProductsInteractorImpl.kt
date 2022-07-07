@@ -57,12 +57,12 @@ class ProductsInteractorImpl(
             }
         }
 
-    override suspend fun updateProductBucketState(
+    override suspend fun updateProductCartState(
         guid: String,
         inCart: Boolean
     ): DomainWrapper<BaseProductsTitleModel.ProductInListVO> =
         withContext(dispatcher) {
-            when (val product = productsRepository.updateProductBucketState(guid, inCart)) {
+            when (val product = productsRepository.updateProductCartState(guid, inCart)) {
                 is ServerResponse.Success -> {
                     DomainWrapper.Success(product.value.mapToVO())
                 }

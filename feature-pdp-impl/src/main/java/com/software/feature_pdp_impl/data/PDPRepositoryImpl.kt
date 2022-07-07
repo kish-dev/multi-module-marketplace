@@ -21,4 +21,15 @@ class PDPRepositoryImpl @Inject constructor(
             }
         }
 
+    override suspend fun changeCount(guid: String, countDiff: Int): ServerResponse<ProductDTO> =
+        when (val result = sharedPreferencesApi.changeProductCount(guid, countDiff)) {
+            null -> {
+                ServerResponse.Error(NullPointerException("Cache can't change cart count productDTO with guid=$guid"))
+            }
+
+            else -> {
+                ServerResponse.Success(result)
+            }
+        }
+
 }
