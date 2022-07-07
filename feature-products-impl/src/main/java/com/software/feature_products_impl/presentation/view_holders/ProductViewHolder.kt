@@ -51,9 +51,6 @@ class ProductViewHolder(
     }
 
     private fun initListeners() {
-
-        //TODO добавить в VO модельки количество товаров в корзине, хранить в репе, мерджить после запроса
-        //TODO возвращать через интерактор и инитить стейт кнопки
         productsBucketButton?.setOnClickListener { view ->
             view.debounceClick {
                 productInListVO?.let {
