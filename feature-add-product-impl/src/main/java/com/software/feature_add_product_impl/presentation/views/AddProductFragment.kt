@@ -10,7 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.software.core_utils.R
-import com.software.core_utils.presentation.common.ActionState
+import com.software.core_utils.presentation.common.Action
 import com.software.core_utils.presentation.common.UiState
 import com.software.core_utils.presentation.fragments.BaseFragment
 import com.software.core_utils.presentation.view_models.viewModelCreator
@@ -86,23 +86,6 @@ class AddProductFragment : BaseFragment() {
 
                 is UiState.Init -> {
                     binding.swipeRefreshLayout.isRefreshing = false
-                }
-            }
-        }
-    }
-
-    override fun initActionStateObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                viewModel.action.collect {
-                    when (it) {
-                        is ActionState.Success -> {
-                            showToast(getString(R.string.add_product_success))
-                        }
-                        is ActionState.Error -> {
-                            showToast(getString(R.string.loading_error))
-                        }
-                    }
                 }
             }
         }

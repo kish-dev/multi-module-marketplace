@@ -2,10 +2,10 @@ package com.software.feature_pdp_impl.presentation.view_models
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.software.core_utils.R
 import com.software.core_utils.models.DomainWrapper
-import com.software.core_utils.presentation.common.ActionState
+import com.software.core_utils.presentation.common.Action
 import com.software.core_utils.presentation.common.UiState
 import com.software.core_utils.presentation.common.safeLaunch
 import com.software.core_utils.presentation.view_models.BaseViewModel
@@ -34,7 +34,7 @@ class PDPViewModel(private val interactor: ProductDetailUseCase) : BaseViewModel
                     is DomainWrapper.Error -> {
                         _productLD.value =
                             UiState.Error(product.throwable)
-                        _action.send(ActionState.Error(product.throwable))
+                        _action.send(Action.ShowToast(R.string.loading_error))
                     }
                 }
             }
@@ -53,7 +53,7 @@ class PDPViewModel(private val interactor: ProductDetailUseCase) : BaseViewModel
                     is DomainWrapper.Error -> {
                         _productLD.value =
                             UiState.Error(product.throwable)
-                        _action.send(ActionState.Error(product.throwable))
+                        _action.send(Action.ShowToast(R.string.loading_error))
                     }
                 }
             }

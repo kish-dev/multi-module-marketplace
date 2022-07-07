@@ -8,7 +8,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.software.core_utils.R
-import com.software.core_utils.presentation.common.ActionState
+import com.software.core_utils.presentation.common.Action
 import com.software.core_utils.presentation.view_models.BaseViewModel
 import com.software.core_utils.presentation.view_models.viewModelCreator
 import kotlinx.coroutines.flow.collect
@@ -30,11 +30,8 @@ abstract class BaseFragment: Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.action.collect {
                     when (it) {
-                        is ActionState.Success -> {
-                            showToast(it.value)
-                        }
-                        is ActionState.Error -> {
-                           showToast(getString(R.string.loading_error))
+                        is Action.ShowToast -> {
+                            showToast(getString(it.stringId))
                         }
                     }
                 }

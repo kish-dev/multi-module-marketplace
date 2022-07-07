@@ -1,12 +1,11 @@
 package com.software.feature_add_product_impl.presentation.view_models
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.software.core_utils.R
 import com.software.core_utils.models.DomainWrapper
-import com.software.core_utils.presentation.common.ActionState
+import com.software.core_utils.presentation.common.Action
 import com.software.core_utils.presentation.common.UiState
 import com.software.core_utils.presentation.common.safeLaunch
 import com.software.core_utils.presentation.view_models.BaseViewModel
@@ -30,11 +29,12 @@ class AddProductViewModel(
                 is DomainWrapper.Success -> {
                     _addProductState.value =
                         UiState.Success(productResult.value)
+                    _action.send(Action.ShowToast(R.string.add_product_success))
                 }
                 is DomainWrapper.Error -> {
                     _addProductState.value =
                         UiState.Error(productResult.throwable)
-                    _action.send(ActionState.Error(productResult.throwable))
+                    _action.send(Action.ShowToast(R.string.loading_error))
                 }
             }
         }

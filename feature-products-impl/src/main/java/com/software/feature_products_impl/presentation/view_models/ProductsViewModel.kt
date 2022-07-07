@@ -6,11 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkInfo
 import com.software.core_utils.models.DomainWrapper
-import com.software.core_utils.presentation.common.ActionState
+import com.software.core_utils.presentation.common.Action
 import com.software.core_utils.presentation.common.UiState
 import com.software.core_utils.presentation.common.safeLaunch
 import com.software.core_utils.presentation.view_models.BaseViewModel
 import com.software.feature_products_api.ProductsNavigationApi
+import com.software.core_utils.R
 import com.software.feature_products_impl.domain.interactors.LoadWithWorkersUseCase
 import com.software.feature_products_impl.domain.interactors.ProductListUseCase
 import com.software.feature_products_impl.presentation.view_objects.DividedProductsInList
@@ -58,7 +59,7 @@ class ProductsViewModel(
                         val thx = Throwable("Something went wrong, FAILED")
                         _productRecyclerLD.value =
                             UiState.Error(thx)
-                        _action.send(ActionState.Error(thx))
+                        _action.send(Action.ShowToast(R.string.loading_error))
                     }
 
                     WorkInfo.State.CANCELLED -> {
@@ -67,7 +68,7 @@ class ProductsViewModel(
                         val thx = Throwable("Something went wrong, CANCELLED")
                         _productRecyclerLD.value =
                             UiState.Error(thx)
-                        _action.send(ActionState.Error(thx))
+                        _action.send(Action.ShowToast(R.string.loading_error))
                     }
 
                     WorkInfo.State.ENQUEUED -> {
@@ -92,7 +93,7 @@ class ProductsViewModel(
                 is DomainWrapper.Error -> {
                     _productRecyclerLD.value =
                         UiState.Error(products.throwable)
-                    _action.send(ActionState.Error(products.throwable))
+                    _action.send(Action.ShowToast(R.string.loading_error))
                 }
             }
         }
@@ -100,12 +101,12 @@ class ProductsViewModel(
 
     fun updateProductCartState(guid: String, inCart: Boolean) {
         viewModelScope.safeLaunch(Dispatchers.Main) {
-            when (val product = interactor.updateProductCartState(guid, inCart)) {
+            when (interactor.updateProductCartState(guid, inCart)) {
                 is DomainWrapper.Success -> {
                     updateUiState()
                 }
                 is DomainWrapper.Error -> {
-                    _action.send(ActionState.Error(product.throwable))
+                    _action.send(Action.ShowToast(R.string.loading_error))
                 }
             }
         }
@@ -113,12 +114,12 @@ class ProductsViewModel(
 
     fun addViewCount(guid: String) {
         viewModelScope.safeLaunch(Dispatchers.Main) {
-            when (val product = interactor.addViewToProductInList(guid)) {
+            when (interactor.addViewToProductInList(guid)) {
                 is DomainWrapper.Success -> {
                     updateUiState()
                 }
                 is DomainWrapper.Error -> {
-                    _action.send(ActionState.Error(product.throwable))
+                    _action.send(Action.ShowToast(R.string.loading_error))
                 }
             }
         }
