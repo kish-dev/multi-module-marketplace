@@ -23,7 +23,7 @@ class ProductsAndTitlesAdapter(
     }
 
     private val nestedRecyclerViewPool = RecyclerView.RecycledViewPool().apply {
-        this.setMaxRecycledViews(ViewTypes.IMAGES, 1)
+        this.setMaxRecycledViews(ViewTypes.IMAGES, 3)
     }
 
     interface Listener {
