@@ -12,4 +12,6 @@
     <string name="in_the_cart">В корзине</string>
     <string name="cheap_products">Дешёвые продукты:</string>
     <string name="expensive_products">Дорогие продукты:</string>
+    <string name="add_product_error">Продукт не добавлен</string>
+
 </resources>

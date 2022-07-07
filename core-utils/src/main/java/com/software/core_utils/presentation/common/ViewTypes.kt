@@ -1,4 +1,4 @@
-package com.software.feature_products_impl.presentation.adapters
+package com.software.core_utils.presentation.common
 
 object ViewTypes {
     const val PRODUCT_IN_LIST = 0

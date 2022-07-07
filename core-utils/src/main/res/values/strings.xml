@@ -14,4 +14,6 @@
     <string name="in_the_cart">In the cart</string>
     <string name="cheap_products">Cheap products:</string>
     <string name="expensive_products">Expensive products:</string>
+    <string name="add_product_error">Product is not added</string>
+
 </resources>

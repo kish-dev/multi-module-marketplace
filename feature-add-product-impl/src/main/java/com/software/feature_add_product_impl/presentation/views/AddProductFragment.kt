@@ -76,6 +76,7 @@ class AddProductFragment : BaseFragment() {
 
                 is UiState.Error -> {
                     binding.swipeRefreshLayout.isRefreshing = false
+                    showToast(getString(R.string.add_product_error))
                 }
 
                 is UiState.Success -> {

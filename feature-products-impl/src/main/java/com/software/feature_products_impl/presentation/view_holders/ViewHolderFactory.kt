@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.software.core_utils.presentation.adapters.ProductImageAdapter
 import com.software.feature_products_impl.R
 import com.software.feature_products_impl.presentation.adapters.ProductsAndTitlesAdapter
-import com.software.feature_products_impl.presentation.adapters.ViewTypes
+import com.software.core_utils.presentation.common.ViewTypes
 import com.software.feature_products_impl.presentation.view_objects.BaseProductsTitleModel
 import java.io.InvalidClassException
 import java.util.*

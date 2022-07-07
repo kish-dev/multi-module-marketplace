@@ -15,6 +15,7 @@ import com.software.core_utils.presentation.fragments.BaseFragment
 import com.software.core_utils.presentation.view_models.viewModelCreator
 import com.software.core_utils.presentation.view_objects.ProductVO
 import com.software.feature_pdp_api.PDPNavigationApi
+import com.software.core_utils.R
 import com.software.feature_pdp_impl.databinding.PdpFragmentBinding
 import com.software.feature_pdp_impl.di.components.PDPFeatureComponent
 import com.software.feature_pdp_impl.domain.interactors.ProductDetailUseCase
@@ -85,6 +86,7 @@ class PDPFragment : BaseFragment() {
 
                 is UiState.Error -> {
                     binding.swipeRefreshLayout.isRefreshing = false
+                    showToast(getString(R.string.loading_error))
                     Log.e(TAG, "UiState is Error because of ${it.throwable.message}")
                 }
 

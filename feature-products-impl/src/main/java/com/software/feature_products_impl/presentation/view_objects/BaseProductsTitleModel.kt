@@ -1,18 +1,6 @@
 package com.software.feature_products_impl.presentation.view_objects
 
-import com.software.feature_products_impl.presentation.adapters.ViewTypes
-
-//abstract class BaseProductsTitleModel {
-//    abstract val viewType: Int
-//
-//    override fun equals(other: Any?): Boolean {
-//        return super.equals(other)
-//    }
-//
-//    override fun hashCode(): Int {
-//        return super.hashCode()
-//    }
-//}
+import com.software.core_utils.presentation.common.ViewTypes
 
 sealed class BaseProductsTitleModel {
 

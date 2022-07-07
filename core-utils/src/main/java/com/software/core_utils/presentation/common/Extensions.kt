@@ -13,7 +13,7 @@ fun AppCompatImageView.setImageFromUrl(imageUrl: String) {
     Glide.with(this)
         .load(imageUrl)
         .transition(DrawableTransitionOptions.withCrossFade())
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .diskCacheStrategy(DiskCacheStrategy.DATA)
         .into(this)
 }
 
