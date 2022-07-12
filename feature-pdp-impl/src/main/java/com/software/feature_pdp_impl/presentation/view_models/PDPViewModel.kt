@@ -40,7 +40,6 @@ class PDPViewModel(private val interactor: ProductDetailUseCase) : BaseViewModel
 
     fun changeCount(productId: String, countDiff: Int) {
         viewModelScope.safeLaunch(Dispatchers.Main) {
-            _productLD.value = UiState.Loading()
             when (val product = interactor.changeCount(productId, countDiff)) {
                 is DomainWrapper.Success -> {
                     _productLD.value =
