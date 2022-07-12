@@ -24,6 +24,19 @@ import javax.inject.Inject
 
 class PDPFragment : BaseFragment() {
 
+    companion object {
+
+        private const val EXTRA_PRODUCT_ID = "extra_product_id"
+        private val TAG = PDPFragment::class.java.simpleName
+
+        @JvmStatic
+        fun newInstance(productId: String): PDPFragment = PDPFragment().apply {
+            arguments = Bundle().apply {
+                putString(EXTRA_PRODUCT_ID, productId)
+            }
+        }
+    }
+
     private var _binding: PdpFragmentBinding? = null
     private val binding
         get() = _binding!!
@@ -146,16 +159,8 @@ class PDPFragment : BaseFragment() {
         super.onPause()
     }
 
-    companion object {
-
-        private const val EXTRA_PRODUCT_ID = "extra_product_id"
-        private val TAG = PDPFragment::class.java.simpleName
-
-        @JvmStatic
-        fun newInstance(productId: String): PDPFragment = PDPFragment().apply {
-            arguments = Bundle().apply {
-                putString(EXTRA_PRODUCT_ID, productId)
-            }
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

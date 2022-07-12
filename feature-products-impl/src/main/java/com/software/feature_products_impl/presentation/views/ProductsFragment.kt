@@ -162,6 +162,11 @@ class ProductsFragment : BaseFragment() {
         super.onPause()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     companion object {
         private val TAG = ProductsFragment::class.java.simpleName
     }

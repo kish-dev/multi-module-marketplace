@@ -23,6 +23,7 @@ import com.software.feature_add_product_impl.di.components.AddProductFeatureComp
 import com.software.feature_add_product_impl.domain.interactors.AddProductUseCase
 import com.software.feature_add_product_impl.presentation.view_models.AddProductViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -59,7 +60,6 @@ class AddProductFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         initObservers()
-        viewModel.restoreProduct()
         saveChanges()
     }
 
@@ -84,27 +84,31 @@ class AddProductFragment : BaseFragment() {
     }
 
     private fun initObservers() {
-        viewModel.restoreState.observe(viewLifecycleOwner) {
-            when (it) {
-                is UiState.Loading -> {
-                    binding.swipeRefreshLayout.isRefreshing = true
-                }
+        viewLifecycleOwner.lifecycleScope.launch{
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.restoreState.collect {
+                    when (it) {
+                        is UiState.Loading -> {
+                            binding.swipeRefreshLayout.isRefreshing = true
+                        }
 
-                is UiState.Error -> {
-                    binding.swipeRefreshLayout.isRefreshing = false
-                }
+                        is UiState.Error -> {
+                            binding.swipeRefreshLayout.isRefreshing = false
+                        }
 
-                is UiState.Success -> {
-                    binding.swipeRefreshLayout.isRefreshing = false
-                    when {
-                        it.value.isNotBlank() -> {
-                            showRestoreDialog(it.value)
+                        is UiState.Success -> {
+                            binding.swipeRefreshLayout.isRefreshing = false
+                            when {
+                                it.value.isNotBlank() -> {
+                                    showRestoreDialog(it.value)
+                                }
+                            }
+                        }
+
+                        is UiState.Init -> {
+                            binding.swipeRefreshLayout.isRefreshing = false
                         }
                     }
-                }
-
-                is UiState.Init -> {
-                    binding.swipeRefreshLayout.isRefreshing = false
                 }
             }
         }

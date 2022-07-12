@@ -12,6 +12,8 @@ import com.software.core_utils.presentation.view_models.BaseViewModel
 import com.software.core_utils.presentation.view_objects.ProductVO
 import com.software.feature_add_product_impl.domain.interactors.AddProductUseCase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 
 class AddProductViewModel(
     private val interactor: AddProductUseCase,
@@ -23,11 +25,13 @@ class AddProductViewModel(
     var addProductState: LiveData<UiState<Boolean>> = _addProductState
 
 
-    private val _restoreState: MutableLiveData<UiState<ProductVO>> = MutableLiveData(
-        UiState.Init()
-    )
-    var restoreState: LiveData<UiState<ProductVO>> = _restoreState
+    private val _restoreState: MutableSharedFlow<UiState<ProductVO>> = MutableSharedFlow()
+    var restoreState: SharedFlow<UiState<ProductVO>> = _restoreState
 
+
+    init {
+        restoreProduct()
+    }
 
     fun addProduct(productVO: ProductVO) {
         viewModelScope.safeLaunch(Dispatchers.Main) {
@@ -47,17 +51,15 @@ class AddProductViewModel(
         }
     }
 
-    fun restoreProduct() {
+    private fun restoreProduct() {
         viewModelScope.safeLaunch(Dispatchers.Main) {
-            _restoreState.value = UiState.Loading()
+            _restoreState.emit(UiState.Loading())
             when (val productResult = interactor.restoreProduct()) {
                 is DomainWrapper.Success -> {
-                    _restoreState.value =
-                        UiState.Success(productResult.value)
+                    _restoreState.emit(UiState.Success(productResult.value))
                 }
                 is DomainWrapper.Error -> {
-                    _restoreState.value =
-                        UiState.Error(productResult.throwable)
+                    _restoreState.emit(UiState.Error(productResult.throwable))
                 }
             }
         }
