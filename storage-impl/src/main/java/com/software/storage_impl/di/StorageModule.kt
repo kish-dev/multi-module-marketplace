@@ -13,8 +13,12 @@ class StorageModule {
 
     @Singleton
     @Provides
-    fun provideSharedPreferencesImpl(appContext: Context)
+    fun provideGson(): Gson = Gson()
+
+    @Singleton
+    @Provides
+    fun provideSharedPreferencesImpl(appContext: Context, gson: Gson)
             : SharedPreferencesApi {
-        return SharedPreferencesApiImpl(appContext, Gson())
+        return SharedPreferencesApiImpl(appContext, gson)
     }
 }

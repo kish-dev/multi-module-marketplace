@@ -22,6 +22,7 @@ import javax.inject.Singleton
 class SharedPreferencesApiImpl @Inject constructor(private val appContext: Context, private val gson: Gson) :
     SharedPreferencesApi {
 
+
     companion object {
         private const val PRODUCTS = "${BuildConfig.LIBRARY_PACKAGE_NAME}.products"
         private const val PRODUCTS_IN_LIST = "${BuildConfig.LIBRARY_PACKAGE_NAME}.products_in_list"
