@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         observeConnectionState()
-        navigateProduct()
+        initNavigation()
     }
 
     private fun observeConnectionState() {
@@ -71,23 +71,44 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        when (supportFragmentManager.backStackEntryCount) {
+            1 -> {
+                finish()
+            }
+
+            else -> {
+                super.onBackPressed()
+            }
+        }
+    }
 
     private fun navigateProduct() {
-        if (FeatureInjectorProxy.isFirstAppLaunch) {
-            FeatureInjectorProxy.initFeatureProductsDI(this.applicationContext)
-            val newFragment = ProductsFragment()
-            supportFragmentManager
-                .beginTransaction()
-                .replace(
-                    R.id.fragmentContainer,
-                    newFragment as Fragment,
-                    ProductsFragment::class.java.simpleName
-                )
-                .addToBackStack(ProductsFragment::class.java.simpleName)
-                .commit()
-            FeatureInjectorProxy.isFirstAppLaunch = false
-        } else {
-            supportFragmentManager.restoreBackStack("")
+        FeatureInjectorProxy.initFeatureProductsDI(this.applicationContext)
+        val newFragment = ProductsFragment()
+        supportFragmentManager
+            .beginTransaction()
+            .replace(
+                R.id.fragmentContainer,
+                newFragment as Fragment,
+                ProductsFragment::class.java.simpleName
+            )
+            .addToBackStack(ProductsFragment::class.java.simpleName)
+            .commit()
+        FeatureInjectorProxy.isFirstAppLaunch = false
+    }
+
+    private fun initNavigation() {
+        when {
+            FeatureInjectorProxy.isFirstAppLaunch -> {
+                navigateProduct()
+            }
+            supportFragmentManager.backStackEntryCount == 0 -> {
+                navigateProduct()
+            }
+            else -> {
+                supportFragmentManager.restoreBackStack("")
+            }
         }
     }
 
