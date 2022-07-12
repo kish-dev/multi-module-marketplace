@@ -15,5 +15,10 @@
     <string name="cheap_products">Cheap products:</string>
     <string name="expensive_products">Expensive products:</string>
     <string name="add_product_error">Product is not added</string>
+    <string name="restore_product_success">State has been restored</string>
+    <string name="restore_products_error">State hasn\'t been restored</string>
+    <string name="restore_dialog_title">Do you want to restore draft?</string>
+    <string name="dialog_positive_button">Yes, I do</string>
+    <string name="dialog_negative_button">No, I don\'t</string>
 
 </resources>

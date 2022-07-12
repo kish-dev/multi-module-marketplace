@@ -27,6 +27,3 @@ fun ProductDTO.mapToProductInListDTO(): ProductInListDTO {
         viewsCount = 0,
     )
 }
-
-
-

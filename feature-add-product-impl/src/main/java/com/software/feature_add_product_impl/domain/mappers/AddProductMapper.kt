@@ -19,3 +19,20 @@ fun ProductVO.mapToDTO(): ProductDTO {
         additionalParams
     )
 }
+
+fun ProductDTO.mapToVO(): ProductVO {
+    return ProductVO(
+        guid,
+        name,
+        price,
+        description,
+        rating,
+        isFavorite,
+        isInCart,
+        images,
+        weight,
+        count,
+        availableCount,
+        additionalParams
+    )
+}

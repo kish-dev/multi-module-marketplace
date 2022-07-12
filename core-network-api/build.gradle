@@ -37,6 +37,7 @@ dependencies {
     implementation retrofit
     implementation retrofitConverter
     implementation junit
+    implementation project(path: ':core-utils')
     testImplementation junit
     androidTestImplementation androidTestJunit
     androidTestImplementation espresso

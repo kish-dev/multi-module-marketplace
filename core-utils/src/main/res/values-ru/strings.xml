@@ -13,5 +13,10 @@
     <string name="cheap_products">Дешёвые продукты:</string>
     <string name="expensive_products">Дорогие продукты:</string>
     <string name="add_product_error">Продукт не добавлен</string>
+    <string name="restore_product_success">Состояние восстановлено</string>
+    <string name="restore_products_error">Состояние не восстановлено</string>
+    <string name="restore_dialog_title">Вы хотите продолжить из черновика?</string>
+    <string name="dialog_positive_button">Да</string>
+    <string name="dialog_negative_button">Нет</string>
 
 </resources>

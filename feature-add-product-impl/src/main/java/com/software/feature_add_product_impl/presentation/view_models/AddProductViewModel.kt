@@ -22,6 +22,13 @@ class AddProductViewModel(
     )
     var addProductState: LiveData<UiState<Boolean>> = _addProductState
 
+
+    private val _restoreState: MutableLiveData<UiState<ProductVO>> = MutableLiveData(
+        UiState.Init()
+    )
+    var restoreState: LiveData<UiState<ProductVO>> = _restoreState
+
+
     fun addProduct(productVO: ProductVO) {
         viewModelScope.safeLaunch(Dispatchers.Main) {
             _addProductState.value = UiState.Loading()
@@ -37,6 +44,28 @@ class AddProductViewModel(
                     _action.emit(Action.ShowToast(R.string.loading_error))
                 }
             }
+        }
+    }
+
+    fun restoreProduct() {
+        viewModelScope.safeLaunch(Dispatchers.Main) {
+            _restoreState.value = UiState.Loading()
+            when (val productResult = interactor.restoreProduct()) {
+                is DomainWrapper.Success -> {
+                    _restoreState.value =
+                        UiState.Success(productResult.value)
+                }
+                is DomainWrapper.Error -> {
+                    _restoreState.value =
+                        UiState.Error(productResult.throwable)
+                }
+            }
+        }
+    }
+
+    fun addChangedProduct(productVO: ProductVO) {
+        viewModelScope.safeLaunch(Dispatchers.Main) {
+            interactor.saveDraft(productVO)
         }
     }
 

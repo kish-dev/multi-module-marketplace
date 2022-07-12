@@ -9,17 +9,20 @@ import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.software.core_utils.R
-import com.software.core_utils.presentation.common.Action
 import com.software.core_utils.presentation.common.UiState
 import com.software.core_utils.presentation.fragments.BaseFragment
 import com.software.core_utils.presentation.view_models.viewModelCreator
+import com.software.core_utils.presentation.view_objects.ProductVO
 import com.software.core_utils.presentation.view_objects.createProduct
+import com.software.core_utils.presentation.view_objects.isNotBlank
 import com.software.feature_add_product.AddProductNavigationApi
 import com.software.feature_add_product_impl.databinding.FragmentAddProductBinding
 import com.software.feature_add_product_impl.di.components.AddProductFeatureComponent
 import com.software.feature_add_product_impl.domain.interactors.AddProductUseCase
 import com.software.feature_add_product_impl.presentation.view_models.AddProductViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -56,6 +59,19 @@ class AddProductFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         initObservers()
+        viewModel.restoreProduct()
+        saveChanges()
+    }
+
+    private fun showRestoreDialog(product: ProductVO) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.restore_dialog_title)
+            .setPositiveButton(R.string.dialog_positive_button) { _, _ ->
+                fillViews(product)
+            }
+            .setNegativeButton(R.string.dialog_negative_button) { _, _ ->
+            }
+            .show()
     }
 
     override fun onPause() {
@@ -68,6 +84,31 @@ class AddProductFragment : BaseFragment() {
     }
 
     private fun initObservers() {
+        viewModel.restoreState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Loading -> {
+                    binding.swipeRefreshLayout.isRefreshing = true
+                }
+
+                is UiState.Error -> {
+                    binding.swipeRefreshLayout.isRefreshing = false
+                }
+
+                is UiState.Success -> {
+                    binding.swipeRefreshLayout.isRefreshing = false
+                    when {
+                        it.value.isNotBlank() -> {
+                            showRestoreDialog(it.value)
+                        }
+                    }
+                }
+
+                is UiState.Init -> {
+                    binding.swipeRefreshLayout.isRefreshing = false
+                }
+            }
+        }
+
         viewModel.addProductState.observe(viewLifecycleOwner) {
             when (it) {
                 is UiState.Loading -> {
@@ -86,6 +127,45 @@ class AddProductFragment : BaseFragment() {
 
                 is UiState.Init -> {
                     binding.swipeRefreshLayout.isRefreshing = false
+                }
+            }
+        }
+    }
+
+    private fun fillViews(product: ProductVO) {
+        with(binding) {
+            nameEditText.setText(product.name)
+            priceEditText.setText(product.price)
+            descriptionEditText.setText(product.description)
+
+            val imagesStringBuilder = StringBuilder()
+            product.images.forEach {
+                imagesStringBuilder.append("$it ")
+            }
+
+            imageLinkEditText.setText(imagesStringBuilder)
+            ratingBar.rating = product.rating.toFloat()
+
+            showToast(getString(R.string.restore_product_success))
+        }
+    }
+
+    private fun saveChanges() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                while (true) {
+                    delay(1000)
+                    with(binding) {
+                        viewModel.addChangedProduct(
+                            createProduct(
+                                name = nameEditText.text!!.toString(),
+                                description = descriptionEditText.text!!.toString(),
+                                price = priceEditText.text!!.toString(),
+                                image = imageLinkEditText.text!!.toString(),
+                                rating = ratingBar.rating.toDouble()
+                            )
+                        )
+                    }
                 }
             }
         }
@@ -132,7 +212,6 @@ class AddProductFragment : BaseFragment() {
         }
         return isValid
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

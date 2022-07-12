@@ -3,6 +3,7 @@ package com.software.storage_impl
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import com.software.core_utils.Constants.DRAFT_SP
 import com.software.core_utils.Constants.PRODUCTS_IN_LIST_SP
 import com.software.core_utils.Constants.PRODUCTS_SP
 import com.software.feature_api.wrappers.ProductDTO
@@ -26,17 +27,20 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
     companion object {
         private const val PRODUCTS = "${BuildConfig.LIBRARY_PACKAGE_NAME}.products"
         private const val PRODUCTS_IN_LIST = "${BuildConfig.LIBRARY_PACKAGE_NAME}.products_in_list"
+        private const val DRAFT = "${BuildConfig.LIBRARY_PACKAGE_NAME}.draft"
     }
 
     private val spProducts: SharedPreferences
-        get() {
-            return appContext.getSharedPreferences(PRODUCTS_SP, 0)
-        }
+        get() = appContext.getSharedPreferences(PRODUCTS_SP, 0)
+
 
     private val spProductInListEntity: SharedPreferences
-        get() {
-            return appContext.getSharedPreferences(PRODUCTS_IN_LIST_SP, 0)
-        }
+        get() = appContext.getSharedPreferences(PRODUCTS_IN_LIST_SP, 0)
+
+
+    private val spDraft: SharedPreferences
+        get() = appContext.getSharedPreferences(DRAFT_SP, 0)
+
 
     private val listEntityProductsInList: MutableList<ProductInListEntity>?
         get() {
@@ -60,6 +64,12 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
             }
             listEntity?.sortedBy { it.name }
             return listEntity
+        }
+
+    private val entityDraft: ProductEntity?
+        get() {
+            val json = spDraft.getString(DRAFT, "")
+            return JSONConverterProductsEntity(gson).toProductEntity(json)
         }
 
     override fun insertProductsDTO(productsDTO: List<ProductDTO>) {
@@ -157,6 +167,20 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
     override fun changeProductCount(guid: String, countDiff: Int): ProductDTO? {
         changeCount(guid, countDiff)
         return listEntityProducts?.findLast { it.guid == guid }?.mapToDTO()
+    }
+
+    override fun getLastSavedDraft(): ProductDTO? {
+        return entityDraft?.mapToDTO()
+    }
+
+    override fun setDraft(productDTO: ProductDTO) {
+        val newEntityDto = productDTO.mapToEntity(productDTO.isInCart, productDTO.count)
+        val json = JSONConverterProductsEntity(gson).fromProductEntity(newEntityDto)
+        spDraft.edit().putString(DRAFT, json).apply()
+    }
+
+    override fun clearDraft() {
+        spDraft.edit().remove(DRAFT).apply()
     }
 
     private fun changeCount(guid: String, countDiff: Int) {

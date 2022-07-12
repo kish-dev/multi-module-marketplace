@@ -17,6 +17,10 @@ data class ProductVO(
     val additionalParams: Map<String, String>
 )
 
+fun ProductVO.isNotBlank(): Boolean {
+    return name.isNotBlank() || price.isNotBlank() || description.isNotBlank() || rating.compareTo(0.0) > 0 || images.isNotEmpty()
+}
+
 fun createProduct(
     name: String,
     description: String,
@@ -24,6 +28,10 @@ fun createProduct(
     price: String,
     rating: Double
 ): ProductVO {
+    val images = when {
+        image.isNotBlank() -> listOf(image)
+        else -> listOf()
+    }
     return ProductVO(
         guid = UUID.randomUUID().toString(),
         name = name,
@@ -32,7 +40,7 @@ fun createProduct(
         rating = rating,
         isFavorite = false,
         isInCart = false,
-        images = listOf(image),
+        images = images,
         weight = null,
         count = null,
         availableCount = null,

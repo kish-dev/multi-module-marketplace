@@ -21,4 +21,18 @@ class JSONConverterProductsEntity(private val gson: Gson) {
         val type: Type = object : TypeToken<List<ProductEntity>>() {}.type
         return gson.fromJson(productsEntitiesString, type)
     }
+
+    fun fromProductEntity(productEntity: ProductEntity?): String? {
+        if (productEntity == null) {
+            return null
+        }
+        return gson.toJson(productEntity)
+    }
+
+    fun toProductEntity(productEntityString: String?): ProductEntity? {
+        if (productEntityString == null) {
+            return null
+        }
+        return gson.fromJson(productEntityString, ProductEntity::class.java)
+    }
 }

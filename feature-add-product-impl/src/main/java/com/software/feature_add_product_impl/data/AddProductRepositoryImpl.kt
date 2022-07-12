@@ -8,12 +8,12 @@ import javax.inject.Inject
 
 class AddProductRepositoryImpl @Inject constructor(
     private val sharedPreferencesApi: SharedPreferencesApi
-) :
-    AddProductRepository {
+) : AddProductRepository {
 
     override suspend fun addProduct(productDTO: ProductDTO): ServerResponse<Boolean> =
         when (val result = sharedPreferencesApi.insertNewProduct(productDTO)) {
             true -> {
+
                 ServerResponse.Success(result)
             }
 
@@ -21,4 +21,27 @@ class AddProductRepositoryImpl @Inject constructor(
                 ServerResponse.Error(NullPointerException("Can't add twice"))
             }
         }
+
+    override suspend fun restoreProduct(): ServerResponse<ProductDTO> =
+        when (val result = sharedPreferencesApi.getLastSavedDraft()) {
+            null -> {
+                ServerResponse.Error(NullPointerException("Can't restore draft"))
+            }
+
+            else -> {
+                ServerResponse.Success(result)
+            }
+        }
+
+    override fun getLastSavedDraft(): ProductDTO? =
+        sharedPreferencesApi.getLastSavedDraft()
+
+    override fun saveDraft(productDTO: ProductDTO) {
+        sharedPreferencesApi.setDraft(productDTO)
+    }
+
+    override fun clearDraft() {
+        sharedPreferencesApi.clearDraft()
+    }
+
 }
