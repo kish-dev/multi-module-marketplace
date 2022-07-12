@@ -31,15 +31,17 @@ fun CoroutineScope.safeLaunch(
     }
 }
 
-fun View.debounceClick(
+fun View.setDebounceClickListener(
     delayInMillis: Long = 500,
     coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main.immediate),
-    click: () -> Unit
+    onClick: () -> Unit
 ) {
-    coroutineScope.launch {
-        this@debounceClick.isEnabled = false
-        click.invoke()
-        delay(delayInMillis)
-        this@debounceClick.isEnabled = true
+    var job: Job? = null
+    setOnClickListener {
+        job?.cancel()
+        job = coroutineScope.launch {
+            onClick.invoke()
+            delay(delayInMillis)
+        }
     }
 }

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
 import com.google.android.material.card.MaterialCardView
 import com.software.core_utils.presentation.adapters.ProductImageAdapter
-import com.software.core_utils.presentation.common.debounceClick
+import com.software.core_utils.presentation.common.setDebounceClickListener
 import com.software.feature_products_impl.R
 import com.software.feature_products_impl.presentation.view_objects.ProductsListItem
 import com.software.feature_products_impl.presentation.views.ProductsCartButtonView
@@ -51,20 +51,16 @@ class ProductProductsListItemViewHolder(
     }
 
     private fun initListeners() {
-        productsCartButtonView?.setOnClickListener { view ->
-            view.debounceClick {
-                productInListVO?.let {
-                    productsCartButtonView?.init()
-                    listener.onChangeCartState(this, it.guid, !it.isInCart)
-                }
+        productsCartButtonView?.setDebounceClickListener {
+            productInListVO?.let {
+                productsCartButtonView?.init()
+                listener.onChangeCartState(this, it.guid, !it.isInCart)
             }
         }
 
-        cardView?.setOnClickListener {
-            it.debounceClick {
-                productInListVO?.guid?.let { product ->
-                    listener.onClickProduct(this, product)
-                }
+        cardView?.setDebounceClickListener {
+            productInListVO?.guid?.let { product ->
+                listener.onClickProduct(this, product)
             }
         }
     }
