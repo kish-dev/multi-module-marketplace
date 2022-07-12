@@ -32,7 +32,7 @@ class PDPViewModel(private val interactor: ProductDetailUseCase) : BaseViewModel
                 is DomainWrapper.Error -> {
                     _productLD.value =
                         UiState.Error(product.throwable)
-                    _action.send(Action.ShowToast(R.string.loading_error))
+                    _action.emit(Action.ShowToast(R.string.loading_error))
                 }
             }
         }
@@ -49,7 +49,7 @@ class PDPViewModel(private val interactor: ProductDetailUseCase) : BaseViewModel
                 is DomainWrapper.Error -> {
                     _productLD.value =
                         UiState.Error(product.throwable)
-                    _action.send(Action.ShowToast(R.string.loading_error))
+                    _action.emit(Action.ShowToast(R.string.loading_error))
                 }
             }
         }

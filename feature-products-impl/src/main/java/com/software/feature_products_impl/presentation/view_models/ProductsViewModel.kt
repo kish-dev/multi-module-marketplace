@@ -59,7 +59,7 @@ class ProductsViewModel(
                         val thx = Throwable("Something went wrong, FAILED")
                         _productRecyclerLD.value =
                             UiState.Error(thx)
-                        _action.send(Action.ShowToast(R.string.loading_error))
+                        _action.emit(Action.ShowToast(R.string.loading_error))
                     }
 
                     WorkInfo.State.CANCELLED -> {
@@ -68,7 +68,7 @@ class ProductsViewModel(
                         val thx = Throwable("Something went wrong, CANCELLED")
                         _productRecyclerLD.value =
                             UiState.Error(thx)
-                        _action.send(Action.ShowToast(R.string.loading_error))
+                        _action.emit(Action.ShowToast(R.string.loading_error))
                     }
 
                     WorkInfo.State.ENQUEUED -> {
@@ -93,7 +93,7 @@ class ProductsViewModel(
                 is DomainWrapper.Error -> {
                     _productRecyclerLD.value =
                         UiState.Error(products.throwable)
-                    _action.send(Action.ShowToast(R.string.loading_error))
+                    _action.emit(Action.ShowToast(R.string.loading_error))
                 }
             }
         }
@@ -106,7 +106,7 @@ class ProductsViewModel(
                     updateUiState()
                 }
                 is DomainWrapper.Error -> {
-                    _action.send(Action.ShowToast(R.string.loading_error))
+                    _action.emit(Action.ShowToast(R.string.loading_error))
                 }
             }
         }
@@ -119,7 +119,7 @@ class ProductsViewModel(
                     updateUiState()
                 }
                 is DomainWrapper.Error -> {
-                    _action.send(Action.ShowToast(R.string.loading_error))
+                    _action.emit(Action.ShowToast(R.string.loading_error))
                 }
             }
         }

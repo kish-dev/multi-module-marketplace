@@ -29,12 +29,12 @@ class AddProductViewModel(
                 is DomainWrapper.Success -> {
                     _addProductState.value =
                         UiState.Success(productResult.value)
-                    _action.send(Action.ShowToast(R.string.add_product_success))
+                    _action.emit(Action.ShowToast(R.string.add_product_success))
                 }
                 is DomainWrapper.Error -> {
                     _addProductState.value =
                         UiState.Error(productResult.throwable)
-                    _action.send(Action.ShowToast(R.string.loading_error))
+                    _action.emit(Action.ShowToast(R.string.loading_error))
                 }
             }
         }

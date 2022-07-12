@@ -16,9 +16,7 @@ import kotlinx.coroutines.launch
 
 abstract class BaseFragment: Fragment() {
 
-    protected open val viewModel : BaseViewModel by viewModelCreator {
-        BaseViewModel()
-    }
+    abstract val viewModel : BaseViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
