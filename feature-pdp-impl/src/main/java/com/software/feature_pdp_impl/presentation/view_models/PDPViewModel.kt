@@ -12,7 +12,6 @@ import com.software.core_utils.presentation.view_models.BaseViewModel
 import com.software.core_utils.presentation.view_objects.ProductVO
 import com.software.feature_pdp_impl.domain.interactors.ProductDetailUseCase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 class PDPViewModel(private val interactor: ProductDetailUseCase) : BaseViewModel() {
 
@@ -25,17 +24,15 @@ class PDPViewModel(private val interactor: ProductDetailUseCase) : BaseViewModel
     fun getProduct(productId: String) {
         viewModelScope.safeLaunch(Dispatchers.Main) {
             _productLD.value = UiState.Loading()
-            withContext(Dispatchers.Main) {
-                when (val product = interactor.getProductById(productId)) {
-                    is DomainWrapper.Success -> {
-                        _productLD.value =
-                            UiState.Success(product.value)
-                    }
-                    is DomainWrapper.Error -> {
-                        _productLD.value =
-                            UiState.Error(product.throwable)
-                        _action.send(Action.ShowToast(R.string.loading_error))
-                    }
+            when (val product = interactor.getProductById(productId)) {
+                is DomainWrapper.Success -> {
+                    _productLD.value =
+                        UiState.Success(product.value)
+                }
+                is DomainWrapper.Error -> {
+                    _productLD.value =
+                        UiState.Error(product.throwable)
+                    _action.send(Action.ShowToast(R.string.loading_error))
                 }
             }
         }
@@ -44,17 +41,15 @@ class PDPViewModel(private val interactor: ProductDetailUseCase) : BaseViewModel
     fun changeCount(productId: String, countDiff: Int) {
         viewModelScope.safeLaunch(Dispatchers.Main) {
             _productLD.value = UiState.Loading()
-            withContext(Dispatchers.Main) {
-                when (val product = interactor.changeCount(productId, countDiff)) {
-                    is DomainWrapper.Success -> {
-                        _productLD.value =
-                            UiState.Success(product.value)
-                    }
-                    is DomainWrapper.Error -> {
-                        _productLD.value =
-                            UiState.Error(product.throwable)
-                        _action.send(Action.ShowToast(R.string.loading_error))
-                    }
+            when (val product = interactor.changeCount(productId, countDiff)) {
+                is DomainWrapper.Success -> {
+                    _productLD.value =
+                        UiState.Success(product.value)
+                }
+                is DomainWrapper.Error -> {
+                    _productLD.value =
+                        UiState.Error(product.throwable)
+                    _action.send(Action.ShowToast(R.string.loading_error))
                 }
             }
         }
