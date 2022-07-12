@@ -70,6 +70,7 @@ class AddProductFragment : BaseFragment() {
                 fillViews(product)
             }
             .setNegativeButton(R.string.dialog_negative_button) { _, _ ->
+                showToast(getString(R.string.restore_products_error))
             }
             .show()
     }
