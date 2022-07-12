@@ -169,7 +169,12 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
                         when (productInListEntity.isInCart) {
                             true -> {
                                 prevListProductsEntity?.findLast { it.guid == guid }?.let {
-                                    it.count = it.count?.plus(countDiff) ?: countDiff
+                                    it.count?.let { count ->
+                                        if(count + countDiff <= 1000) {
+                                            it.count = it.count?.plus(countDiff)
+                                        }
+                                    }
+
                                 }
                             }
                             false -> {

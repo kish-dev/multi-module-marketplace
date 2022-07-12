@@ -47,10 +47,11 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/count__tv"
                 style="@style/UsualText"
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="8dp"
+                android:gravity="center"
                 app:layout_constraintEnd_toStartOf="@+id/plus_count__iv"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toEndOf="@+id/minus_count__iv"
