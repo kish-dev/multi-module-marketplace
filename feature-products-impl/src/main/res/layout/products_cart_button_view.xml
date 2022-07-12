@@ -8,20 +8,21 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/button__cv"
         style="@style/UsualCardView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="112dp"
+        android:layout_height="72dp">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/title__tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:gravity="center"
+            android:layout_height="40dp"
             android:layout_margin="16dp"
             android:text="@string/add_to_a_cart" />
 
         <ProgressBar
             android:id="@+id/loading__pb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
             android:layout_margin="16dp"
             android:indeterminate="true"
             android:visibility="gone"

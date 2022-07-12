@@ -14,7 +14,7 @@ import com.software.feature_products_api.ProductsNavigationApi
 import com.software.core_utils.R
 import com.software.feature_products_impl.domain.interactors.LoadWithWorkersUseCase
 import com.software.feature_products_impl.domain.interactors.ProductListUseCase
-import com.software.feature_products_impl.presentation.view_objects.DividedProductsInList
+import com.software.feature_products_impl.presentation.view_objects.ProductsListItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
@@ -30,11 +30,11 @@ class ProductsViewModel(
         private val TAG = ProductsViewModel::class.java.simpleName
     }
 
-    private val _productRecyclerLD: MutableLiveData<UiState<DividedProductsInList>> =
+    private val _productRecyclerLD: MutableLiveData<UiState<List<ProductsListItem.ProductInListVO>>> =
         MutableLiveData(UiState.Init())
-    var productRecyclerLD: LiveData<UiState<DividedProductsInList>> = _productRecyclerLD
+    var productRecyclerLD: LiveData<UiState<List<ProductsListItem.ProductInListVO>>> = _productRecyclerLD
 
-    private val five_minutes = 1000L * 60 * 5
+    private val fiveMinutes = 1000L * 60 * 5
     private var autoUpdateJob: Job? = null
 
     fun getProducts() {
@@ -127,7 +127,7 @@ class ProductsViewModel(
 
     fun autoUpdateProducts() {
         autoUpdateJob = viewModelScope.safeLaunch(Dispatchers.IO) {
-            delay(five_minutes)
+            delay(fiveMinutes)
             getProducts()
             autoUpdateProducts()
         }

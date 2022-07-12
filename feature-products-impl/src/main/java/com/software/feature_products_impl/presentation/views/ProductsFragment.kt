@@ -21,7 +21,6 @@ import com.software.feature_products_impl.presentation.adapters.ProductsAndTitle
 import com.software.feature_products_impl.presentation.view_holders.ProductProductsListItemViewHolder
 import com.software.feature_products_impl.presentation.view_holders.ViewHolderFactory
 import com.software.feature_products_impl.presentation.view_models.ProductsViewModel
-import com.software.feature_products_impl.presentation.view_objects.mapToBaseRVModel
 import javax.inject.Inject
 
 class ProductsFragment : BaseFragment() {
@@ -57,7 +56,10 @@ class ProductsFragment : BaseFragment() {
     private val productsAndTitlesAdapter: ProductsAndTitlesAdapter by lazy {
         ProductsAndTitlesAdapter(
             object : ProductsAndTitlesAdapter.Listener {
-                override fun onClickProduct(holder: ProductProductsListItemViewHolder, productId: String) {
+                override fun onClickProduct(
+                    holder: ProductProductsListItemViewHolder,
+                    productId: String
+                ) {
                     viewModel.addViewCount(productId)
                     productsNavigationApi.navigateToPDP(this@ProductsFragment, productId)
                 }
@@ -139,8 +141,9 @@ class ProductsFragment : BaseFragment() {
                 is UiState.Success -> {
                     binding.swipeRefreshLayout.isRefreshing = false
                     val list = context?.let { context ->
-                        it.value.mapToBaseRVModel(
-                            context
+                        productsInteractor.createProductsList(
+                            list = it.value,
+                            context = context,
                         )
                     }
                     productsAndTitlesAdapter.submitList(list)
