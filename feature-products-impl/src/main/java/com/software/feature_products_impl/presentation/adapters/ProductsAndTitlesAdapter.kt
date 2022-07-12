@@ -28,7 +28,11 @@ class ProductsAndTitlesAdapter(
 
     interface Listener {
         fun onClickProduct(holder: ProductProductsListItemViewHolder, productId: String)
-        fun onChangeCartState(holder: ProductProductsListItemViewHolder, productId: String, inCart: Boolean)
+        fun onChangeCartState(
+            holder: ProductProductsListItemViewHolder,
+            productId: String,
+            inCart: Boolean
+        )
     }
 
     override fun onCreateViewHolder(
@@ -120,20 +124,7 @@ class ProductsAndTitlesAdapter(
         override fun areContentsTheSame(
             oldItem: ProductsListItem,
             newItem: ProductsListItem
-        ): Boolean =
-            when {
-                oldItem is ProductsListItem.ProductInListVO && newItem is ProductsListItem.ProductInListVO -> {
-                    oldItem == newItem
-                }
-
-                oldItem is ProductsListItem.TitleProductVO && newItem is ProductsListItem.TitleProductVO -> {
-                    oldItem == newItem
-                }
-
-                else -> {
-                    false
-                }
-            }
+        ): Boolean = oldItem == newItem
 
         override fun getChangePayload(
             oldItem: ProductsListItem,
@@ -142,7 +133,7 @@ class ProductsAndTitlesAdapter(
             return when {
                 oldItem is ProductsListItem.ProductInListVO && newItem is ProductsListItem.ProductInListVO -> {
                     var diff: MutableList<String>? = null
-                    if(oldItem.guid == newItem.guid) {
+                    if (oldItem.guid == newItem.guid) {
                         diff = mutableListOf()
                         if (oldItem.isInCart != newItem.isInCart) {
                             diff.add(PAYLOAD_IS_IN_CART)
