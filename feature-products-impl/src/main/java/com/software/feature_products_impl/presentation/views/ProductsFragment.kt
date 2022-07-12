@@ -18,7 +18,7 @@ import com.software.feature_products_impl.di.components.ProductsFeatureComponent
 import com.software.feature_products_impl.domain.interactors.LoadWithWorkersUseCase
 import com.software.feature_products_impl.domain.interactors.ProductListUseCase
 import com.software.feature_products_impl.presentation.adapters.ProductsAndTitlesAdapter
-import com.software.feature_products_impl.presentation.view_holders.ProductViewHolder
+import com.software.feature_products_impl.presentation.view_holders.ProductProductsListItemViewHolder
 import com.software.feature_products_impl.presentation.view_holders.ViewHolderFactory
 import com.software.feature_products_impl.presentation.view_models.ProductsViewModel
 import com.software.feature_products_impl.presentation.view_objects.mapToBaseRVModel
@@ -57,13 +57,13 @@ class ProductsFragment : BaseFragment() {
     private val productsAndTitlesAdapter: ProductsAndTitlesAdapter by lazy {
         ProductsAndTitlesAdapter(
             object : ProductsAndTitlesAdapter.Listener {
-                override fun onClickProduct(holder: ProductViewHolder, productId: String) {
+                override fun onClickProduct(holder: ProductProductsListItemViewHolder, productId: String) {
                     viewModel.addViewCount(productId)
                     productsNavigationApi.navigateToPDP(this@ProductsFragment, productId)
                 }
 
                 override fun onChangeCartState(
-                    holder: ProductViewHolder,
+                    holder: ProductProductsListItemViewHolder,
                     productId: String,
                     inCart: Boolean
                 ) {

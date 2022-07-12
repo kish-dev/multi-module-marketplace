@@ -5,15 +5,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.software.core_utils.presentation.common.ViewTypes
-import com.software.feature_products_impl.presentation.view_holders.BaseViewHolder
-import com.software.feature_products_impl.presentation.view_holders.ProductViewHolder
+import com.software.feature_products_impl.presentation.view_holders.BaseProductsListItemViewHolder
+import com.software.feature_products_impl.presentation.view_holders.ProductProductsListItemViewHolder
 import com.software.feature_products_impl.presentation.view_holders.ViewHolderFactory
-import com.software.feature_products_impl.presentation.view_objects.BaseProductsTitleModel
+import com.software.feature_products_impl.presentation.view_objects.ProductsListItem
 
 class ProductsAndTitlesAdapter(
     private val listener: Listener,
     private val viewHolderFactory: ViewHolderFactory,
-) : ListAdapter<BaseProductsTitleModel, BaseViewHolder<out BaseProductsTitleModel>>(
+) : ListAdapter<ProductsListItem, BaseProductsListItemViewHolder<out ProductsListItem>>(
     BaseProductsTitleDiffUtil()
 ) {
 
@@ -27,14 +27,14 @@ class ProductsAndTitlesAdapter(
     }
 
     interface Listener {
-        fun onClickProduct(holder: ProductViewHolder, productId: String)
-        fun onChangeCartState(holder: ProductViewHolder, productId: String, inCart: Boolean)
+        fun onClickProduct(holder: ProductProductsListItemViewHolder, productId: String)
+        fun onChangeCartState(holder: ProductProductsListItemViewHolder, productId: String, inCart: Boolean)
     }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): BaseViewHolder<out BaseProductsTitleModel> {
+    ): BaseProductsListItemViewHolder<out ProductsListItem> {
         return viewHolderFactory.createViewHolder(
             parentView = parent,
             viewType = viewType,
@@ -44,14 +44,14 @@ class ProductsAndTitlesAdapter(
     }
 
     override fun onBindViewHolder(
-        holder: BaseViewHolder<out BaseProductsTitleModel>,
+        holder: BaseProductsListItemViewHolder<out ProductsListItem>,
         position: Int,
     ) {
         holder.initBind(getItem(position))
     }
 
     override fun onBindViewHolder(
-        holder: BaseViewHolder<out BaseProductsTitleModel>,
+        holder: BaseProductsListItemViewHolder<out ProductsListItem>,
         position: Int,
         payloads: MutableList<Any>
     ) {
@@ -59,17 +59,17 @@ class ProductsAndTitlesAdapter(
             onBindViewHolder(holder, position)
         } else {
             when (holder) {
-                is ProductViewHolder -> {
+                is ProductProductsListItemViewHolder -> {
                     when (payloads[0]) {
                         PAYLOAD_IS_IN_CART -> {
-                            (getItem(position) as? BaseProductsTitleModel.ProductInListVO)?.let {
+                            (getItem(position) as? ProductsListItem.ProductInListVO)?.let {
                                 holder.bindIsInCartState(
                                     it
                                 )
                             }
                         }
                         PAYLOAD_VIEWS_COUNT -> {
-                            (getItem(position) as? BaseProductsTitleModel.ProductInListVO)?.let {
+                            (getItem(position) as? ProductsListItem.ProductInListVO)?.let {
                                 holder.bindViewsCount(
                                     it
                                 )
@@ -89,25 +89,25 @@ class ProductsAndTitlesAdapter(
 
     override fun getItemViewType(position: Int): Int =
         when (getItem(position)) {
-            is BaseProductsTitleModel.ProductInListVO -> {
+            is ProductsListItem.ProductInListVO -> {
                 ViewTypes.PRODUCT_IN_LIST
             }
-            is BaseProductsTitleModel.TitleProductVO -> {
+            is ProductsListItem.TitleProductVO -> {
                 ViewTypes.TITLE
             }
         }
 
-    private class BaseProductsTitleDiffUtil : DiffUtil.ItemCallback<BaseProductsTitleModel>() {
+    private class BaseProductsTitleDiffUtil : DiffUtil.ItemCallback<ProductsListItem>() {
         override fun areItemsTheSame(
-            oldItem: BaseProductsTitleModel,
-            newItem: BaseProductsTitleModel
+            oldItem: ProductsListItem,
+            newItem: ProductsListItem
         ): Boolean =
             when {
-                oldItem is BaseProductsTitleModel.ProductInListVO && newItem is BaseProductsTitleModel.ProductInListVO -> {
+                oldItem is ProductsListItem.ProductInListVO && newItem is ProductsListItem.ProductInListVO -> {
                     oldItem.guid == newItem.guid
                 }
 
-                oldItem is BaseProductsTitleModel.TitleProductVO && newItem is BaseProductsTitleModel.TitleProductVO -> {
+                oldItem is ProductsListItem.TitleProductVO && newItem is ProductsListItem.TitleProductVO -> {
                     oldItem.headerText == newItem.headerText
                 }
 
@@ -118,15 +118,15 @@ class ProductsAndTitlesAdapter(
 
 
         override fun areContentsTheSame(
-            oldItem: BaseProductsTitleModel,
-            newItem: BaseProductsTitleModel
+            oldItem: ProductsListItem,
+            newItem: ProductsListItem
         ): Boolean =
             when {
-                oldItem is BaseProductsTitleModel.ProductInListVO && newItem is BaseProductsTitleModel.ProductInListVO -> {
+                oldItem is ProductsListItem.ProductInListVO && newItem is ProductsListItem.ProductInListVO -> {
                     oldItem == newItem
                 }
 
-                oldItem is BaseProductsTitleModel.TitleProductVO && newItem is BaseProductsTitleModel.TitleProductVO -> {
+                oldItem is ProductsListItem.TitleProductVO && newItem is ProductsListItem.TitleProductVO -> {
                     oldItem == newItem
                 }
 
@@ -136,11 +136,11 @@ class ProductsAndTitlesAdapter(
             }
 
         override fun getChangePayload(
-            oldItem: BaseProductsTitleModel,
-            newItem: BaseProductsTitleModel
+            oldItem: ProductsListItem,
+            newItem: ProductsListItem
         ): Any? {
             return when {
-                oldItem is BaseProductsTitleModel.ProductInListVO && newItem is BaseProductsTitleModel.ProductInListVO -> {
+                oldItem is ProductsListItem.ProductInListVO && newItem is ProductsListItem.ProductInListVO -> {
                     var diff: MutableList<String>? = null
                     if(oldItem.guid == newItem.guid) {
                         diff = mutableListOf()

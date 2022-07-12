@@ -6,7 +6,7 @@ import com.software.core_utils.models.DomainWrapper
 import com.software.feature_api.wrappers.ServerResponse
 import com.software.feature_products_impl.domain.mappers.mapToVO
 import com.software.feature_products_impl.domain.repositories.ProductsRepository
-import com.software.feature_products_impl.presentation.view_objects.BaseProductsTitleModel
+import com.software.feature_products_impl.presentation.view_objects.ProductsListItem
 import com.software.feature_products_impl.presentation.view_objects.DividedProductsInList
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -32,7 +32,7 @@ class ProductsInteractorImpl(
         }
 
     private fun createResult(
-        list: List<BaseProductsTitleModel.ProductInListVO>,
+        list: List<ProductsListItem.ProductInListVO>,
         estimatedPrice: Int = 100
     ): DomainWrapper<DividedProductsInList> =
         try {
@@ -44,7 +44,7 @@ class ProductsInteractorImpl(
         }
 
 
-    override suspend fun addViewToProductInList(guid: String): DomainWrapper<BaseProductsTitleModel.ProductInListVO> =
+    override suspend fun addViewToProductInList(guid: String): DomainWrapper<ProductsListItem.ProductInListVO> =
         withContext(dispatcher) {
             when (val product = productsRepository.addViewToProductInList(guid)) {
                 is ServerResponse.Success -> {
@@ -60,7 +60,7 @@ class ProductsInteractorImpl(
     override suspend fun updateProductCartState(
         guid: String,
         inCart: Boolean
-    ): DomainWrapper<BaseProductsTitleModel.ProductInListVO> =
+    ): DomainWrapper<ProductsListItem.ProductInListVO> =
         withContext(dispatcher) {
             when (val product = productsRepository.updateProductCartState(guid, inCart)) {
                 is ServerResponse.Success -> {

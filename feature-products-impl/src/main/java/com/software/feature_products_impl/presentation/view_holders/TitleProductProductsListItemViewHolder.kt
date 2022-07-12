@@ -3,13 +3,13 @@ package com.software.feature_products_impl.presentation.view_holders
 import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
 import com.software.feature_products_impl.R
-import com.software.feature_products_impl.presentation.view_objects.BaseProductsTitleModel
+import com.software.feature_products_impl.presentation.view_objects.ProductsListItem
 
-class TitleProductViewHolder(
+class TitleProductProductsListItemViewHolder(
     itemView: View,
-) : BaseViewHolder<BaseProductsTitleModel.TitleProductVO>(itemView) {
+) : BaseProductsListItemViewHolder<ProductsListItem.TitleProductVO>(itemView) {
 
-    private var titleProductVO: BaseProductsTitleModel.TitleProductVO? = null
+    private var titleProductVO: ProductsListItem.TitleProductVO? = null
 
     private var titleTV: AppCompatTextView? = null
 
@@ -19,7 +19,7 @@ class TitleProductViewHolder(
         }
     }
 
-    override fun bind(item: BaseProductsTitleModel.TitleProductVO) {
+    override fun bind(item: ProductsListItem.TitleProductVO) {
         this.titleProductVO = item
 
         titleTV?.text = item.headerText

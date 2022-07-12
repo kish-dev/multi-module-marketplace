@@ -34,7 +34,7 @@ class ProductsViewModel(
         MutableLiveData(UiState.Init())
     var productRecyclerLD: LiveData<UiState<DividedProductsInList>> = _productRecyclerLD
 
-    private val five_minutes = 300000L
+    private val five_minutes = 1000L * 60 * 5
     private var autoUpdateJob: Job? = null
 
     fun getProducts() {

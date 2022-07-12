@@ -11,15 +11,15 @@ import com.google.android.material.card.MaterialCardView
 import com.software.core_utils.presentation.adapters.ProductImageAdapter
 import com.software.core_utils.presentation.common.debounceClick
 import com.software.feature_products_impl.R
-import com.software.feature_products_impl.presentation.view_objects.BaseProductsTitleModel
+import com.software.feature_products_impl.presentation.view_objects.ProductsListItem
 import com.software.feature_products_impl.presentation.views.ProductsCartButtonView
 
-class ProductViewHolder(
+class ProductProductsListItemViewHolder(
     itemView: View,
     private val listener: com.software.feature_products_impl.presentation.adapters.ProductsAndTitlesAdapter.Listener,
     private val productImageAdapter: ProductImageAdapter,
     private val nestedRecycledViewPool: RecyclerView.RecycledViewPool
-) : BaseViewHolder<BaseProductsTitleModel.ProductInListVO>(itemView) {
+) : BaseProductsListItemViewHolder<ProductsListItem.ProductInListVO>(itemView) {
 
     private val snapHelper: SnapHelper by lazy {
         PagerSnapHelper()
@@ -33,7 +33,7 @@ class ProductViewHolder(
     private var cardView: MaterialCardView? = null
     private var productsCartButtonView: ProductsCartButtonView? = null
 
-    private var productInListVO: BaseProductsTitleModel.ProductInListVO? = null
+    private var productInListVO: ProductsListItem.ProductInListVO? = null
 
     init {
         itemView.apply {
@@ -84,7 +84,7 @@ class ProductViewHolder(
     }
 
 
-    override fun bind(item: BaseProductsTitleModel.ProductInListVO) {
+    override fun bind(item: ProductsListItem.ProductInListVO) {
         this.productInListVO = item
 
         productImageAdapter.submitList(item.images)
@@ -95,11 +95,11 @@ class ProductViewHolder(
         productsCartButtonView?.setCartState(item.isInCart)
     }
 
-    fun bindIsInCartState(item: BaseProductsTitleModel.ProductInListVO) {
+    fun bindIsInCartState(item: ProductsListItem.ProductInListVO) {
         productsCartButtonView?.setCartState(item.isInCart)
     }
 
-    fun bindViewsCount(item: BaseProductsTitleModel.ProductInListVO) {
+    fun bindViewsCount(item: ProductsListItem.ProductInListVO) {
         viewsCountTV?.text = item.viewsCount.toString()
     }
 }

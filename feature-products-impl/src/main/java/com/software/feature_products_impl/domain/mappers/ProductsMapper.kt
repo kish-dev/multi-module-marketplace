@@ -2,10 +2,10 @@ package com.software.feature_products_impl.domain.mappers
 
 import com.software.feature_api.wrappers.ProductDTO
 import com.software.feature_api.wrappers.ProductInListDTO
-import com.software.feature_products_impl.presentation.view_objects.BaseProductsTitleModel
+import com.software.feature_products_impl.presentation.view_objects.ProductsListItem
 
-fun ProductInListDTO.mapToVO(): BaseProductsTitleModel.ProductInListVO {
-    return BaseProductsTitleModel.ProductInListVO(
+fun ProductInListDTO.mapToVO(): ProductsListItem.ProductInListVO {
+    return ProductsListItem.ProductInListVO(
         guid,
         image,
         name,
@@ -17,7 +17,7 @@ fun ProductInListDTO.mapToVO(): BaseProductsTitleModel.ProductInListVO {
     )
 }
 
-fun BaseProductsTitleModel.ProductInListVO.mapToDTO(): ProductInListDTO {
+fun ProductsListItem.ProductInListVO.mapToDTO(): ProductInListDTO {
     return ProductInListDTO(
         guid,
         images,
