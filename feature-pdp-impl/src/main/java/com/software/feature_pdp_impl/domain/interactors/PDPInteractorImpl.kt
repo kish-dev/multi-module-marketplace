@@ -39,4 +39,20 @@ class PDPInteractorImpl @Inject constructor(
             }
         }
 
+    override suspend fun changeIsFavorite(
+        guid: String,
+        isFavorite: Boolean
+    ): DomainWrapper<ProductVO> =
+        withContext(dispatcher) {
+            when (val response = pdpRepository.changeIsFavorite(guid, isFavorite)) {
+                is ServerResponse.Success -> {
+                    DomainWrapper.Success(response.value.mapToVO())
+                }
+
+                is ServerResponse.Error -> {
+                    DomainWrapper.Error(response.throwable)
+                }
+            }
+        }
+
 }

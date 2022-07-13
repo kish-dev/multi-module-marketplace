@@ -32,4 +32,18 @@ class PDPRepositoryImpl @Inject constructor(
             }
         }
 
+    override suspend fun changeIsFavorite(
+        guid: String,
+        isFavorite: Boolean
+    ): ServerResponse<ProductDTO> =
+        when (val result = sharedPreferencesApi.changeIsFavorite(guid, isFavorite)) {
+            null -> {
+                ServerResponse.Error(NullPointerException("Cache can't change isFavorite productDTO with guid=$guid"))
+            }
+
+            else -> {
+                ServerResponse.Success(result)
+            }
+        }
+
 }

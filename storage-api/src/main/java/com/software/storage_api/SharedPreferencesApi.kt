@@ -33,4 +33,6 @@ interface SharedPreferencesApi {
     fun setDraft(productDTO: ProductDTO)
 
     fun clearDraft()
+
+    fun changeIsFavorite(guid: String, isFavorite: Boolean): ProductDTO?
 }

@@ -53,4 +53,20 @@ class PDPViewModel(private val interactor: ProductDetailUseCase) : BaseViewModel
             }
         }
     }
+
+    fun changeIsFavorite(guid: String, isFavorite: Boolean) {
+        viewModelScope.safeLaunch(Dispatchers.Main) {
+            when (val product = interactor.changeIsFavorite(guid, isFavorite)) {
+                is DomainWrapper.Success -> {
+                    _productLD.value =
+                        UiState.Success(product.value)
+                }
+                is DomainWrapper.Error -> {
+                    _productLD.value =
+                        UiState.Error(product.throwable)
+                    _action.emit(Action.ShowToast(R.string.loading_error))
+                }
+            }
+        }
+    }
 }

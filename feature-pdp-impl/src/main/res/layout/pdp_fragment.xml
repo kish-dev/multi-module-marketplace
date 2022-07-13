@@ -33,9 +33,26 @@
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/favoriteIV"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/productImageRV"
                 tools:text="Яблоки" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/favoriteIV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginEnd="16dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:src="@drawable/ic_not_favorite"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toEndOf="@+id/nameTV"
+                app:layout_constraintTop_toTopOf="@+id/nameTV" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/priceTV"
@@ -62,10 +79,10 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/availableCountTV"
-                android:layout_width="wrap_content"
                 style="@style/UsualText.SubText"
-                android:layout_margin="16dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="16dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/priceTV" />
 

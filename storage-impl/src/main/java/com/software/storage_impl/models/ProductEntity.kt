@@ -10,7 +10,7 @@ data class ProductEntity(
     val price: String,
     val description: String,
     val rating: Double,
-    val isFavorite: Boolean,
+    var isFavorite: Boolean,
     var isInCart: Boolean,
     val images: List<String>,
     val weight: Double?,

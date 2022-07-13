@@ -136,6 +136,19 @@ class PDPFragment : BaseFragment() {
                     }
                 )
 
+                when(isFavorite) {
+                    true -> {
+                        favoriteIV.setImageResource(R.drawable.ic_favorite)
+                    }
+                    false -> {
+                        favoriteIV.setImageResource(R.drawable.ic_not_favorite)
+                    }
+                }
+
+                favoriteIV.setOnClickListener {
+                    viewModel.changeIsFavorite(guid, !isFavorite)
+                }
+
                 when (description.isNotBlank()) {
                     true -> {
                         descriptionTV.text = description

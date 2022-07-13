@@ -30,10 +30,6 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
         private const val DRAFT = "${BuildConfig.LIBRARY_PACKAGE_NAME}.draft"
     }
 
-//    init {
-//        spProducts.edit().remove(PRODUCTS).apply()
-//        spProductInList.edit().remove(PRODUCTS_IN_LIST).apply()
-//    }
 
     private val spProducts: SharedPreferences
         get() = appContext.getSharedPreferences(PRODUCTS_SP, 0)
@@ -172,6 +168,29 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
     override fun changeProductCount(guid: String, countDiff: Int): ProductDTO? {
         changeCount(guid, countDiff)
         return listEntityProducts?.findLast { it.guid == guid }?.mapToDTO()
+    }
+
+    private fun changeProductIsFavorite(guid: String, isFavorite: Boolean) {
+        val listProducts = listEntityProducts
+        listProducts?.findLast { it.guid == guid }?.let {
+            it.isFavorite = isFavorite
+        }
+        val listProductsInList = listEntityProductsInList
+        listProductsInList?.findLast { it.guid == guid }?.let {
+            it.isFavorite = isFavorite
+        }
+
+        val jsonResult = JSONConverterProductsEntity(gson).fromProductsListEntity(listProducts)
+        spProducts.edit().putString(PRODUCTS, jsonResult).apply()
+
+        val jsonResultInList = JSONConverterProductsInListEntity(gson).fromProductInListEntityList(listProductsInList)
+        spProductInList.edit().putString(PRODUCTS_IN_LIST, jsonResultInList).apply()
+    }
+
+    override fun changeIsFavorite(guid: String, isFavorite: Boolean): ProductDTO? {
+        changeProductIsFavorite(guid, isFavorite)
+        val ret = listEntityProducts?.findLast { it.guid == guid }?.mapToDTO()
+        return ret
     }
 
     override fun getLastSavedDraft(): ProductDTO? {
