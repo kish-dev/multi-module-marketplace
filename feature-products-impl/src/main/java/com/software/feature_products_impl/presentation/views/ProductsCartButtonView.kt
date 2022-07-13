@@ -54,6 +54,11 @@ class ProductsCartButtonView @JvmOverloads constructor(
 
     }
 
+    fun stopLoading() {
+        progressBar?.isVisible = false
+        titleText?.isVisible = true
+    }
+
     private fun addToCart() {
         progressBar?.isVisible = false
         cardView?.setCardBackgroundColor(context.getColor(com.software.core_utils.R.color.purple_200))

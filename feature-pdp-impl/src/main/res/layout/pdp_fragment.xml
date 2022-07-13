@@ -5,6 +5,7 @@
     android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/gray_background"
     tools:context="presentation.views.PDPFragment">
 
     <androidx.core.widget.NestedScrollView
@@ -47,7 +48,37 @@
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/nameTV"
-                tools:text="15P" />
+                tools:text="15" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/roubleIV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:src="@drawable/ic_rouble"
+                app:layout_constraintBottom_toBottomOf="@+id/priceTV"
+                app:layout_constraintStart_toEndOf="@+id/priceTV"
+                app:layout_constraintTop_toTopOf="@+id/priceTV" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/availableCountTV"
+                android:layout_width="wrap_content"
+                style="@style/UsualText.SubText"
+                android:layout_margin="16dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/priceTV" />
+
+            <com.software.feature_pdp_impl.presentation.views.PDPCartCountButtonView
+                android:id="@+id/cartCountView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                app:layout_constraintBottom_toTopOf="@+id/descriptionCV"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@+id/ratingView"
+                app:layout_constraintTop_toBottomOf="@+id/availableCountTV" />
 
             <androidx.appcompat.widget.AppCompatRatingBar
                 android:id="@+id/ratingView"
@@ -59,22 +90,87 @@
                 android:layout_marginTop="8dp"
                 android:isIndicator="true"
                 android:rating="3"
-                app:layout_constraintEnd_toStartOf="@+id/cartCountView"
                 app:layout_constraintBottom_toBottomOf="@+id/cartCountView"
+                app:layout_constraintEnd_toStartOf="@+id/cartCountView"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/cartCountView" />
 
-            <com.software.feature_pdp_impl.presentation.views.PDPCartCountButtonView
-                android:id="@+id/cartCountView"
-                android:layout_width="wrap_content"
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/descriptionCV"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/priceTV"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardElevation="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/characteristicsCV"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toEndOf="@+id/ratingView" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cartCountView">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/descriptionTitleTV"
+                        style="@style/UsualText.Bold.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/description_title" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/descriptionTV"
+                        style="@style/UsualText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_margin="16dp"
+                        tools:text="some description" />
+
+                </LinearLayout>
+
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/characteristicsCV"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardElevation="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/descriptionCV">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/characteristicsTitleTV"
+                        style="@style/UsualText.Bold.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/characteristics_title" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/characteristicsRV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

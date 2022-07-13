@@ -6,6 +6,11 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="UsualText.SubText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="UsualText.Bold">
         <item name="android:textStyle">bold</item>
     </style>
@@ -25,6 +30,10 @@
     <style name="UsualCardView.Purple">
         <item name="android:textColor">@color/white</item>
         <item name="cardBackgroundColor">@color/purple_200</item>
+    </style>
+
+    <style name="UsualCardView.White">
+        <item name="cardBackgroundColor">@color/white</item>
     </style>
 
     <style name="UsualCardView.Gray">

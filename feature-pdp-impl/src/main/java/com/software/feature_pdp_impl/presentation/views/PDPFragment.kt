@@ -1,24 +1,27 @@
 package com.software.feature_pdp_impl.presentation.views
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.SnapHelper
+import com.software.core_utils.R
 import com.software.core_utils.presentation.adapters.ProductImageAdapter
 import com.software.core_utils.presentation.common.UiState
 import com.software.core_utils.presentation.fragments.BaseFragment
 import com.software.core_utils.presentation.view_models.viewModelCreator
 import com.software.core_utils.presentation.view_objects.ProductVO
 import com.software.feature_pdp_api.PDPNavigationApi
-import com.software.core_utils.R
 import com.software.feature_pdp_impl.databinding.PdpFragmentBinding
 import com.software.feature_pdp_impl.di.components.PDPFeatureComponent
 import com.software.feature_pdp_impl.domain.interactors.ProductDetailUseCase
+import com.software.feature_pdp_impl.presentation.adapters.CharacteristicsAdapter
 import com.software.feature_pdp_impl.presentation.view_models.PDPViewModel
 import javax.inject.Inject
 
@@ -43,6 +46,10 @@ class PDPFragment : BaseFragment() {
 
     private val productImageAdapter: ProductImageAdapter by lazy {
         ProductImageAdapter()
+    }
+
+    private val characteristicsAdapter: CharacteristicsAdapter by lazy {
+        CharacteristicsAdapter()
     }
 
     private val snapHelper: SnapHelper by lazy {
@@ -111,6 +118,7 @@ class PDPFragment : BaseFragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initProduct(product: ProductVO?) {
         product?.apply {
             with(binding) {
@@ -128,7 +136,26 @@ class PDPFragment : BaseFragment() {
                     }
                 )
 
+                when (description.isNotBlank()) {
+                    true -> {
+                        descriptionTV.text = description
+                    }
+
+                    else -> {
+                        descriptionCV.isVisible = false
+                    }
+                }
+
+                availableCountTV.text = "${getString(R.string.available_count)}: $availableCount"
+
                 cartCountView.setCartCountState(count, price)
+
+                val characteristics = additionalParams.toList().toMutableList()
+                when (weight) {
+                    null -> {}
+                    else -> characteristics.add(getString(R.string.weight) to weight.toString())
+                }
+                characteristicsAdapter.submitList(characteristics)
             }
         }
     }
@@ -146,7 +173,11 @@ class PDPFragment : BaseFragment() {
                 productId?.let { viewModel.getProduct(productId!!) }
             }
 
-
+            characteristicsRV.apply {
+                adapter = characteristicsAdapter
+                layoutManager =
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            }
         }
     }
 

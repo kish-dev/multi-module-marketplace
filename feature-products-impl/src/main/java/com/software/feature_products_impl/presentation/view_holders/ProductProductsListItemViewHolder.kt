@@ -91,6 +91,10 @@ class ProductProductsListItemViewHolder(
         productsCartButtonView?.setCartState(item.isInCart)
     }
 
+    fun cancelCartLoading() {
+        productsCartButtonView?.stopLoading()
+    }
+
     fun bindIsInCartState(item: ProductsListItem.ProductInListVO) {
         productsCartButtonView?.setCartState(item.isInCart)
     }

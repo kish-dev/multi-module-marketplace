@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.software.core_utils.presentation.common.UiState
@@ -21,6 +22,10 @@ import com.software.feature_products_impl.presentation.adapters.ProductsAndTitle
 import com.software.feature_products_impl.presentation.view_holders.ProductProductsListItemViewHolder
 import com.software.feature_products_impl.presentation.view_holders.ViewHolderFactory
 import com.software.feature_products_impl.presentation.view_models.ProductsViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class ProductsFragment : BaseFragment() {
@@ -70,6 +75,12 @@ class ProductsFragment : BaseFragment() {
                     inCart: Boolean
                 ) {
                     viewModel.updateProductCartState(productId, inCart)
+                    lifecycleScope.launch(Dispatchers.Default) {
+                        delay(500)
+                        withContext(Dispatchers.Main) {
+                            holder.cancelCartLoading()
+                        }
+                    }
                 }
             },
             ViewHolderFactory(),

@@ -71,10 +71,7 @@ class ProductsRepositoryImpl @Inject constructor(
             }
 
             else -> {
-                when (updatedProductInListDTO.isInCart == inCart) {
-                    true -> ServerResponse.Success(updatedProductInListDTO)
-                    false -> ServerResponse.Error(RuntimeException("Cache is null after update"))
-                }
+                ServerResponse.Success(updatedProductInListDTO)
             }
         }
 

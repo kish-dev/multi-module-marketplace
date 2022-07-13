@@ -30,11 +30,16 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
         private const val DRAFT = "${BuildConfig.LIBRARY_PACKAGE_NAME}.draft"
     }
 
+//    init {
+//        spProducts.edit().remove(PRODUCTS).apply()
+//        spProductInList.edit().remove(PRODUCTS_IN_LIST).apply()
+//    }
+
     private val spProducts: SharedPreferences
         get() = appContext.getSharedPreferences(PRODUCTS_SP, 0)
 
 
-    private val spProductInListEntity: SharedPreferences
+    private val spProductInList: SharedPreferences
         get() = appContext.getSharedPreferences(PRODUCTS_IN_LIST_SP, 0)
 
 
@@ -44,7 +49,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
 
     private val listEntityProductsInList: MutableList<ProductInListEntity>?
         get() {
-            val jsonList = spProductInListEntity.getString(PRODUCTS_IN_LIST, "")
+            val jsonList = spProductInList.getString(PRODUCTS_IN_LIST, "")
             var listEntity: MutableList<ProductInListEntity>? = null
             jsonList?.let {
                 listEntity = JSONConverterProductsInListEntity(gson)
@@ -89,7 +94,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
                 listEntity = listEntityProductsInList
             )
         )
-        spProductInListEntity.edit().putString(PRODUCTS_IN_LIST, result).apply()
+        spProductInList.edit().putString(PRODUCTS_IN_LIST, result).apply()
     }
 
     override fun insertProductInListDTO(productInListDTO: ProductInListDTO): Boolean {
@@ -100,7 +105,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
                 listEntity = prevListEntity
             )
         val jsonResult = JSONConverterProductsInListEntity(gson).fromProductInListEntityList(result)
-        spProductInListEntity.edit().putString(PRODUCTS_IN_LIST, jsonResult).apply()
+        spProductInList.edit().putString(PRODUCTS_IN_LIST, jsonResult).apply()
         return result.size > (prevListEntity?.size ?: 0)
     }
 
@@ -140,7 +145,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
         prevListEntity?.let {
             val newJsonList =
                 JSONConverterProductsInListEntity(gson).fromProductInListEntityList(it)
-            spProductInListEntity.edit().putString(PRODUCTS_IN_LIST, newJsonList).apply()
+            spProductInList.edit().putString(PRODUCTS_IN_LIST, newJsonList).apply()
         }
         return prevListEntity?.findLast { it.guid == guid }?.mapToDTO()
     }
@@ -194,7 +199,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
                             true -> {
                                 prevListProductsEntity?.findLast { it.guid == guid }?.let {
                                     it.count?.let { count ->
-                                        if(count + countDiff <= 1000) {
+                                        if(count + countDiff <= 1000 && it.availableCount != null && count + countDiff <= it.availableCount) {
                                             it.count = it.count?.plus(countDiff)
                                         }
                                     }
@@ -202,10 +207,13 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
                                 }
                             }
                             false -> {
-                                productInListEntity.isInCart = true
                                 prevListProductsEntity?.findLast { it.guid == guid }?.let {
-                                    it.isInCart = true
-                                    it.count = countDiff
+                                    val count = it.count ?: 0
+                                    if(it.availableCount != null && (count + countDiff) <= it.availableCount) {
+                                        productInListEntity.isInCart = true
+                                        it.isInCart = true
+                                        it.count = countDiff
+                                    }
                                 }
                             }
                         }
@@ -238,8 +246,8 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
                                     }
                             }
                             false -> {
-                                productInListEntity.isInCart = false
                                 prevListProductsEntity?.findLast { it.guid == guid }?.let {
+                                    productInListEntity.isInCart = false
                                     it.isInCart = false
                                     it.count = null
                                 }
@@ -256,7 +264,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
         prevListProductsInListEntity?.let {
             val newJsonList =
                 JSONConverterProductsInListEntity(gson).fromProductInListEntityList(it)
-            spProductInListEntity.edit().putString(PRODUCTS_IN_LIST, newJsonList).apply()
+            spProductInList.edit().putString(PRODUCTS_IN_LIST, newJsonList).apply()
         }
 
         prevListProductsEntity?.let {

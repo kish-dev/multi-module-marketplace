@@ -20,5 +20,9 @@
     <string name="restore_dialog_title">Do you want to restore draft?</string>
     <string name="dialog_positive_button">Yes, I do</string>
     <string name="dialog_negative_button">No, I don\'t</string>
+    <string name="description_title">Description</string>
+    <string name="characteristics_title">Characteristics</string>
+    <string name="weight">Weight</string>
+    <string name="available_count">Available</string>
 
 </resources>
