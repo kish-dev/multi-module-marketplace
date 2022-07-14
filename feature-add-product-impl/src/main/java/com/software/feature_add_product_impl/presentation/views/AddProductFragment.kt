@@ -148,8 +148,6 @@ class AddProductFragment : BaseFragment() {
             }
         }
 
-
-
         viewModel.addProductState.observe(viewLifecycleOwner) {
             when (it) {
                 is UiState.Loading -> {

@@ -12,8 +12,9 @@ import com.software.core_utils.presentation.view_models.BaseViewModel
 import com.software.core_utils.presentation.view_objects.ProductVO
 import com.software.feature_add_product_impl.domain.interactors.AddProductUseCase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 
 class AddProductViewModel(
     private val interactor: AddProductUseCase,
@@ -30,7 +31,9 @@ class AddProductViewModel(
     var onConfigurationState: LiveData<UiState<ProductVO>> = _onConfigurationState
 
 
-    private val _restoreState: MutableSharedFlow<UiState<ProductVO>> = MutableSharedFlow()
+    private val _restoreState: MutableStateFlow<UiState<ProductVO>> = MutableStateFlow(
+        UiState.Init()
+    )
     var restoreState: SharedFlow<UiState<ProductVO>> = _restoreState
 
 
