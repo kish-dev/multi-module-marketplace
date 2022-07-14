@@ -158,7 +158,17 @@ class PDPFragment : BaseFragment() {
                     }
                 }
 
-                availableCountTV.text = "${getString(R.string.available_count)}: $availableCount"
+
+                when(availableCount) {
+                    null -> {
+                        availableCountTV.text = "${getString(R.string.available_count)}: 0"
+                    }
+
+                    else -> {
+                        availableCountTV.text = "Available: $availableCount"
+                    }
+                }
+
 
                 cartCountView.setCartCountState(count, price)
 

@@ -1,5 +1,6 @@
 package com.software.core_utils.presentation.view_objects
 
+import androidx.core.text.isDigitsOnly
 import java.util.*
 
 data class ProductVO(
@@ -26,8 +27,16 @@ fun createProduct(
     description: String,
     images: List<String>,
     price: String,
-    rating: Double
+    rating: Double,
+    availableCount: String,
 ): ProductVO {
+
+    val count = if(availableCount.isNotBlank() && availableCount.isDigitsOnly()) {
+        availableCount.toInt()
+    } else {
+        0
+    }
+
     return ProductVO(
         guid = UUID.randomUUID().toString(),
         name = name,
@@ -39,7 +48,7 @@ fun createProduct(
         images = images,
         weight = null,
         count = null,
-        availableCount = null,
+        availableCount = count,
         additionalParams = mapOf()
     )
 }

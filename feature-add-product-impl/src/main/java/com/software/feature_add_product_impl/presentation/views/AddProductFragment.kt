@@ -84,7 +84,26 @@ class AddProductFragment : BaseFragment() {
             .show()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.onConfigurationState.observe(viewLifecycleOwner) {
+            when(it) {
+                is UiState.Success -> {
+                    fillViews(it.value)
+                }
+                else -> {
+                }
+            }
+        }
+    }
+
     override fun onPause() {
+        if (isRemoving) {
+            if (addProductNavigationApi.isClosed(this)) {
+                AddProductFeatureComponent.reset()
+            }
+        }
+        super.onPause()
         with(binding) {
             viewModel.saveOnConfigurationState(
                 createProduct(
@@ -92,17 +111,11 @@ class AddProductFragment : BaseFragment() {
                     description = descriptionEditText.text!!.toString(),
                     price = priceEditText.text!!.toString(),
                     images = imageLinkAdapter.currentList.map { it.imageLink },
-                    rating = ratingBar.rating.toDouble()
+                    rating = ratingBar.rating.toDouble(),
+                    availableCount = availableCountEditText.text?.toString() ?: "",
                 )
             )
         }
-
-        if (isRemoving) {
-            if (addProductNavigationApi.isClosed(this)) {
-                AddProductFeatureComponent.reset()
-            }
-        }
-        super.onPause()
     }
 
     private fun initObservers() {
@@ -135,15 +148,7 @@ class AddProductFragment : BaseFragment() {
             }
         }
 
-        viewModel.onConfigurationState.observe(viewLifecycleOwner) {
-            when(it) {
-                is UiState.Success -> {
-                    fillViews(it.value)
-                }
-                else -> {
-                }
-            }
-        }
+
 
         viewModel.addProductState.observe(viewLifecycleOwner) {
             when (it) {
@@ -173,6 +178,7 @@ class AddProductFragment : BaseFragment() {
             nameEditText.setText(product.name)
             priceEditText.setText(product.price)
             descriptionEditText.setText(product.description)
+            availableCountEditText.setText(product.availableCount?.toString() ?: "")
 
             val imagesStringBuilder = StringBuilder()
             product.images.forEach {
@@ -196,11 +202,12 @@ class AddProductFragment : BaseFragment() {
                     with(binding) {
                         viewModel.addChangedProduct(
                             createProduct(
-                                name = nameEditText.text!!.toString(),
-                                description = descriptionEditText.text!!.toString(),
-                                price = priceEditText.text!!.toString(),
+                                name = nameEditText.text?.toString() ?: "",
+                                description = descriptionEditText.text?.toString() ?: "",
+                                price = priceEditText.text?.toString() ?: "",
                                 images = imageLinkAdapter.currentList.map { it.imageLink },
-                                rating = ratingBar.rating.toDouble()
+                                rating = ratingBar.rating.toDouble(),
+                                availableCount = availableCountEditText.text?.toString() ?: ""
                             )
                         )
                     }
@@ -225,11 +232,12 @@ class AddProductFragment : BaseFragment() {
             addProductButton.setOnClickListener {
                 if (isValid()) {
                     val product = createProduct(
-                        name = nameEditText.text!!.toString(),
-                        description = descriptionEditText.text!!.toString(),
-                        price = priceEditText.text!!.toString(),
+                        name = nameEditText.text?.toString() ?: "",
+                        description = descriptionEditText.text?.toString() ?: "",
+                        price = priceEditText.text?.toString() ?: "",
                         images = imageLinkAdapter.currentList.map { it.imageLink },
-                        rating = ratingBar.rating.toDouble()
+                        rating = ratingBar.rating.toDouble(),
+                        availableCount = availableCountEditText.text?.toString() ?: ""
                     )
                     viewModel.addProduct(product)
                 } else {
@@ -254,7 +262,8 @@ class AddProductFragment : BaseFragment() {
                 priceEditText.text?.isNotBlank() == true &&
                 descriptionEditText.text?.isNotBlank() == true &&
                 imageLinkAdapter.currentList.isNotEmpty() &&
-                ratingBar.rating.isFinite()
+                ratingBar.rating.isFinite() &&
+                availableCountEditText.text?.isNotBlank() == true
             ) {
                 isValid = true
             }

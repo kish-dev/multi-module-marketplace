@@ -254,7 +254,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
                                                         productEntity.count = it + countDiff
                                                     }
                                                 } else {
-                                                    productEntity.count = null
+                                                    productEntity.count = 0
                                                     productInListEntity.isInCart = false
                                                     productEntity.isInCart = false
                                                 }

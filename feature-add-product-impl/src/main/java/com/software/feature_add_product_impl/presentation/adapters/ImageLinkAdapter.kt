@@ -2,6 +2,7 @@ package com.software.feature_add_product_impl.presentation.adapters
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -17,6 +18,8 @@ class ImageLinkAdapter : ListAdapter<ImageLinkVO, ImageLinkViewHolder>(
     ) {
 
     companion object {
+        private val TAG = ImageLinkAdapter::class.java.simpleName
+
         const val PAYLOAD_STRING_CHANGED = "payload_string_changed"
     }
 
@@ -49,14 +52,14 @@ class ImageLinkAdapter : ListAdapter<ImageLinkVO, ImageLinkViewHolder>(
             when (payloads[0]) {
                 PAYLOAD_STRING_CHANGED -> {
                     holder.bind(getItem(position))
-                    holder.textChangeListener.updatePosition(position)
+                    holder.textChangeListener.updateHolder(holder)
                 }
             }
         }
     }
 
     override fun onBindViewHolder(holder: ImageLinkViewHolder, position: Int) {
-        holder.textChangeListener.updatePosition(position)
+        holder.textChangeListener.updateHolder(holder)
         holder.bind(getItem(position))
     }
 
@@ -81,20 +84,25 @@ class ImageLinkAdapter : ListAdapter<ImageLinkVO, ImageLinkViewHolder>(
     }
 
     inner class RecyclerTextWatcher : TextWatcher {
-        private var position = 0
+        private var holder: ImageLinkViewHolder? = null
 
-        fun updatePosition(position: Int) {
-            this.position = position
+        fun updateHolder(holder: ImageLinkViewHolder) {
+            this.holder = holder
         }
 
         override fun beforeTextChanged(charSequence: CharSequence, i: Int, i2: Int, i3: Int) {
         }
 
         override fun onTextChanged(charSequence: CharSequence, i: Int, i2: Int, i3: Int) {
-            val pos = position
-            val list: MutableList<ImageLinkVO> = currentList.toMutableList()
-            list[pos].imageLink = charSequence.toString()
-            submitList(list)
+            val pos = holder?.layoutPosition ?: 0
+            try {
+                val list: MutableList<ImageLinkVO> = currentList.toMutableList()
+                list[pos].imageLink = charSequence.toString()
+                submitList(list)
+            } catch (e: Exception) {
+                Log.d(TAG, "onTextChanged Exception: ${e.printStackTrace()}")
+            }
+
         }
 
         override fun afterTextChanged(editable: Editable) {
