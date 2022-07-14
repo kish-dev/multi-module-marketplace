@@ -33,7 +33,9 @@ fun CoroutineScope.safeLaunch(
 
 fun View.setDebounceClickListener(
     delayInMillis: Long = 500,
-    coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main.immediate),
+    coroutineScope: CoroutineScope = CoroutineScope(
+        Dispatchers.Main.immediate
+    ),
     onClick: () -> Unit
 ) {
     var job: Job? = null
