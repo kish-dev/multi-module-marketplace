@@ -26,11 +26,14 @@ class PDPInteractorImpl @Inject constructor(
             }
         }
 
-    override suspend fun changeCount(guid: String, countDiff: Int): DomainWrapper<ProductVO> =
+    override suspend fun changeCount(guid: String, countDiff: Int, count: Int): DomainWrapper<ProductVO> =
         withContext(dispatcher) {
             when (val response = pdpRepository.changeCount(guid, countDiff)) {
                 is ServerResponse.Success -> {
-                    DomainWrapper.Success(response.value.mapToVO())
+                    when(response.value.count == count + countDiff) {
+                        true -> DomainWrapper.Success(response.value.mapToVO())
+                        false -> DomainWrapper.Error(Exception("Count not changed"))
+                    }
                 }
 
                 is ServerResponse.Error -> {

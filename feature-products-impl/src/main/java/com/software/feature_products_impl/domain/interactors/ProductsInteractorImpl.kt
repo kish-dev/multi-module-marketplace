@@ -89,7 +89,10 @@ class ProductsInteractorImpl(
         withContext(dispatcher) {
             when (val product = productsRepository.updateProductCartState(guid, inCart)) {
                 is ServerResponse.Success -> {
-                    DomainWrapper.Success(product.value.mapToVO())
+                    when(product.value.isInCart == inCart) {
+                        true -> DomainWrapper.Success(product.value.mapToVO())
+                        false -> DomainWrapper.Error(Exception("Product cart state is not updated"))
+                    }
                 }
 
                 is ServerResponse.Error -> {

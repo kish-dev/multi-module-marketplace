@@ -38,9 +38,9 @@ class PDPViewModel(private val interactor: ProductDetailUseCase) : BaseViewModel
         }
     }
 
-    fun changeCount(productId: String, countDiff: Int) {
+    fun changeCount(productId: String, countDiff: Int, count: Int = 0) {
         viewModelScope.safeLaunch(Dispatchers.Main) {
-            when (val product = interactor.changeCount(productId, countDiff)) {
+            when (val product = interactor.changeCount(productId, countDiff, count)) {
                 is DomainWrapper.Success -> {
                     _productLD.value =
                         UiState.Success(product.value)
@@ -48,7 +48,7 @@ class PDPViewModel(private val interactor: ProductDetailUseCase) : BaseViewModel
                 is DomainWrapper.Error -> {
                     _productLD.value =
                         UiState.Error(product.throwable)
-                    _action.emit(Action.ShowToast(R.string.loading_error))
+                    _action.emit(Action.ShowToast(R.string.update_cart_state_error))
                 }
             }
         }

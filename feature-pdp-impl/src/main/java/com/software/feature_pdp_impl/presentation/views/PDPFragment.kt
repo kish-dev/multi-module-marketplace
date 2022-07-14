@@ -106,7 +106,6 @@ class PDPFragment : BaseFragment() {
 
                 is UiState.Error -> {
                     binding.swipeRefreshLayout.isRefreshing = false
-                    showToast(getString(R.string.loading_error))
                     Log.e(TAG, "UiState is Error because of ${it.throwable.message}")
                 }
 
@@ -129,10 +128,10 @@ class PDPFragment : BaseFragment() {
 
                 cartCountView.initListeners(
                     plusListener = {
-                        viewModel.changeCount(guid, 1)
+                        viewModel.changeCount(guid, 1, count ?: 0)
                     },
                     minusListener = {
-                        viewModel.changeCount(guid, -1)
+                        viewModel.changeCount(guid, -1,  count ?: 0)
                     }
                 )
 

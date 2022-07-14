@@ -22,5 +22,6 @@
     <string name="characteristics_title">Характеристики</string>
     <string name="weight">Вес</string>
     <string name="available_count">Доступно</string>
+    <string name="update_cart_state_error">Доступное количество равно количеству товаров в вашей корзине</string>
 
 </resources>

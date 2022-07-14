@@ -106,7 +106,7 @@ class ProductsViewModel(
                     updateUiState()
                 }
                 is DomainWrapper.Error -> {
-                    _action.emit(Action.ShowToast(R.string.loading_error))
+                    _action.emit(Action.ShowToast(R.string.update_cart_state_error))
                 }
             }
         }
