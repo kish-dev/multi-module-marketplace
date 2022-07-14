@@ -33,7 +33,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
         get() = appContext.getSharedPreferences(PRODUCTS_SP, 0)
 
 
-    private val spProductInList: SharedPreferences
+    private val spProductsInList: SharedPreferences
         get() = appContext.getSharedPreferences(PRODUCTS_IN_LIST_SP, 0)
 
 
@@ -43,7 +43,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
 
     private val listEntityProductsInList: MutableList<ProductInListEntity>?
         get() {
-            val jsonList = spProductInList.getString(PRODUCTS_IN_LIST, "")
+            val jsonList = spProductsInList.getString(PRODUCTS_IN_LIST, "")
             var listEntity: MutableList<ProductInListEntity>? = null
             jsonList?.let {
                 listEntity = JSONConverterProductsInListEntity(gson)
@@ -88,7 +88,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
                 listEntity = listEntityProductsInList
             )
         )
-        spProductInList.edit().putString(PRODUCTS_IN_LIST, result).apply()
+        spProductsInList.edit().putString(PRODUCTS_IN_LIST, result).apply()
     }
 
     override fun insertProductInListDTO(productInListDTO: ProductInListDTO): Boolean {
@@ -99,7 +99,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
                 listEntity = prevListEntity
             )
         val jsonResult = JSONConverterProductsInListEntity(gson).fromProductInListEntityList(result)
-        spProductInList.edit().putString(PRODUCTS_IN_LIST, jsonResult).apply()
+        spProductsInList.edit().putString(PRODUCTS_IN_LIST, jsonResult).apply()
         return result.size > (prevListEntity?.size ?: 0)
     }
 
@@ -139,7 +139,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
         prevListEntity?.let {
             val newJsonList =
                 JSONConverterProductsInListEntity(gson).fromProductInListEntityList(it)
-            spProductInList.edit().putString(PRODUCTS_IN_LIST, newJsonList).apply()
+            spProductsInList.edit().putString(PRODUCTS_IN_LIST, newJsonList).apply()
         }
         return prevListEntity?.findLast { it.guid == guid }?.mapToDTO()
     }
@@ -182,7 +182,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
         spProducts.edit().putString(PRODUCTS, jsonResult).apply()
 
         val jsonResultInList = JSONConverterProductsInListEntity(gson).fromProductInListEntityList(listProductsInList)
-        spProductInList.edit().putString(PRODUCTS_IN_LIST, jsonResultInList).apply()
+        spProductsInList.edit().putString(PRODUCTS_IN_LIST, jsonResultInList).apply()
     }
 
     override fun changeIsFavorite(guid: String, isFavorite: Boolean): ProductDTO? {
@@ -281,7 +281,7 @@ class SharedPreferencesApiImpl @Inject constructor(private val appContext: Conte
         prevListProductsInListEntity?.let {
             val newJsonList =
                 JSONConverterProductsInListEntity(gson).fromProductInListEntityList(it)
-            spProductInList.edit().putString(PRODUCTS_IN_LIST, newJsonList).apply()
+            spProductsInList.edit().putString(PRODUCTS_IN_LIST, newJsonList).apply()
         }
 
         prevListProductsEntity?.let {

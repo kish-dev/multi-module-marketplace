@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.software.core_utils.R
 import com.software.core_utils.presentation.common.UiState
@@ -21,10 +22,12 @@ import com.software.feature_add_product.AddProductNavigationApi
 import com.software.feature_add_product_impl.databinding.FragmentAddProductBinding
 import com.software.feature_add_product_impl.di.components.AddProductFeatureComponent
 import com.software.feature_add_product_impl.domain.interactors.AddProductUseCase
+import com.software.feature_add_product_impl.presentation.adapters.ImageLinkAdapter
 import com.software.feature_add_product_impl.presentation.view_models.AddProductViewModel
+import com.software.feature_add_product_impl.presentation.view_objects.ImageLinkVO
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 class AddProductFragment : BaseFragment() {
@@ -43,6 +46,10 @@ class AddProductFragment : BaseFragment() {
         AddProductViewModel(addProductInteractor)
     }
 
+    private val imageLinkAdapter: ImageLinkAdapter by lazy {
+        ImageLinkAdapter()
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         AddProductFeatureComponent.addProductFeatureComponent?.inject(this)
@@ -53,6 +60,7 @@ class AddProductFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAddProductBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 
@@ -68,6 +76,7 @@ class AddProductFragment : BaseFragment() {
             .setTitle(R.string.restore_dialog_title)
             .setPositiveButton(R.string.dialog_positive_button) { _, _ ->
                 fillViews(product)
+                showToast(getString(R.string.restore_product_success))
             }
             .setNegativeButton(R.string.dialog_negative_button) { _, _ ->
                 showToast(getString(R.string.restore_products_error))
@@ -76,6 +85,18 @@ class AddProductFragment : BaseFragment() {
     }
 
     override fun onPause() {
+        with(binding) {
+            viewModel.saveOnConfigurationState(
+                createProduct(
+                    name = nameEditText.text!!.toString(),
+                    description = descriptionEditText.text!!.toString(),
+                    price = priceEditText.text!!.toString(),
+                    images = imageLinkAdapter.currentList.map { it.imageLink },
+                    rating = ratingBar.rating.toDouble()
+                )
+            )
+        }
+
         if (isRemoving) {
             if (addProductNavigationApi.isClosed(this)) {
                 AddProductFeatureComponent.reset()
@@ -85,7 +106,7 @@ class AddProductFragment : BaseFragment() {
     }
 
     private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launch{
+        viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.restoreState.collect {
                     when (it) {
@@ -110,6 +131,16 @@ class AddProductFragment : BaseFragment() {
                             binding.swipeRefreshLayout.isRefreshing = false
                         }
                     }
+                }
+            }
+        }
+
+        viewModel.onConfigurationState.observe(viewLifecycleOwner) {
+            when(it) {
+                is UiState.Success -> {
+                    fillViews(it.value)
+                }
+                else -> {
                 }
             }
         }
@@ -148,10 +179,12 @@ class AddProductFragment : BaseFragment() {
                 imagesStringBuilder.append("$it ")
             }
 
-            imageLinkEditText.setText(imagesStringBuilder)
+            imageLinkAdapter.submitList(product.images.map {
+                ImageLinkVO(
+                    UUID.randomUUID().toString(), it
+                )
+            })
             ratingBar.rating = product.rating.toFloat()
-
-            showToast(getString(R.string.restore_product_success))
         }
     }
 
@@ -166,7 +199,7 @@ class AddProductFragment : BaseFragment() {
                                 name = nameEditText.text!!.toString(),
                                 description = descriptionEditText.text!!.toString(),
                                 price = priceEditText.text!!.toString(),
-                                image = imageLinkEditText.text!!.toString(),
+                                images = imageLinkAdapter.currentList.map { it.imageLink },
                                 rating = ratingBar.rating.toDouble()
                             )
                         )
@@ -178,13 +211,24 @@ class AddProductFragment : BaseFragment() {
 
     private fun initViews() {
         with(binding) {
+
+            imageLinkRecyclerView.apply {
+                adapter = imageLinkAdapter
+                layoutManager =
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            }
+
+            addImageLinkTextView.setOnClickListener {
+                imageLinkAdapter.addEmptyLink()
+            }
+
             addProductButton.setOnClickListener {
                 if (isValid()) {
                     val product = createProduct(
                         name = nameEditText.text!!.toString(),
                         description = descriptionEditText.text!!.toString(),
                         price = priceEditText.text!!.toString(),
-                        image = imageLinkEditText.text!!.toString(),
+                        images = imageLinkAdapter.currentList.map { it.imageLink },
                         rating = ratingBar.rating.toDouble()
                     )
                     viewModel.addProduct(product)
@@ -209,7 +253,7 @@ class AddProductFragment : BaseFragment() {
             if (nameEditText.text?.isNotBlank() == true &&
                 priceEditText.text?.isNotBlank() == true &&
                 descriptionEditText.text?.isNotBlank() == true &&
-                imageLinkEditText.text?.isNotBlank() == true &&
+                imageLinkAdapter.currentList.isNotEmpty() &&
                 ratingBar.rating.isFinite()
             ) {
                 isValid = true

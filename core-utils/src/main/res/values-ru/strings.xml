@@ -23,5 +23,6 @@
     <string name="weight">Вес</string>
     <string name="available_count">Доступно</string>
     <string name="update_cart_state_error">Доступное количество равно количеству товаров в вашей корзине</string>
+    <string name="add_product_image_link">Добавить ссылку на картинку</string>
 
 </resources>

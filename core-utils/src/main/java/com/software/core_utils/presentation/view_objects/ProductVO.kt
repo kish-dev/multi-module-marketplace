@@ -24,14 +24,10 @@ fun ProductVO.isNotBlank(): Boolean {
 fun createProduct(
     name: String,
     description: String,
-    image: String,
+    images: List<String>,
     price: String,
     rating: Double
 ): ProductVO {
-    val images = when {
-        image.isNotBlank() -> listOf(image)
-        else -> listOf()
-    }
     return ProductVO(
         guid = UUID.randomUUID().toString(),
         name = name,

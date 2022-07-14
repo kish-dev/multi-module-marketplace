@@ -25,5 +25,7 @@
     <string name="weight">Weight</string>
     <string name="available_count">Available</string>
     <string name="update_cart_state_error">Available count equal to count product in your cart</string>
+    <string name="add_product_image_link">Add image link</string>
+
 
 </resources>

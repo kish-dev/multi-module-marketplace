@@ -24,6 +24,11 @@ class AddProductViewModel(
     )
     var addProductState: LiveData<UiState<Boolean>> = _addProductState
 
+    private val _onConfigurationState: MutableLiveData<UiState<ProductVO>> = MutableLiveData(
+        UiState.Init()
+    )
+    var onConfigurationState: LiveData<UiState<ProductVO>> = _onConfigurationState
+
 
     private val _restoreState: MutableSharedFlow<UiState<ProductVO>> = MutableSharedFlow()
     var restoreState: SharedFlow<UiState<ProductVO>> = _restoreState
@@ -49,6 +54,10 @@ class AddProductViewModel(
                 }
             }
         }
+    }
+
+    fun saveOnConfigurationState(productVO: ProductVO) {
+        _onConfigurationState.value = UiState.Success(productVO)
     }
 
     private fun restoreProduct() {

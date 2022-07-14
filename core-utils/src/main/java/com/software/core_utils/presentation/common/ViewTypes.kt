@@ -5,4 +5,5 @@ object ViewTypes {
     const val TITLE = 1
     const val IMAGES = 2
     const val CHARACTERISTICS = 3
+    const val IMAGE_LINK = 4
 }
