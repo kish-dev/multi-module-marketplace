@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/materialCardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginTop="16dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/productIV"
+            android:layout_width="84dp"
+            android:layout_height="84dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/nameTV"
+            style="@style/UsualText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:maxLines="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/productIV"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Яблоки" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/priceTV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:maxLines="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/productIV"
+            app:layout_constraintTop_toBottomOf="@id/nameTV"
+            tools:text="15P" />
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/ratingView"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:isIndicator="true"
+            android:rating="3"
+            app:layout_constraintBottom_toTopOf="@id/productsCartButton"
+            app:layout_constraintStart_toEndOf="@id/productIV"
+            app:layout_constraintTop_toBottomOf="@id/priceTV" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/eyeIV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_eye"
+            android:tint="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/ratingView"
+            app:layout_constraintStart_toEndOf="@+id/ratingView"
+            app:layout_constraintTop_toTopOf="@+id/ratingView" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/viewsCountTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/eyeIV"
+            app:layout_constraintStart_toEndOf="@+id/eyeIV"
+            app:layout_constraintTop_toTopOf="@+id/eyeIV"
+            tools:text="16" />
+
+        <com.software.feature_products_impl.presentation.views.ProductsCartButtonView
+            android:id="@+id/productsCartButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/productIV" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

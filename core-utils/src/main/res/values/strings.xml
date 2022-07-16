@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Homework-2</string>
+    <string name="add_product_name">Product name</string>
+    <string name="add_description">Description</string>
+    <string name="add_image_link">Image link</string>
+    <string name="add_price">Price</string>
+    <string name="add_product">Add product</string>
+    <string name="loading_error">Loading error</string>
+    <string name="add_product_success">Product added successfully</string>
+    <string name="fill_all_strokes">Fill all strokes</string>
+    <string name="shared_preferences" translatable="false">SharedPreferences</string>
+    <string name="add_to_a_cart">Add to a cart</string>
+    <string name="in_the_cart">In the cart</string>
+    <string name="cheap_products">Cheap products:</string>
+    <string name="expensive_products">Expensive products:</string>
+    <string name="add_product_error">Product is not added</string>
+    <string name="restore_product_success">State has been restored</string>
+    <string name="restore_products_error">State hasn\'t been restored</string>
+    <string name="restore_dialog_title">Do you want to restore draft?</string>
+    <string name="dialog_positive_button">Yes, I do</string>
+    <string name="dialog_negative_button">No, I don\'t</string>
+    <string name="description_title">Description</string>
+    <string name="characteristics_title">Characteristics</string>
+    <string name="weight">Weight</string>
+    <string name="available_count">Available</string>
+    <string name="update_cart_state_error">Available count equal to count product in your cart</string>
+    <string name="add_product_image_link">Add image link</string>
+
+
+</resources>
