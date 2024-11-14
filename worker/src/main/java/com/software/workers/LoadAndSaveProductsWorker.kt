@@ -6,6 +6,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.software.feature_api.NetworkApi
 import com.software.feature_api.wrappers.ServerResponse
+import com.software.feature_api.wrappers.mapToProductDTO
 import com.software.storage_api.StorageApi
 import com.software.workers.di.WorkerComponent
 import javax.inject.Inject
@@ -35,7 +36,10 @@ class LoadAndSaveProductsWorker(
         Log.d(TAG, "doWork: startWork")
         return when (val response = networkApi.getProductsApi().getProducts()) {
             is ServerResponse.Success -> {
-                storageApi.getSharedPreferencesApi().insertProductsDTO(response.value)
+                val result = response.value.map {
+                    it.mapToProductDTO()
+                }
+                storageApi.getSharedPreferencesApi().insertProductsDTO(result)
                 Result.success()
             }
             is ServerResponse.Error -> {

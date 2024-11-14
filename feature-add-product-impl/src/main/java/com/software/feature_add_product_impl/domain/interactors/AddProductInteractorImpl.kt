@@ -66,7 +66,7 @@ class AddProductInteractorImpl(
             lastSavedDraft.name != productVO.name -> true
             lastSavedDraft.price != productVO.price -> true
             lastSavedDraft.description != productVO.description -> true
-            lastSavedDraft.images != productVO.images -> true
+            lastSavedDraft.images != (productVO.images.firstOrNull() ?: "") -> true
             lastSavedDraft.rating != productVO.rating -> true
             else -> false
         }

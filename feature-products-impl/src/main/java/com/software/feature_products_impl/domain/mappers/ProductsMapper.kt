@@ -7,7 +7,7 @@ import com.software.feature_products_impl.presentation.view_objects.ProductsList
 fun ProductInListDTO.mapToVO(): ProductsListItem.ProductInListVO {
     return ProductsListItem.ProductInListVO(
         guid,
-        image,
+        listOf(image),
         name,
         price,
         rating,
@@ -20,7 +20,7 @@ fun ProductInListDTO.mapToVO(): ProductsListItem.ProductInListVO {
 fun ProductsListItem.ProductInListVO.mapToDTO(): ProductInListDTO {
     return ProductInListDTO(
         guid,
-        images,
+        images.firstOrNull() ?: "",
         name,
         price,
         rating,

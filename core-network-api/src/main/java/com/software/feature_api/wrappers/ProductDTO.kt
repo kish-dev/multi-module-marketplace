@@ -8,11 +8,11 @@ data class ProductDTO(
     val rating: Double,
     val isFavorite: Boolean,
     val isInCart: Boolean,
-    val images: List<String>,
+    val images: String,
     val weight: Double?,
     val count: Int?,
     val availableCount: Int?,
-    val additionalParams: Map<String, String>
+    val additionalParams: Map<String, String>?
 )
 
 fun ProductDTO.mapToProductInListDTO(): ProductInListDTO {
@@ -25,5 +25,22 @@ fun ProductDTO.mapToProductInListDTO(): ProductInListDTO {
         isFavorite = isFavorite,
         isInCart = isInCart,
         viewsCount = 0,
+    )
+}
+
+fun ProductInListDTO.mapToProductDTO(): ProductDTO {
+    return ProductDTO(
+        guid = guid,
+        images = image,
+        name = name,
+        price = price,
+        rating = rating,
+        isFavorite = isFavorite,
+        isInCart = isInCart,
+        availableCount = 10,
+        additionalParams = emptyMap(),
+        weight = 10.0,
+        description = "",
+        count = 0,
     )
 }

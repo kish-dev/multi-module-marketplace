@@ -12,7 +12,7 @@ fun ProductVO.mapToDTO(): ProductDTO {
         rating,
         isFavorite,
         isInCart,
-        images,
+        images.firstOrNull() ?: "",
         weight,
         count,
         availableCount,
@@ -29,10 +29,10 @@ fun ProductDTO.mapToVO(): ProductVO {
         rating,
         isFavorite,
         isInCart,
-        images,
+        listOf(images),
         weight,
         count,
         availableCount,
-        additionalParams
+        additionalParams ?: emptyMap()
     )
 }

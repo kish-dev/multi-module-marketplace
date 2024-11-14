@@ -8,7 +8,7 @@ import com.software.storage_impl.models.ProductInListEntity
 fun ProductInListDTO.mapToEntity(views: Int, isInCart: Boolean): ProductInListEntity {
     return ProductInListEntity(
         guid,
-        image,
+        listOf(image),
         name,
         price,
         rating,
@@ -21,7 +21,7 @@ fun ProductInListDTO.mapToEntity(views: Int, isInCart: Boolean): ProductInListEn
 fun ProductInListEntity.mapToDTO(): ProductInListDTO {
     return ProductInListDTO(
         guid,
-        images,
+        images.firstOrNull() ?: "",
         name,
         price,
         rating,
@@ -40,11 +40,11 @@ fun ProductDTO.mapToEntity(isInCart: Boolean, count: Int? = null): ProductEntity
         rating,
         isFavorite,
         isInCart,
-        images,
+        listOf(images),
         weight,
         count,
         availableCount,
-        additionalParams
+        additionalParams ?: emptyMap()
     )
 }
 
@@ -57,7 +57,7 @@ fun ProductEntity.mapToDTO(): ProductDTO {
         rating,
         isFavorite,
         isInCart,
-        images,
+        images.firstOrNull() ?: "",
         weight,
         count,
         availableCount,
