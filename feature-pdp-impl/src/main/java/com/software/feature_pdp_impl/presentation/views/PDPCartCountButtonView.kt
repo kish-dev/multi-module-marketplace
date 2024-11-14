@@ -49,6 +49,7 @@ class PDPCartCountButtonView @JvmOverloads constructor(
         addToCart?.setOnClickListener { plusListener() }
     }
 
+    //TODO fix
     fun setCartCountState(count: Int?, price: String) {
         when(count) {
             null, 0 -> {
@@ -59,7 +60,7 @@ class PDPCartCountButtonView @JvmOverloads constructor(
             else -> {
                 addToCart?.isVisible = false
                 countTV?.text = count.toString()
-                resultPriceTV?.text = (price.toDouble() * count).toString()
+                resultPriceTV?.text = (price.toDouble() * (count * 2)).toString()
                 inCartCL?.isVisible = true
             }
         }

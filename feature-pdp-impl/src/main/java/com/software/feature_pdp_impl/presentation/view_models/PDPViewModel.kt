@@ -1,5 +1,7 @@
 package com.software.feature_pdp_impl.presentation.view_models
 
+import android.text.BoringLayout
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -21,14 +23,31 @@ class PDPViewModel(private val interactor: ProductDetailUseCase) : BaseViewModel
     var productLD: LiveData<UiState<ProductVO>> =
         _productLD
 
+    private fun randomizeIsFavorite(): Boolean {
+        val nextRandomDouble = Math.random()
+        Log.d("PDPViewModel", "nextRandomDouble=$nextRandomDouble")
+        return if (nextRandomDouble > 0.5) {
+            true
+        } else {
+            false
+        }
+    }
+
+    //TODO fix rating & like
     fun getProduct(productId: String) {
         viewModelScope.safeLaunch(Dispatchers.Main) {
             _productLD.value = UiState.Loading()
             when (val product = interactor.getProductById(productId)) {
                 is DomainWrapper.Success -> {
                     _productLD.value =
-                        UiState.Success(product.value)
+                        UiState.Success(
+                            product.value.copy(
+                                rating = 3.5,
+                                isFavorite = randomizeIsFavorite()
+                            )
+                        )
                 }
+
                 is DomainWrapper.Error -> {
                     _productLD.value =
                         UiState.Error(product.throwable)
@@ -45,6 +64,7 @@ class PDPViewModel(private val interactor: ProductDetailUseCase) : BaseViewModel
                     _productLD.value =
                         UiState.Success(product.value)
                 }
+
                 is DomainWrapper.Error -> {
                     _productLD.value =
                         UiState.Error(product.throwable)
@@ -61,6 +81,7 @@ class PDPViewModel(private val interactor: ProductDetailUseCase) : BaseViewModel
                     _productLD.value =
                         UiState.Success(product.value)
                 }
+
                 is DomainWrapper.Error -> {
                     _productLD.value =
                         UiState.Error(product.throwable)

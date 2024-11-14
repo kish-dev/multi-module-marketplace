@@ -10,6 +10,7 @@ import com.software.feature_products_impl.domain.mappers.mapToVO
 import com.software.feature_products_impl.domain.repositories.ProductsRepository
 import com.software.feature_products_impl.presentation.view_objects.ProductsListItem
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
@@ -69,11 +70,12 @@ class ProductsInteractorImpl(
         }
 
 
+    //TODO fix
     override suspend fun addViewToProductInList(guid: String): DomainWrapper<ProductsListItem.ProductInListVO> =
         withContext(dispatcher) {
-            when (val product = productsRepository.addViewToProductInList(guid)) {
+            when (val product = productsRepository.getProducts()) {
                 is ServerResponse.Success -> {
-                    DomainWrapper.Success(product.value.mapToVO())
+                    DomainWrapper.Success(product.value.first {it.guid == guid}.mapToVO())
                 }
 
                 is ServerResponse.Error -> {
