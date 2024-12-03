@@ -7,9 +7,9 @@ import retrofit2.http.GET
 
 interface ProductsApi {
 
-    @GET("ee6876a1-8c02-45aa-bde4-b91817a8b210")
+    @GET("9707da79-b769-4994-b2e9-6595a0557e74")
     suspend fun getProductsInList(): ServerResponse<List<ProductInListDTO>>
 
-    @GET("d1b4763b-a5ea-471f-83bf-796da466e3d8")
+    @GET("4a6504f2-f809-4775-b74b-38f8b06b52a5")
     suspend fun getProducts(): ServerResponse<List<ProductDTO>>
 }
