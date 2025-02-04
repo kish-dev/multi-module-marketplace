@@ -42,7 +42,7 @@ class NetworkModule {
     @Provides
     fun provideProductsApi(okHttpClient: OkHttpClient): ProductsApi {
         return Retrofit.Builder()
-            .baseUrl("https://run.mocky.io/v3/")
+            .baseUrl("https://675d888763b05ed079781f3e.mockapi.io/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(ServerResponseCallAdapterFactory())
             .client(okHttpClient)

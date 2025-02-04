@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.software.feature_api.NetworkApi
+import com.software.feature_api.wrappers.ProductInListDTO
 import com.software.feature_api.wrappers.ServerResponse
 import com.software.storage_api.StorageApi
 import com.software.workers.di.WorkerComponent
@@ -37,7 +38,13 @@ class LoadAndSaveProductsInListWorker(
 
         return when (val response = networkApi.getProductsApi().getProductsInList()) {
             is ServerResponse.Success -> {
-                storageApi.getSharedPreferencesApi().insertProductsInListDTO(response.value)
+                val newResponse: MutableSet<ProductInListDTO> = mutableSetOf()
+                newResponse.add(response.value[0].copy(name = "null", price = "-199"))
+                newResponse.addAll(response.value)
+
+                val list = mutableListOf<ProductInListDTO>()
+                list.addAll(newResponse)
+                storageApi.getSharedPreferencesApi().insertProductsInListDTO(list)
                 Result.success()
             }
             is ServerResponse.Error -> {
